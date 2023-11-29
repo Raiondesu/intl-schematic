@@ -1,0 +1,36 @@
+{
+  "name": "@intl-schematic/solid",
+  "version": "0.0.0",
+  "license": "MIT",
+  "repository": {
+    "url": "https://github.com/Raiondesu/intl-schematic"
+  },
+  "main": "index",
+  "types": "index",
+  "type": "module",
+  "scripts": {
+    "build:es": "tsc --outDir dist/es -t ES2020 --module ES2020",
+    "build:next": "tsc --outDir dist/esnext --module esnext",
+    "dev": "tsc --noEmit -w",
+    "commit-build": "(git diff --quiet && git diff --staged --quiet) || (git commit -am \"Update dist\")",
+    "preversion": "npm t && npm run build && npm run commit-build",
+    "prerelease": "npm version prerelease --preid=rc",
+    "pre-patch": "npm version prerelease --preid=rc",
+    "pre-minor": "npm version preminor --preid=rc",
+    "pre-major": "npm version premajor --preid=rc",
+    "patch": "npm version patch",
+    "minor": "npm version minor",
+    "major": "npm version major"
+  },
+  "peerDependencies": {
+    "intl-schematic": "*"
+  },
+  "devDependencies": {
+    "tsconfig": "*",
+    "typescript": "^5.3.2"
+  },
+  "dependencies": {
+    "rambda": "^8.6.0",
+    "solid-js": "^1.8.6"
+  }
+}

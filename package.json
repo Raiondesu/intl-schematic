@@ -1,0 +1,14 @@
+{
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build:schema": "npm run build:schema -w intl-schematic",
+    "type-check": "tsc"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "packageManager": "npm@10.1.0"
+}

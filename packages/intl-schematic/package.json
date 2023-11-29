@@ -1,0 +1,55 @@
+{
+  "name": "intl-schematic",
+  "version": "0.0.0",
+  "license": "MIT",
+  "repository": {
+    "url": "https://github.com/Raiondesu/intl-schematic"
+  },
+  "module": "src/index",
+  "exports": {
+    ".": "./src/index",
+    "./processors": "./src/processors",
+    "./plugins": "./src/plugins",
+    "./translation.schema": "./src/translation.schema",
+    "./ts.schema": "./src/ts.schema"
+  },
+  "typesVersions": {
+    "*": {
+      "index": [
+        "./src/index.ts"
+      ],
+      "processors": [
+        "./src/processors.ts"
+      ],
+      "plugins": [
+        "./src/plugins.ts"
+      ],
+      "translation.schema": [
+        "./src/translation.schema.d.ts"
+      ]
+    }
+  },
+  "types": "src/index",
+  "main": "dist/es/index",
+  "type": "module",
+  "scripts": {
+    "build:schema": "node ./generate-schema.js",
+    "build:es": "tsc --outDir dist/es -t ES2020 --module ES2020",
+    "build:next": "tsc --outDir dist/esnext --module esnext",
+    "dev": "tsc --noEmit -w",
+    "commit-build": "(git diff --quiet && git diff --staged --quiet) || (git commit -am \"Update dist\")",
+    "preversion": "npm t && npm run build && npm run commit-build",
+    "prerelease": "npm version prerelease --preid=rc",
+    "pre-patch": "npm version prerelease --preid=rc",
+    "pre-minor": "npm version preminor --preid=rc",
+    "pre-major": "npm version premajor --preid=rc",
+    "patch": "npm version patch",
+    "minor": "npm version minor",
+    "major": "npm version major"
+  },
+  "devDependencies": {
+    "json-schema-to-typescript": "^13.0.1",
+    "tsconfig": "*",
+    "typescript": "^5.3.2"
+  }
+}
