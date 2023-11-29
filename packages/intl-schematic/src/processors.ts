@@ -100,8 +100,66 @@ export const defaultProcessors = {
   // TODO: find a way to make typing for id fork
   id: () => () => x => x,
   string: () => () => String,
+
+  /**
+   * ```
+   * {
+   *  "translation-key": {
+   *    "processor": { "date": "" },
+   *    "parameter": { // Intl.DateTimeFormat options
+   *      "day": "2-digit",
+   *      "month": "2-digit",
+   *      "year": "numeric"
+   *    },
+   *    "input": "" // fallback
+   *  }
+   * }
+   * ```
+   * then:
+   * ```js
+   * t('translation-key', new Date()) // "29.11.2023"
+   * ```
+   */
   date: dateFormat,
+
+  /**
+   * ```
+   * {
+   *  "translation-key": {
+   *    "processor": { "number": "" },
+   *    "parameter": { // Intl.NumberFormat options
+   *      "style": "currency",
+   *      "currency": "USD",
+   *      "currencyDisplay": "symbol",
+   *      "trailingZeroDisplay": "stripIfInteger"
+   *    },
+   *    "input": 0 // fallback
+   *  }
+   * }
+   * ```
+   * then:
+   * ```js
+   * t('translation-key', 123) // "$123"
+   * ```
+   */
   number: cachedIntl(Intl.NumberFormat, Number),
+
+  /**
+   * ```
+   * {
+   *  "translation-key": {
+   *    "processor": { "plural": "" },
+   *    "parameter": { // Intl.PluralRules options
+   *      "one": "word",
+   *      "many": "words"
+   *    },
+   *    "input": "" // fallback
+   *  }
+   * }
+   * ```
+   *
+   * t('translation-key', 12) // "words"
+   */
   plural: (locale: Intl.Locale) => {
     const plurals = new Intl.PluralRules(locale.language);
 
@@ -115,6 +173,27 @@ export const defaultProcessors = {
 
     return plural;
   },
+
+
+  /**
+   * ```
+   * {
+   *  "translation-key": {
+   *    "processor": { "dictionary": "" },
+   *    "parameter": { // Intl.DateTimeFormat options
+   *      "a": "Variant A",
+   *      "b": "Variant B"
+   *    },
+   *    "input": { "default": "Choose a variant!" } // fallback
+   *  }
+   * }
+   * ```
+   * then:
+   * ```js
+   * t('translation-key', { value: 'a' }) // "Variant a"
+   * t('translation-key', { value: null }) // "Choose a variant!"
+   * ```
+   */
   dictionary: () => (options: Record<string, string>) => (input: { value: string, default: string; }) => {
     try {
       return (options && input.value in options) ? options[input.value] : input.default;
@@ -124,6 +203,7 @@ export const defaultProcessors = {
       return input.default;
     }
   },
+
   display: cachedIntl(DisplayNames, x => x),
 } satisfies Processors;
 
