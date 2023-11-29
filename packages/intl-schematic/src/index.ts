@@ -5,18 +5,19 @@ import type { Plugin } from './plugins/core';
 
 export * from './ts.schema.d';
 
-// TODO: decouple architecture from plugins
+// TODO: decouple processor architecture from plugins
 interface Options<P extends Processors, Locale extends Translation> {
   processors?: P;
   plugins?: Plugin<Locale, P>[];
 }
 
 /**
- * Creates a translation function
- * @param getLocaleDocument
- * @param currentLocaleId
+ * Creates a translation function (commonly known as `t()` or `$t()`)
+ *
+ * @param getLocaleDocument should return a translation document
+ * @param currentLocaleId should return a current Intl.Locale
  * @param options
- * @returns
+ * @returns a tranlation function that accepts a key to look up in the translation document
  */
 export const createTranslator: {
   <Locale extends Translation>(
@@ -80,6 +81,7 @@ export const createTranslator: {
 
   const callPluginsHook = callPlugins(translate, plugins);
 
+  // Initialize plugins
   callPluginsHook('initPlugin', processors, undefined, undefined, currentLocaleId, '', undefined, undefined);
 
   return translate;

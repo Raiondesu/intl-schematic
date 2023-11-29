@@ -35,7 +35,7 @@ This library will **not** support:
 
 Comprehensive documentation is in progress.
 
-See a simple example below and don't be afraid to take a look into the sources to find out more.
+See a simplified example below and don't be afraid to take a look into the sources to find out more.
 
 ### Define a translation document
 
@@ -57,12 +57,9 @@ const getLocale = () => new Intl.Locale('en')
 ### Create a translator function (`t()`)
 
 ```js
-import { createTranslator, defaultPlugins, defaultProcessors } from 'intl-schematic';
+import { createTranslator } from 'intl-schematic';
 
-const t = createTranslator(getDocument, getLocale, {
-  processors: defaultProcessors,
-  plugins: defaultPlugins,
-});
+const t = createTranslator(getDocument, getLocale);
 ```
 
 ### Use a translator function

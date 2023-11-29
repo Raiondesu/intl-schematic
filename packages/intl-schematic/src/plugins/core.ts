@@ -34,8 +34,26 @@ type PluginHooks = keyof Omit<Plugin<any, any>, 'name'>;
 export const callPlugins = <Locale extends Translation, Processors>(
   translate: TranslationProxy<Locale, Processors>,
   plugins: Plugin<Locale, Processors>[] = [],
-) => (
-  (hook: PluginHooks, ...[
+) => {
+  const pluginsPerHook = plugins.reduce((obj, plugin) => {
+    for (const _hookName in plugin) if (typeof plugin[_hookName as PluginHooks] === 'function') {
+      const hookName = _hookName as PluginHooks;
+      const hook = plugin[hookName] as PluginHook<Locale, Processors>;
+
+      if (hookName in obj) {
+        obj[hookName].push(hook);
+      } else {
+        obj[hookName] = [hook];
+      }
+    }
+
+    return obj;
+  }, {} as Record<PluginHooks, PluginHook<Locale, Processors>[]>);
+
+  console.log(pluginsPerHook);
+
+
+  const callPluginsForHook = (hook: PluginHooks, ...[
     value,
     input,
     parameter,
@@ -44,19 +62,20 @@ export const callPlugins = <Locale extends Translation, Processors>(
     doc,
     initiatorPlugin
   ]: Parameters<PluginHook<Locale, Processors>>): string | undefined => String(
-    plugins.reduce(
-      (val, plugin) => (
-        console.log('calling plugin on', hook, ':', plugin.name),
-        plugin[hook]?.call({
+    pluginsPerHook[hook]?.reduce(
+      (val, pluginHook) => (
+        pluginHook?.call({
           callHook(hook, value) {
-            return callPlugins(translate, plugins)(hook, value, input, parameter, key, currentLocaleId, doc, plugin.name);
+            return callPluginsForHook(hook, value, input, parameter, key, currentLocaleId, doc, pluginHook.name);
           },
           translate
         }, val, input, parameter, key, currentLocaleId, doc, initiatorPlugin) ?? val
       ),
       value
-    )
-  )
-);
+    ) ?? value
+  );
+
+  return callPluginsForHook;
+};
 
 export const createPlugin = <T extends Plugin<any, any>>(plugin: T): T => plugin;
