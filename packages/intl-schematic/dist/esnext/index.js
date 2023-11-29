@@ -1,5 +1,13 @@
 import { callPlugins } from './plugins/core';
 export * from './ts.schema.d';
+/**
+ * Creates a translation function (commonly known as `t()` or `$t()`)
+ *
+ * @param getLocaleDocument should return a translation document
+ * @param currentLocaleId should return a current Intl.Locale
+ * @param options
+ * @returns a tranlation function that accepts a key to look up in the translation document
+ */
 export const createTranslator = (getLocaleDocument, currentLocaleId, options = {}) => {
     const { processors = {}, plugins = [], } = options;
     const translate = function (key, input, parameter) {
@@ -19,12 +27,12 @@ export const createTranslator = (getLocaleDocument, currentLocaleId, options = {
         // Process a function record
         // TODO: move into a plugin
         if (typeof currentKey === 'function') {
-            const inputContainsArgs = typeof input === 'object' && input && 'args' in input && Array.isArray(input.args);
-            return callHook('keyProcessed', currentKey(...(inputContainsArgs ? input.args : [])));
+            return callHook('keyProcessed', currentKey(...(Array.isArray(input) ? input : [])));
         }
         return callHook('keyFound', currentKey);
     };
     const callPluginsHook = callPlugins(translate, plugins);
+    // Initialize plugins
     callPluginsHook('initPlugin', processors, undefined, undefined, currentLocaleId, '', undefined, undefined);
     return translate;
 };

@@ -20,7 +20,6 @@ export const ProcessorPlugin = createPlugin({
     keyFound(record, input, parameter, currentLocaleId, key, doc) {
         const localizedProcessors = (localizedProcessorsByLocale[String(currentLocaleId()?.baseName)] ??= getLocalizedProcessors(currentLocaleId));
         // Handle a processed record
-        // TODO: move into a plugin
         if (isParametrized(record)) {
             const processorName = Object.keys(record.processor)[0];
             const processor = localizedProcessors[processorName];

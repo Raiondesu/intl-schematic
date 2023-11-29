@@ -32,7 +32,6 @@ export const ProcessorPlugin = createPlugin({
     );
 
     // Handle a processed record
-    // TODO: move into a plugin
     if (isParametrized(record)) {
       const processorName = Object.keys(record.processor)[0];
       const processor = localizedProcessors[processorName];

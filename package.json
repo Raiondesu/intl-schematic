@@ -5,6 +5,7 @@
   ],
   "scripts": {
     "build:schema": "npm run build:schema -w intl-schematic",
+    "build": "npm run build -ws",
     "type-check": "tsc"
   },
   "engines": {
