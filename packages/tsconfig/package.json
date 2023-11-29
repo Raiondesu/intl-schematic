@@ -4,7 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build:es": "exit 0"
+    "build": "exit 0",
+    "build:es": "exit 0",
+    "build:next": "exit 0"
   },
   "dependencies": {
     "typescript": "^5.3.2"
