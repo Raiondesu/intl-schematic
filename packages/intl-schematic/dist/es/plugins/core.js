@@ -13,7 +13,6 @@ export const callPlugins = (translate, plugins = []) => {
             }
         return obj;
     }, {});
-    console.log(pluginsPerHook);
     const callPluginsForHook = (hook, ...[value, input, parameter, key, currentLocaleId, doc, initiatorPlugin]) => String(pluginsPerHook[hook]?.reduce((val, pluginHook) => (pluginHook?.call({
         callHook(hook, value) {
             return callPluginsForHook(hook, value, input, parameter, key, currentLocaleId, doc, pluginHook.name);

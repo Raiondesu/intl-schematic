@@ -50,9 +50,6 @@ export const callPlugins = <Locale extends Translation, Processors>(
     return obj;
   }, {} as Record<PluginHooks, PluginHook<Locale, Processors>[]>);
 
-  console.log(pluginsPerHook);
-
-
   const callPluginsForHook = (hook: PluginHooks, ...[
     value,
     input,
