@@ -11,6 +11,13 @@ interface Options<P extends Processors, Locale extends Translation> {
   plugins?: Plugin<Locale, P>[];
 }
 
+/**
+ * Creates a translation function
+ * @param getLocaleDocument
+ * @param currentLocaleId
+ * @param options
+ * @returns
+ */
 export const createTranslator: {
   <Locale extends Translation>(
     getLocaleDocument: () => Locale | undefined,
@@ -65,9 +72,7 @@ export const createTranslator: {
     // Process a function record
     // TODO: move into a plugin
     if (typeof currentKey === 'function') {
-      const inputContainsArgs = typeof input === 'object' && input && 'args' in input && Array.isArray(input.args);
-
-      return callHook('keyProcessed', currentKey(...(inputContainsArgs ? input.args as [] : [])));
+      return callHook('keyProcessed', currentKey(...(Array.isArray(input) ? input : [])));
     }
 
     return callHook('keyFound', currentKey);

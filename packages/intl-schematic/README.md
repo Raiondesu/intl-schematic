@@ -33,26 +33,23 @@ This library will **not** support:
 
 ## Usage
 
+Comprehensive documentation is in progress.
+
+See a simple example below and don't be afraid to take a look into the sources to find out more.
+
 ### Define a translation document
 
-```json
-// en.json
-{
-  "hello": "Hello, World!"
-}
+```js
+const en = {
+  "hello": "Hello, World!",
+  "hello-name": name => `Hello, ${name}!`
+};
 ```
 
-### Define a function that returns a translation document and a locale
+### Define functions that return a translation document and a locale
 
 ```js
-
-let translation = undefined;
-
-import('./en.json').then(doc => {
-  translation = doc;
-});
-
-const getDocument = () => translation;
+const getDocument = () => en;
 
 const getLocale = () => new Intl.Locale('en')
 ```
@@ -62,7 +59,7 @@ const getLocale = () => new Intl.Locale('en')
 ```js
 import { createTranslator, defaultPlugins, defaultProcessors } from 'intl-schematic';
 
-const t = createTranslator(getLocale, getDocument, {
+const t = createTranslator(getDocument, getLocale, {
   processors: defaultProcessors,
   plugins: defaultPlugins,
 });
@@ -71,5 +68,6 @@ const t = createTranslator(getLocale, getDocument, {
 ### Use a translator function
 
 ```js
-console.log(t('hello')); // `Hello, World!``
+console.log(t('hello')); // `Hello, World!`
+console.log(t('hello-name', ['Bob'])); // `Hello, Bob!`
 ```
