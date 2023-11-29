@@ -35,8 +35,41 @@ This library will **not** support:
 
 ### Define a translation document
 
-### Define a function that returns a translation document
+```json
+// en.json
+{
+  "hello": "Hello, World!"
+}
+```
+
+### Define a function that returns a translation document and a locale
+
+```js
+
+let translation = undefined;
+
+import('./en.json').then(doc => {
+  translation = doc;
+});
+
+const getDocument = () => translation;
+
+const getLocale = () => new Intl.Locale('en')
+```
 
 ### Create a translator function (`t()`)
 
+```js
+import { createTranslator, defaultPlugins, defaultProcessors } from 'intl-schematic';
+
+const t = createTranslator(getLocale, getDocument, {
+  processors: defaultProcessors,
+  plugins: defaultPlugins,
+});
+```
+
 ### Use a translator function
+
+```js
+console.log(t('hello')); // `Hello, World!``
+```
