@@ -3,6 +3,7 @@ import { merge } from 'rambda';
 
 import type { TranslationDocument as Translation } from 'intl-schematic/translation.schema';
 import { Processors, defaultProcessors } from 'intl-schematic/processors';
+import { defaultPlugins } from 'intl-schematic/plugins';
 import { TranslationProxy, createTranslator } from 'intl-schematic';
 
 export interface LocaleResponse<Locale> {
@@ -46,5 +47,6 @@ export const createLocaleResource: {
 
   return createTranslator(() => localeResource.latest?.[0], () => localeResource.latest?.[1], {
     processors: processors ?? defaultProcessors,
+    plugins: defaultPlugins,
   });
 };

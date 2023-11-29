@@ -8,8 +8,8 @@
   "module": "src/index",
   "exports": {
     ".": "./src/index",
-    "./processors": "./src/processors",
-    "./plugins": "./src/plugins",
+    "./processors": "./src/processors/index",
+    "./plugins": "./src/plugins/index",
     "./translation.schema": "./src/translation.schema",
     "./ts.schema": "./src/ts.schema"
   },
@@ -19,10 +19,10 @@
         "./src/index.ts"
       ],
       "processors": [
-        "./src/processors.ts"
+        "./src/processors/index.ts"
       ],
       "plugins": [
-        "./src/plugins.ts"
+        "./src/plugins/index.ts"
       ],
       "translation.schema": [
         "./src/translation.schema.d.ts"
@@ -30,7 +30,7 @@
     }
   },
   "types": "src/index",
-  "main": "dist/es/index",
+  "main": "src/index",
   "type": "module",
   "scripts": {
     "build:schema": "node ./generate-schema.js",

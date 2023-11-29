@@ -1,4 +1,4 @@
-import type { TranslationModule } from './ts.schema';
+import type { TranslationModule } from '../ts.schema';
 
 export type Processor = (locale: Intl.Locale) => (
   (parameter: any, key: string, document: TranslationModule) => (
