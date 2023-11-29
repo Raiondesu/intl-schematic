@@ -68,3 +68,35 @@ const t = createTranslator(getDocument, getLocale);
 console.log(t('hello')); // `Hello, World!`
 console.log(t('hello-name', ['Bob'])); // `Hello, Bob!`
 ```
+
+### Add default plugins and processors
+
+These allow to use standard [Intl](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl) features,
+like [`DateTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat)
+or [`PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/PluralRules).
+
+```js
+import { createTranslator } from 'intl-schematic';
+import { defaultPlugins } from 'intl-schematic/plugins';
+import { defaultProcessors } from 'intl-schematic/processors';
+
+const getDocument = () => ({
+  price: {
+   processor: { number: "" },
+   parameter: { // Intl.NumberFormat options
+     style: "currency",
+     currency: "USD",
+     currencyDisplay: "symbol",
+     trailingZeroDisplay: "stripIfInteger"
+   },
+   input: 0 // fallback
+ }
+});
+
+const t = createTranslator(getDocument, getLocale, {
+  plugins: defaultPlugins,
+  processors: defaultProcessors,
+});
+
+console.log(t('price', 123)); // "US$123"
+```
