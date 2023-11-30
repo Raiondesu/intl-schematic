@@ -44,13 +44,12 @@ export const cachedIntl: {
     format?: (format: FormatFunction<Value, IntlOptions>, convert: (value: string) => Value) => CustomFormat,
   },
 ) => {
-  const cache = new Map<Intl.Locale, Record<string, Formatter>>();
+  const cache: Record<string, Record<string, Formatter>> = {};
   const processOptions = process?.options;
   const processFormat = process?.format;
 
   return (locale: Intl.Locale) => {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const localeCache = cache.get(locale) ?? cache.set(locale, {}).get(locale)!;
+    const localeCache = (cache[locale.baseName] ??= {});
 
     return (options: IntlOptions, key: string) => {
       let formatter = localeCache[key] ??= new intl(locale.language, processOptions?.(options) ?? options);
