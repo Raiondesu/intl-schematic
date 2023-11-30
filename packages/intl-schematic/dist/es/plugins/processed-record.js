@@ -35,7 +35,7 @@ export const ProcessorPlugin = createPlugin({
             };
             const getProcessedResult = processor(mergedParameter, key, doc);
             const result = getProcessedResult(mergedInput, mergedParameter);
-            return result
+            return result != null
                 ? this.callHook('keyProcessed', result)
                 : (this.callHook('keyNotProcessed', result) ?? this.callHook('keyNotFound', result));
         }

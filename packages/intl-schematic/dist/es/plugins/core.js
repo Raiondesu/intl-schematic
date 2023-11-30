@@ -15,7 +15,7 @@ export const callPlugins = (translate, plugins = []) => {
     }, {});
     const callPluginsForHook = (hook, ...[value, input, parameter, currentLocaleId, key, doc, initiatorPlugin]) => {
         if (!pluginsPerHook[hook]) {
-            return !value ? undefined : String(value);
+            return value == null ? undefined : String(value);
         }
         let val = value;
         for (const pluginHook of pluginsPerHook[hook]) {
@@ -36,7 +36,7 @@ export const callPlugins = (translate, plugins = []) => {
                 val = pluginResult;
             }
         }
-        return !val ? undefined : String(val);
+        return val == null ? undefined : String(val);
     };
     return callPluginsForHook;
 };

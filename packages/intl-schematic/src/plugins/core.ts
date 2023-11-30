@@ -60,7 +60,7 @@ export const callPlugins = <Locale extends Translation, Processors>(
     initiatorPlugin
   ]: Parameters<PluginHook<Locale, Processors>>): string | undefined => {
     if (!pluginsPerHook[hook]) {
-      return !value ? undefined : String(value);
+      return value == null ? undefined : String(value);
     }
 
     let val = value;
@@ -87,7 +87,7 @@ export const callPlugins = <Locale extends Translation, Processors>(
       }
     }
 
-    return !val ? undefined : String(val);
+    return val == null ? undefined : String(val);
   };
 
   return callPluginsForHook;
