@@ -14,7 +14,7 @@ export type PluginHook<Locale extends Translation, Processors> = (
   currentLocaleId: () => Intl.Locale | undefined,
   key: string,
   translationDocument: Locale | undefined,
-  initiatorPlugin: string | undefined
+  initiatorPlugin?: string | undefined
 ) => string | undefined;
 
 export interface Plugin<Locale extends Translation, Processors> {
@@ -54,23 +54,41 @@ export const callPlugins = <Locale extends Translation, Processors>(
     value,
     input,
     parameter,
-    key,
     currentLocaleId,
+    key,
     doc,
     initiatorPlugin
-  ]: Parameters<PluginHook<Locale, Processors>>): string | undefined => String(
-    pluginsPerHook[hook]?.reduce(
-      (val, pluginHook) => (
-        pluginHook?.call({
-          callHook(hook, value) {
-            return callPluginsForHook(hook, value, input, parameter, key, currentLocaleId, doc, pluginHook.name);
-          },
-          translate
-        }, val, input, parameter, key, currentLocaleId, doc, initiatorPlugin) ?? val
-      ),
-      value
-    ) ?? value
-  );
+  ]: Parameters<PluginHook<Locale, Processors>>): string | undefined => {
+    if (!pluginsPerHook[hook]) {
+      return !value ? undefined : String(value);
+    }
+
+    let val = value;
+
+    for (const pluginHook of pluginsPerHook[hook]) {
+      const pluginResult = pluginHook.call({
+        callHook(_hook, value) {
+          if (hook === _hook) {
+            // Prevent recursion
+            return;
+          }
+
+          return callPluginsForHook(_hook, value, input, parameter, currentLocaleId, key, doc, pluginHook.name);
+        },
+        translate
+      }, val, input, parameter, currentLocaleId, key, doc, initiatorPlugin);
+
+      if (typeof pluginResult === 'string') {
+        return pluginResult;
+      }
+
+      if (pluginResult != null) {
+        val = pluginResult;
+      }
+    }
+
+    return !val ? undefined : String(val);
+  };
 
   return callPluginsForHook;
 };

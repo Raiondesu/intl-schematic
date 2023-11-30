@@ -51,9 +51,8 @@ export const createTranslator: {
     const callHook = (
       hook: keyof Omit<Plugin<Locale, Processors>, 'name'>,
       value?: unknown,
-      processor?: string,
       _input: typeof input = input,
-    ) => callPluginsHook(hook, value, _input, parameter, currentLocaleId, key, doc, processor) ?? key;
+    ) => callPluginsHook(hook, value, _input, parameter, currentLocaleId, key, doc) ?? key;
 
     if (!doc) {
       return callHook('docNotFound');
@@ -61,13 +60,13 @@ export const createTranslator: {
 
     const currentKey = doc[key];
 
-    if (typeof currentKey === 'undefined') {
-      return callHook('keyNotFound');
+    if (currentKey == null) {
+      return callHook('keyNotFound', key);
     }
 
     // Process a plain-string
-    if (typeof currentKey !== 'object' && typeof currentKey !== 'function') {
-      return currentKey ? callHook('keyProcessed', currentKey) : callHook('keyNotFound');
+    if (typeof currentKey === 'string') {
+      return callHook('keyProcessed', currentKey);
     }
 
     // Process a function record
