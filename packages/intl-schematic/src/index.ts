@@ -1,5 +1,5 @@
 import type { LocaleInputParameter, LocaleKey, LocaleOptionsParameter, Translation, TranslationProxy } from './ts.schema';
-import type { Processors, defaultProcessors } from './processors';
+import type { Processors, defaultProcessors } from './plugins/processors/default';
 import { callPlugins } from './plugins/core';
 import type { Plugin } from './plugins/core';
 

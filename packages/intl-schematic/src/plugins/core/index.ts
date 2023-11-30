@@ -1,4 +1,4 @@
-import { Translation, LocaleInputParameter, LocaleKey, TranslationProxy, LocaleOptionsParameter } from '../ts.schema';
+import { Translation, LocaleInputParameter, LocaleKey, TranslationProxy, LocaleOptionsParameter } from 'schema';
 
 export type PluginHook<Locale extends Translation, Processors> = (
   this: {

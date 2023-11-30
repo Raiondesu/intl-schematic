@@ -8,8 +8,10 @@
   "module": "src/index",
   "exports": {
     ".": "./src/index",
-    "./processors": "./src/processors/index",
+    "./processors": "./src/plugins/processors/default",
+    "./processors/*": "./src/plugins/processors/*",
     "./plugins": "./src/plugins/index",
+    "./plugins/*": "./src/plugins/*",
     "./translation.schema": "./src/translation.schema",
     "./ts.schema": "./src/ts.schema"
   },
@@ -19,10 +21,16 @@
         "./src/index.ts"
       ],
       "processors": [
-        "./src/processors/index.ts"
+        "./src/plugins/processors/default.ts"
+      ],
+      "processors/*": [
+        "./src/plugins/processors/*"
       ],
       "plugins": [
         "./src/plugins/index.ts"
+      ],
+      "plugins/*": [
+        "./src/plugins/*"
       ],
       "translation.schema": [
         "./src/translation.schema.d.ts"

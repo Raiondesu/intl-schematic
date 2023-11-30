@@ -1,4 +1,4 @@
-import { InputObject } from '../translation.schema';
+import { InputObject } from '../../translation.schema';
 
 export function mergeInputs(
   baseInput: InputObject,

@@ -1,13 +1,15 @@
-import { Processor, Processors } from '../processors';
+import { Processor, Processors } from './processors/core';
 import { InputObject, ParameterObject, ParametrizedTranslationRecord } from '../translation.schema';
-import { LocaleInputParameter } from '../ts.schema';
 import { createPlugin } from './core';
-import { mergeInputs } from './merge-inputs';
+import { mergeInputs } from './core/merge-inputs';
 
 const localizedProcessorsByLocale: Record<string, Record<string, ReturnType<Processor>>> = {};
 
 let getLocalizedProcessors: (currentLocaleId: () => Intl.Locale | undefined) => Record<string, ReturnType<Processor>> = () => ({});
 
+/**
+ * This plugin enables usage of custom translation pocessors
+ */
 export const ProcessorPlugin = createPlugin({
   name: 'Processor',
   initPlugin(processors) {

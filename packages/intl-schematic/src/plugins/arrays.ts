@@ -1,9 +1,15 @@
 import { createPlugin } from './core';
 
+/**
+ * Process an array record of this format:
+ * `["Some text", "translation-key"]`
+ *
+ * Will find all translation keys referenced, resolve them
+ * and join with all array elements by space.
+ */
 export const ArrayRecordPlugin = createPlugin({
   name: 'ArrayRecord',
-  keyFound(key, input, parameter, _, recKey) {
-    // Process an array record (["Some text", "translation-key"])
+  keyFound(key, input, parameter) {
     if (Array.isArray(key)) {
       const result = key.reduce((arr, refK) => {
         if (typeof refK !== 'string') {

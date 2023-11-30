@@ -1,12 +1,16 @@
-import { InputObject, ParametrizedTranslationRecord } from '../translation.schema';
-import { LocaleInputParameter } from '../ts.schema';
+import { InputObject } from '../translation.schema';
 import { createPlugin } from './core';
-import { mergeInputs } from './merge-inputs';
+import { mergeInputs } from './core/merge-inputs';
 
+/**
+ * Process an object record that doesn't specify a processor.
+ *
+ * Treats object keys as references to other records
+ * that should be translated and joined by space.
+ */
 export const ObjectRecordPlugin = createPlugin({
   name: 'ObjectRecord',
   keyFound(key, input) {
-    // Process an object record that doesn't specify a processor
     if (typeof key === 'object' && key != null) {
       return this.callHook(
         'keyProcessed',
