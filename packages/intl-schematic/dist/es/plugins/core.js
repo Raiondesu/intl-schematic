@@ -13,12 +13,31 @@ export const callPlugins = (translate, plugins = []) => {
             }
         return obj;
     }, {});
-    const callPluginsForHook = (hook, ...[value, input, parameter, key, currentLocaleId, doc, initiatorPlugin]) => String(pluginsPerHook[hook]?.reduce((val, pluginHook) => (pluginHook?.call({
-        callHook(hook, value) {
-            return callPluginsForHook(hook, value, input, parameter, key, currentLocaleId, doc, pluginHook.name);
-        },
-        translate
-    }, val, input, parameter, key, currentLocaleId, doc, initiatorPlugin) ?? val), value) ?? value);
+    const callPluginsForHook = (hook, ...[value, input, parameter, currentLocaleId, key, doc, initiatorPlugin]) => {
+        if (!pluginsPerHook[hook]) {
+            return !value ? undefined : String(value);
+        }
+        let val = value;
+        for (const pluginHook of pluginsPerHook[hook]) {
+            const pluginResult = pluginHook.call({
+                callHook(_hook, value) {
+                    if (hook === _hook) {
+                        // Prevent recursion
+                        return;
+                    }
+                    return callPluginsForHook(_hook, value, input, parameter, currentLocaleId, key, doc, pluginHook.name);
+                },
+                translate
+            }, val, input, parameter, currentLocaleId, key, doc, initiatorPlugin);
+            if (typeof pluginResult === 'string') {
+                return pluginResult;
+            }
+            if (pluginResult != null) {
+                val = pluginResult;
+            }
+        }
+        return !val ? undefined : String(val);
+    };
     return callPluginsForHook;
 };
 export const createPlugin = (plugin) => plugin;

@@ -12,17 +12,17 @@ export const createTranslator = (getLocaleDocument, currentLocaleId, options = {
     const { processors = {}, plugins = [], } = options;
     const translate = function (key, input, parameter) {
         const doc = getLocaleDocument();
-        const callHook = (hook, value, processor, _input = input) => callPluginsHook(hook, value, _input, parameter, currentLocaleId, key, doc, processor) ?? key;
+        const callHook = (hook, value, _input = input) => callPluginsHook(hook, value, _input, parameter, currentLocaleId, key, doc) ?? key;
         if (!doc) {
             return callHook('docNotFound');
         }
         const currentKey = doc[key];
-        if (typeof currentKey === 'undefined') {
-            return callHook('keyNotFound');
+        if (currentKey == null) {
+            return callHook('keyNotFound', key);
         }
         // Process a plain-string
-        if (typeof currentKey !== 'object' && typeof currentKey !== 'function') {
-            return currentKey ? callHook('keyProcessed', currentKey) : callHook('keyNotFound');
+        if (typeof currentKey === 'string') {
+            return callHook('keyProcessed', currentKey);
         }
         // Process a function record
         // TODO: move into a plugin

@@ -1,7 +1,7 @@
 import { createPlugin } from './core';
 export const ArrayRecordPlugin = createPlugin({
     name: 'ArrayRecord',
-    keyFound(key, input, parameter) {
+    keyFound(key, input, parameter, _, recKey) {
         // Process an array record (["Some text", "translation-key"])
         if (Array.isArray(key)) {
             const result = key.reduce((arr, refK) => {
