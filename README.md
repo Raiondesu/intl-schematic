@@ -18,8 +18,7 @@ To read more, see the [main package readme](./packages/intl-schematic/README.md)
 
 [Packages legend](#packages)
 
-> ⚠ This is an early work-in-progress public prototype, use with caution! ⚠\
-> The fact that this library is used in one project on produciton, doesn't mean it will work flawlessly in yours!
+> ⚠ This is an early work-in-progress public prototype, use with caution! ⚠
 
 </div>
 
@@ -65,7 +64,7 @@ To contribute, create a branch and make a PR to `main`, or [create an issue](htt
 
 ### Packages
 
-This project utilizes a monorepo structure based on [npm workspaces](https://docs.npmjs.com/cli/v7/using-npm/workspaces/),
+This project utilizes a monorepo structure based on [npm workspaces](https://docs.npmjs.com/cli/v7/using-npm/workspaces/),\
 with the main package being, of course, [`intl-schematic`](./packages/intl-schematic/).
 
 Full list of packages at the moment:
