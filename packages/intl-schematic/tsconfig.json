@@ -4,6 +4,8 @@
   "compilerOptions": {
     "paths": {
       "schema": ["./src/ts.schema"],
+      "core": ["./src/core"],
+      "core/*": ["./src/core/*"],
     }
   }
 }

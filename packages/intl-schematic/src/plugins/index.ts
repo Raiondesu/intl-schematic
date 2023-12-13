@@ -1,7 +1,6 @@
-import { ArrayRecordPlugin } from './arrays';
-import { ObjectRecordPlugin } from './object-record';
+import { ArraysPlugin } from './arrays';
 import { ProcessorPlugin } from './processors';
-import { ResolveMissingKeyPlugin } from './resolve-missing';
+import { defaultProcessors } from './processors/default';
 
 /**
  * Default schematic plugins
@@ -12,8 +11,6 @@ import { ResolveMissingKeyPlugin } from './resolve-missing';
  * - Resolve missing keys to avoid exceptions
  */
 export const defaultPlugins = [
-  ProcessorPlugin,
-  ArrayRecordPlugin,
-  ObjectRecordPlugin,
-  ResolveMissingKeyPlugin,
-];
+  ArraysPlugin,
+  ProcessorPlugin(defaultProcessors),
+] as const;
