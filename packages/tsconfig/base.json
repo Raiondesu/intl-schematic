@@ -3,8 +3,7 @@
   "display": "Default",
   "compilerOptions": {
     "composite": false,
-    "declaration": true,
-    "declarationMap": true,
+    "declaration": false,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "inlineSources": false,
@@ -18,7 +17,10 @@
     "allowSyntheticDefaultImports": true,
     "target": "ESNext",
     "module": "ESNext",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "removeComments": true,
+    "disableReferencedProjectLoad": true,
+    "skipDefaultLibCheck": true
   },
   "exclude": ["node_modules", "dist"]
 }

@@ -1,10 +1,8 @@
-import { ArrayRecordPlugin } from './array-record';
-import { ObjectRecordPlugin } from './object-record';
-import { ProcessorPlugin } from './processed-record';
-import { ResolveMissingKeyPlugin } from './resolve-missing';
-export const defaultPlugins = [
-    ProcessorPlugin,
-    ArrayRecordPlugin,
-    ObjectRecordPlugin,
-    ResolveMissingKeyPlugin,
+import { LocalePlugin } from './locale';
+import { ArraysPlugin } from './arrays';
+import { ProcessorsPlugin } from './processors/plugin';
+export const defaultPlugins = (currentLocale, processors) => [
+    LocalePlugin(currentLocale),
+    ArraysPlugin,
+    ProcessorsPlugin(processors),
 ];

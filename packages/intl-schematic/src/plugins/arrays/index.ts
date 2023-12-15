@@ -2,7 +2,9 @@ import { createPlugin } from 'core';
 
 declare module 'intl-schematic/core' {
   export interface Plugins {
-    ArraysPlugin: [input: Record<string, unknown>, parameter: Record<string, unknown>];
+    ArraysPlugin: {
+      args: [input: Record<string, unknown>, parameter: Record<string, unknown>];
+    };
   }
 }
 
@@ -20,28 +22,33 @@ export const ArraysPlugin = createPlugin(
     return Array.isArray(value);
   },
 
-  function translate(input, parameter): string {
+  function translate(input, parameter) {
     return this.value.reduce<string[]>((arr, refK) => {
       if (typeof refK === 'string') {
         if (!refK.startsWith('input:')) {
-          return [...arr, (this.plugins.ProcessorPlugin?.translate ?? this.translate)(
+          const result = this.translate(
             refK,
-            (input as Record<string, typeof input>)?.[refK],
-            (parameter as Record<string, typeof parameter>)?.[refK]
-          )];
+            input?.[refK],
+            parameter?.[refK]
+          );
+
+          if (typeof result === 'string') {
+            return [...arr, result];
+          }
+
+          return arr;
         }
 
-        const _input = input as Record<string, typeof input>;
         const inputKey = refK.replace('input:', '');
 
-        return [...arr, _input[inputKey] as unknown as string];
+        return [...arr, String(input[inputKey])];
       }
 
       const refParamK = Object.keys(refK)[0];
 
       if (refParamK.startsWith('input:')) {
         const key = refParamK.replace('input:', '');
-        const value = (input as Record<string, typeof input>)?.[key];
+        const value = input?.[key];
 
         return [
           ...arr,
@@ -54,11 +61,17 @@ export const ArraysPlugin = createPlugin(
         return arr;
       }
 
-      return [...arr, (this.plugins.ProcessorPlugin?.translate ?? this.translate)(
+      const result = this.translate(
         refParamK,
-        (input as Record<string, typeof input>)?.[refParamK],
-        (parameter as Record<string, typeof parameter>)?.[refParamK]
-      )];
+        input?.[refParamK],
+        parameter?.[refParamK]
+      );
+
+      if (typeof result === 'string') {
+        return [...arr, result];
+      }
+
+      return arr;
     }, []).join(' ');
   }
 );

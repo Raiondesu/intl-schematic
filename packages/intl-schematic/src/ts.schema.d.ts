@@ -3,7 +3,7 @@ import type {
   ParametrizedTranslationRecord,
   PlainStringTranslationRecordWithReferences,
 } from './translation.schema';
-import type { InputParameter, OptionsParameter } from './plugins/processors/default';
+import type { InputParameter, OptionsParameter } from './plugins/processors';
 
 export interface TranslationModule {
   [k: string]:

@@ -2,7 +2,9 @@ import { createPlugin } from 'core';
 
 declare module 'intl-schematic/core' {
   export interface Plugins<Locale, Key> {
-    NestedKeys: Locale[Key] extends string ? [] : Leaves<Locale[Key]>;
+    NestedKeys: {
+      args: Locale[Key] extends string ? [] : Leaves<Locale[Key]>;
+    };
   }
 }
 
@@ -30,9 +32,9 @@ export const NestedKeysPlugin = createPlugin(
     return (!!value && typeof value === 'object' && Object.values(value).some(match)) || typeof value === 'string';
   },
 
-  function translate(...path: string[]): string {
-    const result = path.reduce((branch, leaf, index) => (
-      typeof branch === 'string'
+  function translate(...path: string[]) {
+    const result = path.reduce<NestedRecord | undefined>((branch, leaf, index) => (
+      typeof branch === 'string' || typeof branch === 'undefined'
         // found the final leaf
         ? branch
         // looking for the leaf
@@ -41,14 +43,12 @@ export const NestedKeysPlugin = createPlugin(
           // found a nested leaf, passing on...
           ? branch[leaf]
           // not found a leaf with this path, output debug info
-          : [this.key].concat(path.slice(0, index + 1), JSON.stringify(branch)).join('.'))
+          : (console.log(path.slice(0, index + 1).concat([JSON.stringify(branch)]).join('.')) as undefined)
+        )
     ), this.value);
 
     if (typeof result === 'string') {
       return result;
     }
-
-    return [this.key].concat(path).join('.');
   }
 );
-

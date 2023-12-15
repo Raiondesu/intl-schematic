@@ -8,7 +8,8 @@
   "module": "src/index",
   "exports": {
     ".": "./src/index",
-    "./processors": "./src/plugins/processors/default",
+    "./plugins/processors": "./src/plugins/processors/plugin",
+    "./processors": "./src/plugins/processors/index",
     "./processors/*": "./src/plugins/processors/*",
     "./plugins": "./src/plugins/index",
     "./plugins/*": "./src/plugins/*",
@@ -23,7 +24,10 @@
         "./src/index.ts"
       ],
       "processors": [
-        "./src/plugins/processors/default.ts"
+        "./src/plugins/processors/index.ts"
+      ],
+      "plugins/processors": [
+        "./src/plugins/processors/plugin.ts"
       ],
       "processors/*": [
         "./src/plugins/processors/*"
