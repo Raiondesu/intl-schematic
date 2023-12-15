@@ -1,8 +1,8 @@
 import type { LocaleKey } from 'schema';
-import type { PMatch, PluginContext, PluginInterface, PluginTemplate, SimpleTranslationFunction, TranslationFunction } from './core';
+import type { PluginContext, PluginInterface, Plugin, PluginRegistry } from './plugins/core';
 
 interface TranslationContext {
-  plugins?: readonly PluginTemplate[];
+  plugins?: readonly Plugin[];
   pluginContext?: PluginContext;
 }
 
@@ -24,7 +24,7 @@ export function createTranslator<Locale extends Record<string, string>>(
  * @returns a tranlation function that accepts a key to look up in the translation document
  */
 export function createTranslator<
-  const P extends readonly PluginTemplate[],
+  const P extends readonly Plugin[],
   LocaleDoc extends Record<string, PMatch<P> | string>,
 >(
   getLocaleDocument: () => LocaleDoc,
@@ -32,7 +32,7 @@ export function createTranslator<
 ): TranslationFunction<LocaleDoc, P>;
 
 export function createTranslator<
-  const P extends readonly PluginTemplate[],
+  const P extends readonly Plugin[],
   LocaleDoc extends Record<string, PMatch<P> | string>,
 >(
   getLocaleDocument: () => LocaleDoc,
@@ -59,7 +59,7 @@ export function createTranslator<
 
     function createPluginContext(
       this: TranslationContext,
-      plugin: PluginTemplate,
+      plugin: Plugin,
       index: number
     ): PluginContext {
       const contextualPlugins = contextPlugins.reduce<PluginContext['plugins']>((obj, pl) => ({
@@ -95,7 +95,7 @@ export function createTranslator<
         }, subkey, ...args)
       }
 
-      function createPluginInterface(pt: PluginTemplate): PluginInterface | undefined {
+      function createPluginInterface(pt: Plugin): PluginInterface | undefined {
         return {
           translate: (subkey, ...args) => (
             pt.translate.call({
@@ -110,4 +110,51 @@ export function createTranslator<
       }
     }
   };
+}
+
+export type PMatch<P extends readonly Plugin[]> = (
+  P extends readonly Plugin<infer Match, any>[] ? Match : never
+);
+
+type NamePerPlugin<P extends readonly Plugin[]> = {
+  [key in keyof P]: P[key] extends Plugin<any, any, infer Name> ? Name : never;
+};
+
+type MatchPerPlugin<P extends readonly Plugin[], Names extends NamePerPlugin<P> = NamePerPlugin<P>> = {
+  [key in keyof Names & keyof P & `${number}` as Names[key]]: P[key] extends Plugin<infer Match, any> ? Match : never;
+};
+
+type InfoPerPlugin<P extends readonly Plugin[], Names extends NamePerPlugin<P> = NamePerPlugin<P>> = {
+  [key in keyof Names & keyof P & `${number}` as Names[key]]: P[key] extends Plugin<any, any, any, infer Info> ? Info : never;
+};
+
+type KeysOfType<O, T> = {
+  [K in keyof O]: T extends O[K] ? K : never
+}[keyof O];
+
+export type SimpleTranslationFunction<Locale extends Record<string, any>> = {
+  (key: keyof Locale): string;
+  (this: { plugins?: Plugin[] }, key: keyof Locale): string;
+};
+
+export type TranslationFunction<
+  LocaleDoc extends Record<string, any>,
+  P extends readonly Plugin[]
+> = {
+  <
+    K extends LocaleKey<LocaleDoc>,
+    PluginKey extends KeysOfType<MatchPerPlugin<P>, LocaleDoc[K]> = KeysOfType<MatchPerPlugin<P>, LocaleDoc[K]>
+  >(
+    key: K,
+    ...args: PluginRegistry<LocaleDoc, K, InfoPerPlugin<P>[PluginKey]>[PluginKey]['args']
+  ): string;
+
+  <
+    K extends LocaleKey<LocaleDoc>,
+    PluginKey extends KeysOfType<MatchPerPlugin<P>, LocaleDoc[K]> = KeysOfType<MatchPerPlugin<P>, LocaleDoc[K]>
+  >(
+    this: { plugins?: Plugin[] },
+    key: K,
+    ...args: PluginRegistry<LocaleDoc, K, InfoPerPlugin<P>[PluginKey]>[PluginKey]['args']
+  ): string;
 }

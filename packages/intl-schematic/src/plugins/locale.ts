@@ -1,7 +1,7 @@
-import { createPlugin } from 'intl-schematic/core';
+import { Plugin } from './core';
 
-declare module 'intl-schematic/core' {
-  export interface Plugins {
+declare module 'intl-schematic/plugins/core' {
+  export interface PluginRegistry {
     Locale: {
       args: [];
       info: () => Intl.Locale | undefined;
@@ -13,14 +13,9 @@ declare module 'intl-schematic/core' {
  * Adds a locale property to the plugin context for later use,
  * intended to be only used as a locale container
  */
-export const LocalePlugin = (currentLocale: () => Intl.Locale | undefined) => createPlugin(
+export const LocalePlugin = (currentLocale: () => Intl.Locale | undefined) => new Plugin(
   'Locale',
-
   // Always match
-  (value): value is any => true,
-
-  // Don't translate anything
-  () => undefined,
-
-  currentLocale
+  (_): _ is any => true,
+  { info: currentLocale }
 );

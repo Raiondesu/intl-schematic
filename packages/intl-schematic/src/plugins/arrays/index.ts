@@ -1,11 +1,15 @@
-import { createPlugin } from 'core';
+import { createPlugin } from '../core';
 
-declare module 'intl-schematic/core' {
-  export interface Plugins {
+declare module 'intl-schematic/plugins/core' {
+  export interface PluginRegistry {
     ArraysPlugin: {
       args: [input: Record<string, unknown>, parameter: Record<string, unknown>];
     };
   }
+}
+
+function match(value: unknown): value is Array<string | object> {
+  return Array.isArray(value);
 }
 
 /**
@@ -15,14 +19,8 @@ declare module 'intl-schematic/core' {
  * Will find all translation keys referenced, resolve them
  * and join with all array elements by space.
  */
-export const ArraysPlugin = createPlugin(
-  'ArraysPlugin',
-
-  function match(value): value is Array<string | object> {
-    return Array.isArray(value);
-  },
-
-  function translate(input, parameter) {
+export const ArraysPlugin = createPlugin('ArraysPlugin', match, {
+  translate(input, parameter) {
     return this.value.reduce<string[]>((arr, refK) => {
       if (typeof refK === 'string') {
         if (!refK.startsWith('input:')) {
@@ -74,5 +72,5 @@ export const ArraysPlugin = createPlugin(
       return arr;
     }, []).join(' ');
   }
-);
+});
 

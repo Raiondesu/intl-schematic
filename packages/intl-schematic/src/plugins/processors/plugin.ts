@@ -1,11 +1,11 @@
-import { createPlugin } from 'core';
+import { createPlugin } from '../core';
 import { TranslationModule } from 'schema';
 
 import { InputObject, ParameterObject, ParametrizedTranslationRecord } from '../../translation.schema';
 import { ExtraPartial, LocaleKey, Translation } from 'schema';
 
-declare module 'intl-schematic/core' {
-  export interface Plugins<Locale, Key, PluginInfo> {
+declare module 'intl-schematic/plugins/core' {
+  export interface PluginRegistry<Locale, Key, PluginInfo> {
     ProcessorsPlugin: {
       args: PluginInfo extends Processors
         ? [
@@ -39,12 +39,10 @@ export const ProcessorsPlugin = <P extends Processors>(processors: P) => {
     return isParametrized(value);
   };
 
-  return createPlugin(
-    'ProcessorsPlugin',
+  return createPlugin('ProcessorsPlugin', match, {
+    info: processors,
 
-    match,
-
-    function translate(input: InputObject, parameter: ParameterObject) {
+    translate(input: InputObject, parameter: ParameterObject) {
       const locale = this.plugins.Locale?.info();
       const localizedProcessors = (
         localizedProcessorsByLocale[String(locale?.baseName)] ??= getLocalizedProcessors(processors, locale)
@@ -74,9 +72,7 @@ export const ProcessorsPlugin = <P extends Processors>(processors: P) => {
 
       return result ?? undefined;
     },
-
-    processors
-  );
+  });
 };
 
 function isParametrized(key: unknown): key is ParametrizedTranslationRecord {
