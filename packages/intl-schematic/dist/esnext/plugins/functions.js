@@ -1,6 +1,10 @@
-import { createPlugin } from 'core';
-export const FunctionsPlugin = createPlugin('Functions', function match(value) {
+import { createPlugin } from './core';
+function match(value) {
     return typeof value === 'function';
-}, function translate(...args) {
-    return this.value(...args);
+}
+;
+export const FunctionsPlugin = createPlugin('Functions', match, {
+    translate(...args) {
+        return this.value(...args);
+    }
 });

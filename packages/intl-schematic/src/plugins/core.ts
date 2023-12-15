@@ -50,10 +50,7 @@ export interface PluginContext<
   };
 }
 
-/**
- * @deprecated Internal implementation detail, use {@link createPlugin} instead
- */
-export class Plugin<
+export interface Plugin<
   Match = any,
   Args extends any[] = any,
   Name extends keyof PluginRegistry = string,
@@ -61,22 +58,27 @@ export class Plugin<
   LocaleDoc extends Record<string, any> = Record<string, any>,
   Key extends keyof LocaleDoc = keyof LocaleDoc,
 > {
-  constructor(
-    public name: Name,
-    public match: (value: unknown, key: string, doc: Record<string, unknown>) => value is Match,
-    options: {
-      translate?(this: PluginContext<Match, LocaleDoc, Key, Name>, ...args: Args): string | undefined;
-      info?: PluginInfo;
-    }
-  ) {
-    this.translate = options.translate ?? (() => undefined);
-    this.info = options.info as PluginInfo;
-  }
-
-  translate: (this: PluginContext<Match, LocaleDoc, Key, Name>, ...args: Args) => string | undefined;
+  name: Name;
   info: PluginInfo;
+  match(value: unknown, key: string, doc: Record<string, unknown>): value is Match;
+  translate(this: PluginContext<Match, LocaleDoc, Key, Name>, ...args: Args): string | undefined;
 }
 
+/**
+ * A plugin factory, mostly used for type-checking
+ *
+ * @param name a name for the plugin, will be used as a global plugin registry shortcut for other plugins,
+ * must match with the name used in the plugin registry definition
+ *
+ * @param match a {@link https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates type predicate}
+ * that decides whether or not the plugin should be used on a specific key-value pair
+ *
+ * @param options allows to define the functionality of a plugin. It can do 2 things:
+ * 1. Provide info and context to other plugins, using the `info` property
+ * 2. Provide additional ways of translating a key-value pair from a translation document, using the `translate` method
+ *
+ * @returns a ready-to-use plugin
+ */
 export const createPlugin: {
   /**
    * A plugin factory, mostly used for type-checking
@@ -102,6 +104,21 @@ export const createPlugin: {
     }
   ): Plugin<Match, Args, Name, PluginInfo>;
 
+  /**
+   * A plugin factory, mostly used for type-checking
+   *
+   * @param name a name for the plugin, will be used as a global plugin registry shortcut for other plugins,
+   * must match with the name used in the plugin registry definition
+   *
+   * @param match a {@link https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates type predicate}
+   * that decides whether or not the plugin should be used on a specific key-value pair
+   *
+   * @param options allows to define the functionality of a plugin.
+   * It can provide additional ways of translating a key-value pair
+   * from a translation document, using the `translate` method
+   *
+   * @returns a ready-to-use plugin
+   */
   <Match, Args extends any[]>(
     name: string,
     match: (value: unknown) => value is Match,
@@ -116,5 +133,5 @@ export const createPlugin: {
     info?: unknown,
     translate?: (this: PluginContext<Match>, ...args: Args) => string | undefined,
   }
-): Plugin<Match, Args> => new Plugin(name, match, options);
+): Plugin<Match, Args> => ({ name, match, translate: options.translate ?? (() => undefined), info: options.info });
 
