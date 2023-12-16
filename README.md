@@ -14,7 +14,7 @@ A tiny framework-agnostic i18n library (3kb, zero-dependency) that allows to loc
 
 You can also install a nightly build [directly from github]()
 
-To read more, see the [main package readme](./packages/intl-schematic/README.md)
+To read more, see the [main package readme](./packages/core/README.md)
 
 [Packages legend](#packages)
 
@@ -65,11 +65,12 @@ To contribute, create a branch and make a PR to `main`, or [create an issue](htt
 ### Packages
 
 This project utilizes a monorepo structure based on [npm workspaces](https://docs.npmjs.com/cli/v7/using-npm/workspaces/),\
-with the main package being, of course, [`intl-schematic`](./packages/intl-schematic/).
+with the main package being, of course, [`intl-schematic`](./packages/core/).
 
 Full list of packages at the moment:
-- [`intl-schematic`](./packages/intl-schematic/) - main package
-- [`@intl-schematic/solid`](./packages/intl-schematic/) - reactive adapter for [`solid-js`](https://www.solidjs.com)
+- [`intl-schematic`](./packages/core/) - main package
+- [`@intl-schematic/solid`](./packages/solid/) - reactive adapter for [`solid-js`](https://www.solidjs.com)
+- [`tsconfig`](./packages/tsconfig/) - typescript config used by the packages
 
 ### Local development
 
@@ -88,5 +89,5 @@ to transpile a json-schema into usable type definitions.
 In order to evaluate and test the newest version that is yet to be released on npm, simply install from github:
 
 ```
-npm install 'https://gitpkg.now.sh/Raiondesu/intl-schematic/packages/intl-schematic?main'
+npm install 'https://gitpkg.now.sh/Raiondesu/intl-schematic/packages/core?main'
 ```
