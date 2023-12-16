@@ -8,12 +8,13 @@
   "module": "src/index",
   "exports": {
     ".": "./src/index",
-    "./processors": "./src/plugins/processors/default",
+    "./plugins/processors": "./src/plugins/processors/plugin",
+    "./processors": "./src/plugins/processors/index",
     "./processors/*": "./src/plugins/processors/*",
     "./plugins": "./src/plugins/index",
     "./plugins/*": "./src/plugins/*",
     "./translation.schema": "./src/translation.schema",
-    "./ts.schema": "./src/ts.schema"
+    "./schema": "./src/ts.schema"
   },
   "typesVersions": {
     "*": {
@@ -21,7 +22,10 @@
         "./src/index.ts"
       ],
       "processors": [
-        "./src/plugins/processors/default.ts"
+        "./src/plugins/processors/index.ts"
+      ],
+      "plugins/processors": [
+        "./src/plugins/processors/plugin.ts"
       ],
       "processors/*": [
         "./src/plugins/processors/*"
@@ -34,6 +38,9 @@
       ],
       "translation.schema": [
         "./src/translation.schema.d.ts"
+      ],
+      "schema": [
+        "./src/ts.schema.d.ts"
       ]
     }
   },

@@ -1,26 +1,79 @@
+type ObjectInput = Either<{
+  /** Displayed when the key is not found
+   * @alias default
+   */
+  fallback?: string;
+}, {
+  /** Displayed when the key is not found
+   * @alias fallback
+   * @deprecated use `fallback`
+  */
+  default?: string;
+}> & Either<{
+  /**
+   * A key to find in the dictionary
+   *
+   * @alias key
+   * @deprecated use `key`
+  */
+  value: string;
+}, {
+  /**
+   * A key to find in the dictionary
+   *
+   * @alias value
+   */
+  key: string;
+}>;
+
 /**
  * ```
  * {
- *  "translation-key": {
+ *  "variant": {
  *    "processor": { "dictionary": "" },
  *    "parameter": { // Intl.DateTimeFormat options
  *      "a": "Variant A",
  *      "b": "Variant B"
  *    },
- *    "input": { "default": "Choose a variant!" } // fallback
+ *    "input": { "fallback": "Choose a variant!" }
  *  }
  * }
  * ```
  * then:
  * ```js
- * t('translation-key', { value: 'a' }) // "Variant a"
- * t('translation-key', { value: null }) // "Choose a variant!"
+ * t('variant', { key: 'a' }) // "Variant a"
+ * t('variant', { key: null }) // "Choose a variant!"
  * ```
  */
-export const dictionary = () => (options: Record<string, string>) => (input: { value: string, default: string; }) => {
-  try {
-    return (options && input.value in options) ? options[input.value] : input.default;
-  } catch (error) {
-    return input.default;
+export const dictionary = () => (options: Record<string, string>, key: string) => (
+  (input: string | ObjectInput) => {
+    const _input = typeof input === 'string'
+      ? { key: input, fallback: key }
+      : {
+        fallback: (
+          'default' in input ? input.default
+          : 'fallback' in input ? input.fallback
+          : undefined
+        ) ?? key,
+        key: (
+          'key' in input ? input.key
+          : 'value' in input ? input.value
+          : ''
+        ) ?? ''
+      };
+
+    try {
+      return options && _input.key in options ? options[_input.key] : _input.fallback ?? key;
+    } catch (error) {
+      return _input.fallback ?? key;
+    }
   }
+);
+
+type Only<Include, Exclude> = {
+  [P in keyof Include]: Include[P];
+} & {
+  [P in keyof Exclude]?: never;
 };
+
+type Either<One, Other> = Only<One, Other> | Only<Other, One>;

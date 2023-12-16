@@ -1,4 +1,4 @@
 {
   "extends": "tsconfig/base",
-  "include": ["./index.ts"]
+  "include": ["./index.ts"],
 }

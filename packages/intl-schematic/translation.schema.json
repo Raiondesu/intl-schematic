@@ -9,8 +9,8 @@
                 "description": "This record simply allows to get the value string by the key, value can be an array to help break one-line texts in multiple lines for readability or to reference other translation records by their keys",
                 "items": {
                     "anyOf": [{
-                        "title": "Reference to an input of another paramterized record",
-                        "description": "Value must refer to a paramterized record that is already referenced in this array",
+                        "title": "Reference to an input of another parametrized record",
+                        "description": "Value must refer to a parametrized record that is already referenced in this array",
                         "type": "string",
                         "pattern": "input:.+"
                     }, {

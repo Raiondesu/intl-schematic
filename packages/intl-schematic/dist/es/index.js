@@ -1,38 +1,57 @@
-import { callPlugins } from './plugins/core';
-export * from './ts.schema.d';
-/**
- * Creates a translation function (commonly known as `t()` or `$t()`)
- *
- * @param getLocaleDocument should return a translation document
- * @param currentLocaleId should return a current Intl.Locale
- * @param options
- * @returns a tranlation function that accepts a key to look up in the translation document
- */
-export const createTranslator = (getLocaleDocument, currentLocaleId, options = {}) => {
-    const { processors = {}, plugins = [], } = options;
-    const translate = function (key, input, parameter) {
+export function createTranslator(getLocaleDocument, plugins) {
+    return (function translate(key, ...args) {
         const doc = getLocaleDocument();
-        const callHook = (hook, value, _input = input) => callPluginsHook(hook, value, _input, parameter, currentLocaleId, key, doc) ?? key;
-        if (!doc) {
-            return callHook('docNotFound');
+        const contextPlugins = this.plugins ?? plugins ?? [];
+        for (const [index, plugin] of contextPlugins.entries())
+            if (plugin.match(doc[key], key, doc)) {
+                const pluginContext = createPluginContext.call(this, plugin, index);
+                try {
+                    const pluginResult = plugin.translate.call(pluginContext, ...args);
+                    if (typeof pluginResult === 'string') {
+                        return pluginResult;
+                    }
+                }
+                catch { }
+            }
+        const plainKey = doc[key];
+        return typeof plainKey === 'string' ? plainKey : key;
+        function createPluginContext(plugin, index) {
+            const contextualPlugins = contextPlugins.reduce((obj, pl) => ({
+                ...obj,
+                [pl.name]: createPluginInterface(pl),
+            }), {});
+            const createdContext = {
+                name: plugin.name,
+                originalCallArgs: args,
+                originalKey: key,
+                originalValue: doc[key],
+                ...this.pluginContext,
+                plugins: contextualPlugins,
+                doc,
+                key,
+                value: doc[key],
+                translate: translateFromContext,
+            };
+            return createdContext;
+            function translateFromContext(subkey, ...args) {
+                return translate.call({
+                    plugins: subkey !== key
+                        ? contextPlugins
+                        : contextPlugins?.slice(index),
+                    pluginContext: createdContext,
+                }, subkey, ...args);
+            }
+            function createPluginInterface(pt) {
+                return {
+                    translate: (subkey, ...args) => (pt.translate.call({
+                        ...createdContext,
+                        key: subkey,
+                        value: doc[subkey]
+                    }, ...args)),
+                    match: pt.match,
+                    info: pt.info,
+                };
+            }
         }
-        const currentKey = doc[key];
-        if (currentKey == null) {
-            return callHook('keyNotFound', key);
-        }
-        // Process a plain-string
-        if (typeof currentKey === 'string') {
-            return callHook('keyProcessed', currentKey);
-        }
-        // Process a function record
-        // TODO: move into a plugin
-        if (typeof currentKey === 'function') {
-            return callHook('keyProcessed', currentKey(...(Array.isArray(input) ? input : [])));
-        }
-        return callHook('keyFound', currentKey);
-    };
-    const callPluginsHook = callPlugins(translate, plugins);
-    // Initialize plugins
-    callPluginsHook('initPlugin', processors, undefined, undefined, currentLocaleId, '', undefined, undefined);
-    return translate;
-};
+    }).bind({ plugins });
+}
