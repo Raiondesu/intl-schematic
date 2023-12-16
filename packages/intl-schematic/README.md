@@ -22,17 +22,14 @@ See a simplified example below and don't be afraid to take a look into the sourc
 
 ```js
 const en = {
-  "hello": "Hello, World!",
-  "hello-name": name => `Hello, ${name}!`
+  "hello": "Hello, World!"
 };
 ```
 
-### Define functions that return a translation document and a locale
+### Define a function that return a translation document
 
 ```js
 const getDocument = () => en;
-
-const getLocale = () => new Intl.Locale('en')
 ```
 
 ### Create a translator function (`t()`)
@@ -40,14 +37,13 @@ const getLocale = () => new Intl.Locale('en')
 ```js
 import { createTranslator } from 'intl-schematic';
 
-const t = createTranslator(getDocument, getLocale);
+const t = createTranslator(getDocument);
 ```
 
 ### Use a translator function
 
 ```js
 console.log(t('hello')); // `Hello, World!`
-console.log(t('hello-name', ['Bob'])); // `Hello, Bob!`
 ```
 
 ### Add default plugins and processors
@@ -75,10 +71,12 @@ const getDocument = () => ({
  }
 });
 
-const t = createTranslator(getDocument, getLocale, {
-  plugins: defaultPlugins,
-  processors: defaultProcessors,
-});
+const getLocale = () => new Intl.Locale('en');
+
+const t = createTranslator(getDocument, defaultPlugins(
+  getLocale
+  defaultProcessors
+));
 
 console.log(t('price', 123)); // "US$123"
 ```

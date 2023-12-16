@@ -53,7 +53,7 @@ This library will try to avoid these common pitfalls, while retaining a small si
 ## No-goals
 
 This library will **not** support:
-- **Translation key nesting**: needlessly complicates key lookup and maintenance, use namespaced keys instead;
+- **Translation key nesting using dot-notation**: needlessly complicates key lookup and maintenance, instead use namespaced keys or the `nested` plugin;
 - **String interpolation**: while custom processors can do anything with the translated string, the library by-itself does not and will not do any processing on the strings.
 
 ## Contributing
