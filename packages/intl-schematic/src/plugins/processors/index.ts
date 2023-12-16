@@ -17,3 +17,4 @@ export const defaultProcessors = {
 };
 
 export * from './plugin';
+export * from './intl/_cache';

@@ -1,11 +1,4 @@
 {
   "extends": "tsconfig/base",
-  "include": ["./src"],
-  "compilerOptions": {
-    "paths": {
-      "schema": ["./src/ts.schema"],
-      "core": ["./src/core"],
-      "core/*": ["./src/core/*"],
-    }
-  }
+  "include": ["./src"]
 }

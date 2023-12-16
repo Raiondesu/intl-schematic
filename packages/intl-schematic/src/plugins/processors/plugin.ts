@@ -1,19 +1,41 @@
 import { createPlugin } from '../core';
-import { TranslationModule } from 'schema';
 
-import { InputObject, ParameterObject, ParametrizedTranslationRecord } from '../../translation.schema';
-import { ExtraPartial, LocaleKey, Translation } from 'schema';
+import { TranslationDocuemnt } from '../../ts.schema';
+
+export type Processor<HandlesType = any, Parameter = any> = (locale: Intl.Locale) => (
+  (parameter: Parameter, key: string, document: TranslationDocuemnt) => (
+    (input: HandlesType, overrideParameter?: Parameter) => string | undefined
+  )
+);
+
+export type Processors<HandleTypes = any> = Record<string, Processor<HandleTypes>>;
 
 declare module 'intl-schematic/plugins/core' {
   export interface PluginRegistry<Locale, Key, PluginInfo> {
     ProcessorsPlugin: {
+      // Any attempt to externalize these types leads to a rat race between a type simplifier and a type inferer
       args: PluginInfo extends Processors
         ? [
-          input?: LocaleInputParameter<Locale, Key, PluginInfo>,
-          parameter?: LocaleOptionsParameter<Locale, Key, PluginInfo>
+          input: {
+              [key in Extract<keyof PluginInfo, keyof Locale[Key]['processor']>]:
+                PluginInfo[key] extends Processor<infer HT> ? HT : never;
+            }[Extract<keyof PluginInfo, keyof Locale[Key]['processor']>],
+
+          parameter?: {
+              [key in Extract<keyof PluginInfo, keyof Locale[Key]['processor']>]:
+                PluginInfo[key] extends Processor<any, infer Param> ? Param : never;
+            }[Extract<keyof PluginInfo, keyof Locale[Key]['processor']>],
         ]
         : [input?: unknown, parameter?: unknown];
       info: Processors;
+
+      // Extracts a processor and a parameter from a translation key to display
+      signature: {
+        [subkey in keyof Omit<Locale[Key], 'input'>]:
+          | subkey extends 'processor' ? keyof Locale[Key]['processor']
+          : subkey extends 'parameter' ? Locale[Key][subkey]
+          : never
+      };
     };
   }
 }
@@ -31,15 +53,23 @@ const getLocalizedProcessors = (processors: Processors, locale: Intl.Locale | un
 
 /**
  * This plugin enables usage of custom translation pocessors
+ *
+ * Depends on LocalePlugin
+*
+ * @param processors An array of processors to use.
+ * A processor is defined as a function of the following format:
+ * ```js
+ * locale => processorOptions => userInput => "string"
+ * ```
+ *
+ * All processors are lazily initialized on the first use of the plugin
+ * (first use of the translation function)
+ * and then cached per processor options per user locale
  */
 export const ProcessorsPlugin = <P extends Processors>(processors: P) => {
   const localizedProcessorsByLocale: Record<string, Record<string, ReturnType<Processor>>> = {};
 
-  function match(value: unknown): value is ParametrizedTranslationRecord {
-    return isParametrized(value);
-  };
-
-  return createPlugin('ProcessorsPlugin', match, {
+  return createPlugin('ProcessorsPlugin', isParametrized, {
     info: processors,
 
     translate(input: InputObject, parameter: ParameterObject) {
@@ -75,8 +105,8 @@ export const ProcessorsPlugin = <P extends Processors>(processors: P) => {
   });
 };
 
-function isParametrized(key: unknown): key is ParametrizedTranslationRecord {
-  return typeof key === 'object' && key != null && 'processor' in key && 'parameter' in key && 'input' in key;
+function isParametrized(value: unknown): value is ParametrizedTranslationRecord {
+  return typeof value === 'object' && value != null && 'processor' in value && 'parameter' in value && 'input' in value;
 }
 
 function mergeInputs(
@@ -96,51 +126,70 @@ function mergeInputs(
 
   return mergedInput;
 }
+/**
+ * The input arguments to a translation function in the format of 'name': 'default-value'. Provide a default value for each key.
+ */
+export type InputObject =
+  | {
+      /**
+       * A key in the input object, value is used as a default
+       *
+       * This interface was referenced by `undefined`'s JSON-Schema definition
+       * via the `patternProperty` "^.*$".
+       */
+      [k: string]:
+        | unknown[]
+        | boolean
+        | number
+        | null
+        | {
+            [k: string]: unknown;
+          }
+        | string;
+    }
+  | string
+  | number
+  | boolean
+  | null;
 
-export type LocaleInputParameter<
-  Locale extends Translation,
-  K extends LocaleKey<Locale>,
-  P extends Processors,
-> = null | (
-  Locale[K] extends { processor: infer O; input: infer I; }
-    ? keyof O extends keyof P
-      ? ExtraPartial<InputParameter<P, keyof O>>
-      : ExtraPartial<I>
-    : /* Locale[K] extends Array<Record<infer Key, any> | string>
-      ? { [key in LocaleKey<Locale> & Key]?: LocaleInputParameter<Locale, key, P>; }
-      : Locale[K] extends Record<infer Key, any>
-        ? { [key in LocaleKey<Locale> & Key]?: LocaleInputParameter<Locale, key, P>; }
-        :  */never
-);
+/**
+ * Parameter to pass into the processor function before passing in the input
+ */
+export type ParameterObject =
+  | (
+      | unknown[]
+      | boolean
+      | number
+      | null
+      | number
+      | {
+          [k: string]: unknown;
+        }
+      | string
+    )[]
+  | {
+      /**
+       * A key-value in the parameter object
+       *
+       * This interface was referenced by `undefined`'s JSON-Schema definition
+       * via the `patternProperty` "^.*$".
+       */
+      [k: string]:
+        | unknown[]
+        | boolean
+        | number
+        | null
+        | {
+            [k: string]: unknown;
+          }
+        | string;
+    };
 
-export type LocaleOptionsParameter<
-  Locale extends Translation,
-  K extends LocaleKey<Locale>,
-  P extends Processors,
-> = null | (
-  Locale[K] extends { processor: infer O; parameter: infer I; }
-    ? keyof O extends keyof P
-      ? ExtraPartial<OptionsParameter<P, keyof O>>
-      : ExtraPartial<I>
-    : /* Locale[K] extends Record<string, any>
-      ? { [key in LocaleKey<Locale> & keyof Locale[K]]?: LocaleOptionsParameter<Locale, key, P>; }
-      :  */never
-);
-
-export type Processor = (locale: Intl.Locale) => (
-  (parameter: any, key: string, document: TranslationModule) => (
-    (input: any, overrideParameter?: any) => string
-  )
-);
-
-export type Processors = Record<string, Processor>;
-
-export type InputParameter<
-  P extends Processors,
-  O extends keyof P
-> = Parameters<ReturnType<ReturnType<P[O]>>>[0];
-
-export type OptionsParameter<
-  P extends Processors,
-  O extends keyof P
-> = Parameters<ReturnType<P[O]>>[0];
+/**
+ * Allows to apply different pre-set functions to the input value with an object parameter before returning a localized string
+ */
+export interface ParametrizedTranslationRecord {
+  processor: { [key: string]: string };
+  parameter: ParameterObject;
+  input: InputObject;
+}

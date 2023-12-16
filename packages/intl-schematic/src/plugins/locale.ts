@@ -11,11 +11,12 @@ declare module 'intl-schematic/plugins/core' {
 
 /**
  * Adds a locale property to the plugin context for later use,
- * intended to be only used as a locale container
+ * intended to only be used as a locale container,
+ * doesn't provide any translating on its own
  */
-export const LocalePlugin = (currentLocale: () => Intl.Locale | undefined) => createPlugin(
+export const LocaleProviderPlugin = (currentLocale: () => Intl.Locale | undefined) => createPlugin(
   'Locale',
-  // Always match
-  (_): _ is any => true,
+  // Never match (invisible plugin)
+  (_): _ is never => false,
   { info: currentLocale }
 );
