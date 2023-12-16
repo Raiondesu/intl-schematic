@@ -5,7 +5,7 @@
   "repository": {
     "url": "https://github.com/Raiondesu/intl-schematic"
   },
-  "module": "src/index",
+  "module": "dist/es",
   "exports": {
     ".": "./src/index",
     "./plugins/processors": "./src/plugins/processors/plugin",
