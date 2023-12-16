@@ -10,11 +10,7 @@ const getLocalizedProcessors = (processors, locale) => {
 };
 export const ProcessorsPlugin = (processors) => {
     const localizedProcessorsByLocale = {};
-    function match(value) {
-        return isParametrized(value);
-    }
-    ;
-    return createPlugin('ProcessorsPlugin', match, {
+    return createPlugin('ProcessorsPlugin', isParametrized, {
         info: processors,
         translate(input, parameter) {
             const locale = this.plugins.Locale?.info();
@@ -35,8 +31,8 @@ export const ProcessorsPlugin = (processors) => {
         },
     });
 };
-function isParametrized(key) {
-    return typeof key === 'object' && key != null && 'processor' in key && 'parameter' in key && 'input' in key;
+function isParametrized(value) {
+    return typeof value === 'object' && value != null && 'processor' in value && 'parameter' in value && 'input' in value;
 }
 function mergeInputs(baseInput, input) {
     if (typeof input === 'object' && input != null) {

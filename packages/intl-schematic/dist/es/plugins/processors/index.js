@@ -9,3 +9,4 @@ export const defaultProcessors = {
     display: displayNames,
 };
 export * from './plugin';
+export * from './intl/_cache';
