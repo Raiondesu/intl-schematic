@@ -4,13 +4,11 @@ import { cachedIntl } from './_cache';
  * ```
  * {
  *  "translation-key": {
- *    "processor": { "date": "" },
- *    "parameter": { // Intl.DateTimeFormat options
+ *    "date": { // Intl.DateTimeFormat options
  *      "day": "2-digit",
  *      "month": "2-digit",
  *      "year": "numeric"
- *    },
- *    "input": "" // fallback
+ *    }
  *  }
  * }
  * ```

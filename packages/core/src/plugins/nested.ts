@@ -19,12 +19,12 @@ type Leaves<T> = T extends object ? {
 }[keyof T] : []
 
 function match(value: unknown): value is NestedRecord {
-  return (!!value && typeof value === 'object' && Object.values(value).some(match)) || typeof value === 'string';
+  return (!!value && typeof value === 'object' && Object.values(value).some(match));
 }
 
 /**
- * Process an nested record of this format:
- * `{ "key": "Some text", "other-nested-key": { "some-deeper-key": "Some other text" } }`
+ * Process a nested record of this format:
+ * `{ "nested-key": "Some text", "other-nested-key": { "some-deeper-key": "Some other text" } }`
  *
  * Will find all nested keys referenced, resolve them
  * and output the final leaf string value, or a full key path if not found.

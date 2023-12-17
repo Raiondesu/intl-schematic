@@ -1,6 +1,6 @@
 import { createPlugin } from './core';
 function match(value) {
-    return (!!value && typeof value === 'object' && Object.values(value).some(match)) || typeof value === 'string';
+    return (!!value && typeof value === 'object' && Object.values(value).some(match));
 }
 export const NestedKeysPlugin = createPlugin('NestedKeys', match, {
     translate(...path) {

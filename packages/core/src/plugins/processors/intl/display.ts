@@ -16,13 +16,11 @@ class DisplayNames {
  * ```
  * {
  *  "translation-key": {
- *    "processor": { "display": "" },
- *    "parameter": { // Intl.DisplayNames options
+ *    "display": { // Intl.DisplayNames options
  *      "type": "language",
  *      "languageDisplay": "standard",
  *      "style": "narrow"
- *    },
- *    "input": "" // fallback
+ *    }
  *  }
  * }
  * ```

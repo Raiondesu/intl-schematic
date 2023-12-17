@@ -1,103 +1,115 @@
-import { createPlugin } from '../core';
-import { Processor } from '../processors';
+import { LocaleKey } from 'intl-schematic/schema';
+import { createPlugin } from 'intl-schematic/plugins/core';
 
 declare module 'intl-schematic/plugins/core' {
   export interface PluginRegistry<Locale, Key, PluginInfo, ContextualPlugins> {
     ArraysPlugin: {
       // Any attempt to externalize these types leads to a rat race between a type simplifier and a type inferer
       args: [
-        input: Locale[Key][number] extends Record<infer Keys, any> ? {
-          [key in Extract<Keys, keyof Locale>]: {
-            [key in Extract<keyof ContextualPlugins['ProcessorsPlugin']['info'], keyof Locale[key]['processor']>]:
-              ContextualPlugins['ProcessorsPlugin']['info'][key] extends Processor<infer HT> ? HT : never;
-          }[Extract<keyof ContextualPlugins['ProcessorsPlugin']['info'], keyof Locale[key]['processor']>]
-        } : unknown,
-
-        parameter?: Locale[Key][number] extends Record<infer Keys, any> ? {
-          [key in Extract<Keys, keyof Locale>]: {
-            [key in Extract<keyof ContextualPlugins['ProcessorsPlugin']['info'], keyof Locale[key]['processor']>]:
-              ContextualPlugins['ProcessorsPlugin']['info'][key] extends Processor<any, infer Param> ? Param : never;
-          }[Extract<keyof ContextualPlugins['ProcessorsPlugin']['info'], keyof Locale[key]['processor']>]
-        } : unknown
+        references: {
+          [key in keyof Exclude<Locale[Key][number], string> & LocaleKey<Locale>]:
+            GetPluginNameFromContext<Locale, key, ContextualPlugins> extends infer PluginName
+              ? PluginName extends keyof PluginRegistry
+                ? PluginRegistry<Locale, key,
+                    ContextualPlugins[PluginName]['info'],
+                    ContextualPlugins
+                  >[PluginName] extends PluginRecord<infer Args>
+                    ? Args
+                    : unknown
+                : unknown
+              : unknown;
+        },
+        delimiter?: string | ((translatedArray: string[], defaultDelimiter: string) => string),
       ];
 
       // Extracts reference keys from arrays and detects their processors
+      // to display them to the user
       signature: {
-        [key in Extract<keyof Exclude<Locale[Key][number], string>, keyof Locale>]: {
-          [subkey in keyof Omit<Locale[key], 'input' | 'parameter'>]:
-            | subkey extends 'processor' ? keyof Locale[key]['processor']
-            : never
-        }
-      }
+        [key in keyof Exclude<Locale[Key][number], string> & LocaleKey<Locale>]: [
+          GetPluginNameFromContext<Locale, key, ContextualPlugins>,
+          Locale[key]
+        ];
+      };
     };
   }
 }
 
-function match(value: unknown): value is Array<string | object> {
+function match(value: unknown): value is Array<string | Record<string, any>> {
   return Array.isArray(value);
 }
 
 /**
  * Process an array record of this format:
- * `["Some text", "translation-key"]`
+ * `["Some text", { "translation-key": "" }]`
+ *
+ * If a referenced key matches with another plugin,
+ * it's possible to reference a raw parameter for the plugin:
+ * ```
+ * // Will reference the parameter at index 0 passed into the translation function for this key
+ * ["Some text", { "translation-key": "" }, "0:translation-key"]
+ * ```
  *
  * Will find all translation keys referenced, resolve them
- * and join with all array elements by space.
+ * and join all elements using a custom delimiter (space by-default).
  *
- * Depends on the {@link ProcessorsPlugin}
+ * @param defaultDelimiter a string to join the array elements by, default is space
  */
-export const ArraysPlugin = createPlugin('ArraysPlugin', match, {
-  translate(input: Record<string, unknown>, parameter?: Record<string, unknown>) {
-    return this.value.reduce<string[]>((arr, refK) => {
+export const ArraysPlugin = (defaultDelimiter = ' ') => createPlugin('ArraysPlugin', match, {
+  translate(
+    referenceParams: Record<string, unknown[]>,
+    delimiter: string | ((arr: string[], dDelimiter: string) => string) = defaultDelimiter
+  ) {
+    const startsWithIndex = /^\d+:/;
+
+    const processReference = (referencedKey: string): string[] => {
+      if (startsWithIndex.test(referencedKey)) {
+        const [argIndexName, inputKey] = referencedKey.split(':');
+        const argIndex = isNaN(Number(argIndexName)) ? 0 : Number(argIndexName);
+
+        return [String(referenceParams[inputKey][argIndex])];
+      }
+
+      const result = this.translate(
+        referencedKey,
+        ...referenceParams[referencedKey]
+      );
+
+      if (typeof result === 'string') {
+        return [result];
+      }
+
+      return [];
+    }
+
+    const result = this.value.reduce<string[]>((arr, refK) => {
       if (typeof refK === 'string') {
-        if (!refK.startsWith('input:')) {
-          const result = this.translate(
-            refK,
-            input?.[refK],
-            parameter?.[refK]
-          );
-
-          if (typeof result === 'string') {
-            return [...arr, result];
-          }
-
-          return arr;
-        }
-
-        const inputKey = refK.replace('input:', '');
-
-        return [...arr, String(input[inputKey])];
+        return [...arr, ...processReference(refK)];
       }
 
       const refParamK = Object.keys(refK)[0];
 
-      if (refParamK.startsWith('input:')) {
-        const key = refParamK.replace('input:', '');
-        const value = input?.[key];
+      if (typeof referenceParams[refParamK] === 'undefined' && refParamK in refK) {
+        referenceParams[refParamK] = refK[refParamK];
+      } else if (refParamK in refK) {
+        const inlineParams = refK[refParamK];
+        referenceParams[refParamK] = referenceParams[refParamK]
+          .map((param, i) => {
+            const inlineParam = inlineParams[i];
 
-        return [
-          ...arr,
-          // TOOD: add a way to get a stringifier for a processors input
-          String(value)
-        ];
+            return typeof param === 'object' && typeof inlineParam === 'object'
+              ? { ...inlineParam, ...param }
+              : (param ?? inlineParam);
+          });
       }
 
-      if ('__ignore' in refK) {
-        return arr;
-      }
+      return [...arr, ...processReference(refParamK)];
+    }, []);
 
-      const result = this.translate(
-        refParamK,
-        input?.[refParamK],
-        parameter?.[refParamK]
-      );
+    if (typeof delimiter === 'string') {
+      return result.join(delimiter);
+    }
 
-      if (typeof result === 'string') {
-        return [...arr, result];
-      }
-
-      return arr;
-    }, []).join(' ');
+    return delimiter(result, defaultDelimiter);
   }
 });
 

@@ -1,8 +1,8 @@
 import { LocaleProviderPlugin } from './locale';
 import { ArraysPlugin } from './arrays';
-import { ProcessorsPlugin } from './processors/plugin';
-export const defaultPlugins = (currentLocale, processors) => [
+import { ProcessorsPlugin } from './processors';
+export const defaultPlugins = (currentLocale, processors, arraysDelimiter = ' ') => [
     LocaleProviderPlugin(currentLocale),
-    ArraysPlugin,
+    ArraysPlugin(arraysDelimiter),
     ProcessorsPlugin(processors),
 ];

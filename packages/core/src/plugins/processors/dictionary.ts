@@ -1,3 +1,5 @@
+import { Either } from './plugin-core';
+
 type ObjectInput = Either<{
   /** Displayed when the key is not found
    * @alias default
@@ -31,7 +33,7 @@ type ObjectInput = Either<{
  * {
  *  "variant": {
  *    "processor": { "dictionary": "" },
- *    "parameter": { // Intl.DateTimeFormat options
+ *    "parameter": {
  *      "a": "Variant A",
  *      "b": "Variant B"
  *    },
@@ -69,11 +71,3 @@ export const dictionary = () => (options: Record<string, string>, key: string) =
     }
   }
 );
-
-type Only<Include, Exclude> = {
-  [P in keyof Include]: Include[P];
-} & {
-  [P in keyof Exclude]?: never;
-};
-
-type Either<One, Other> = Only<One, Other> | Only<Other, One>;

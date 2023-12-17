@@ -2,12 +2,10 @@
  * ```
  * {
  *  "translation-key": {
- *    "processor": { "plural": "" },
- *    "parameter": { // Intl.PluralRules options
+ *    "plural": { // Intl.PluralRules options
  *      "one": "word",
  *      "many": "words"
- *    },
- *    "input": "" // fallback
+ *    }
  *  }
  * }
  * ```

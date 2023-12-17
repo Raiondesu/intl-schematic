@@ -1,38 +1,45 @@
-import { createPlugin } from '../core';
+import { createPlugin } from 'intl-schematic/plugins/core';
 function match(value) {
     return Array.isArray(value);
 }
-export const ArraysPlugin = createPlugin('ArraysPlugin', match, {
-    translate(input, parameter) {
-        return this.value.reduce((arr, refK) => {
+export const ArraysPlugin = (defaultDelimiter = ' ') => createPlugin('ArraysPlugin', match, {
+    translate(referenceParams, delimiter = defaultDelimiter) {
+        const startsWithIndex = /^\d+:/;
+        const processReference = (referencedKey) => {
+            if (startsWithIndex.test(referencedKey)) {
+                const [argIndexName, inputKey] = referencedKey.split(':');
+                const argIndex = isNaN(Number(argIndexName)) ? 0 : Number(argIndexName);
+                return [String(referenceParams[inputKey][argIndex])];
+            }
+            const result = this.translate(referencedKey, ...referenceParams[referencedKey]);
+            if (typeof result === 'string') {
+                return [result];
+            }
+            return [];
+        };
+        const result = this.value.reduce((arr, refK) => {
             if (typeof refK === 'string') {
-                if (!refK.startsWith('input:')) {
-                    const result = this.translate(refK, input?.[refK], parameter?.[refK]);
-                    if (typeof result === 'string') {
-                        return [...arr, result];
-                    }
-                    return arr;
-                }
-                const inputKey = refK.replace('input:', '');
-                return [...arr, String(input[inputKey])];
+                return [...arr, ...processReference(refK)];
             }
             const refParamK = Object.keys(refK)[0];
-            if (refParamK.startsWith('input:')) {
-                const key = refParamK.replace('input:', '');
-                const value = input?.[key];
-                return [
-                    ...arr,
-                    String(value)
-                ];
+            if (typeof referenceParams[refParamK] === 'undefined' && refParamK in refK) {
+                referenceParams[refParamK] = refK[refParamK];
             }
-            if ('__ignore' in refK) {
-                return arr;
+            else if (refParamK in refK) {
+                const inlineParams = refK[refParamK];
+                referenceParams[refParamK] = referenceParams[refParamK]
+                    .map((param, i) => {
+                    const inlineParam = inlineParams[i];
+                    return typeof param === 'object' && typeof inlineParam === 'object'
+                        ? { ...inlineParam, ...param }
+                        : (param ?? inlineParam);
+                });
             }
-            const result = this.translate(refParamK, input?.[refParamK], parameter?.[refParamK]);
-            if (typeof result === 'string') {
-                return [...arr, result];
-            }
-            return arr;
-        }, []).join(' ');
+            return [...arr, ...processReference(refParamK)];
+        }, []);
+        if (typeof delimiter === 'string') {
+            return result.join(delimiter);
+        }
+        return delimiter(result, defaultDelimiter);
     }
 });

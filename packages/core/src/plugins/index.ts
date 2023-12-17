@@ -1,7 +1,8 @@
 import { LocaleProviderPlugin } from './locale';
 import { ArraysPlugin } from './arrays';
-import { Processors, ProcessorsPlugin } from './processors/plugin';
-import { defaultProcessors } from './processors';
+import { defaultProcessors } from './processors/default';
+import { Processors, ProcessorsPlugin } from './processors';
+import { Plugin } from 'intl-schematic/plugins/core';
 
 /**
  * Default schematic plugins
@@ -13,9 +14,10 @@ import { defaultProcessors } from './processors';
  */
 export const defaultPlugins = <P extends Processors = typeof defaultProcessors>(
   currentLocale: () => Intl.Locale | undefined,
-  processors: P
+  processors: P,
+  arraysDelimiter = ' '
 ) => [
   LocaleProviderPlugin(currentLocale),
-  ArraysPlugin,
+  ArraysPlugin(arraysDelimiter),
   ProcessorsPlugin(processors),
-] as const;
+] as const satisfies readonly Plugin[];

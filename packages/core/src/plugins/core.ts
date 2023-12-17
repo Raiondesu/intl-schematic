@@ -1,5 +1,30 @@
 import { LocaleKey } from '../ts.schema';
 
+export interface PluginRecord<
+  Args extends unknown[] = unknown[],
+  Info extends unknown = unknown,
+  Signature extends unknown = unknown
+> {
+  /**
+   * Arguments to require when translating a key that matches this plugin
+   *
+   * Should be a named tuple
+   */
+  args: Args;
+  /**
+   * Miscellanious information that the plugin uses
+   *
+   * This is a generic type that is then used as a type guard in PluginRegistry evaluation
+   */
+  info?: Info;
+  /**
+   * This is displayed in a type hint when the user hovers over the translation function invocation
+   *
+   * Allows to display any important information (for example, original key signature) to the user
+   */
+  signature?: Signature;
+}
+
 /**
  * Opt-in global plugin registry,
  * tracks all plugins included throughout the project to simplify type-checking
@@ -8,30 +33,9 @@ export interface PluginRegistry<
   Locale extends Record<string, any> = Record<string, any>,
   Key extends LocaleKey<Locale> = LocaleKey<Locale>,
   PluginInfo = unknown,
-  ContextualPlugins extends Record<string, Plugin> = Record<string, Plugin>
+  ContextualPlugins extends Record<keyof PluginRegistry, Plugin> = Record<string, Plugin>
 > {
-  [name: string]: {
-    /**
-     * Arguments to require when translating a key that matches this plugin
-     *
-     * Should be a named tuple
-     */
-    args: unknown[];
-
-    /**
-     * Miscellanious information that the plugin uses
-     *
-     * This is a generic type that is then used as a type guard in PluginRegistry evaluation
-     */
-    info?: unknown;
-
-    /**
-     * This is displayed in a type hint when the user hovers over the translation function invocation
-     *
-     * Allows to display any important information (for example, original key signature) to the user
-     */
-    signature?: unknown;
-  };
+  [name: string]: PluginRecord;
 }
 
 /**
@@ -155,3 +159,63 @@ export const createPlugin: {
   }
 ): Plugin<Match, Args> => ({ name, match, translate: options.translate ?? (() => undefined), info: options.info });
 
+
+export type PMatch<P extends readonly Plugin[]> = (
+  [] extends P ? never : P extends readonly Plugin<infer Match, any>[] ? Match : never
+);
+
+type NamePerPlugin<P extends readonly Plugin[]> = {
+  [key in keyof P]: P[key] extends Plugin<any, any, infer Name> ? Name : never;
+};
+
+type MatchPerPlugin<P extends readonly Plugin[], Names extends Record<number, keyof PluginRegistry> = NamePerPlugin<P>> = {
+  [key in keyof Names & keyof P & `${number}` as Names[key]]: P[key] extends Plugin<infer Match, any> ? Match : never;
+};
+
+export type MatchPerPluginName<P extends Record<string, Plugin>> = {
+  [key in keyof P]: P[key] extends Plugin<infer Match, any> ? Match : never;
+};
+
+type InfoPerPlugin<P extends readonly Plugin[], Names extends Record<number, keyof PluginRegistry> = NamePerPlugin<P>> = {
+  [key in keyof Names & keyof P & `${number}` as Names[key]]: P[key] extends Plugin<any, any, any, infer Info> ? Info : never;
+};
+
+type PluginPerPlugin<P extends readonly Plugin[], Names extends Record<number, keyof PluginRegistry> = NamePerPlugin<P>> = {
+  [key in Extract<keyof Names & keyof P & `${number}`, keyof PluginRegistry> as Names[key]]: P[key] extends Plugin ? P[key] : never;
+};
+
+export type KeysOfType<O, T> = {
+  [K in keyof O]: T extends O[K] ? K : never
+}[keyof O];
+
+/**
+ * Gets a name of a plugin that processes a specific key
+ * from the initial plugin array
+ */
+export type GetPluginNameFromArray<
+  LocaleDoc extends Record<string, any>,
+  K extends LocaleKey<LocaleDoc>,
+  P extends readonly Plugin[]
+> = KeysOfType<MatchPerPlugin<P>, LocaleDoc[K]>;
+
+/**
+ * Gets information on a plugin that processes a specific key
+ * from the plugin registry
+ */
+export type GetPluginFromArray<
+  LocaleDoc extends Record<string, any>,
+  K extends LocaleKey<LocaleDoc>,
+  P extends readonly Plugin[],
+  PluginKey extends keyof PluginRegistry,
+  PluginsInfo extends Record<keyof PluginRegistry, any> = InfoPerPlugin<P>,
+> = PluginRegistry<LocaleDoc, K, PluginsInfo[PluginKey], PluginPerPlugin<P>>[PluginKey];
+
+/**
+ * Gets a name of a plugin that processes a specific key
+ * from a plugin context
+ */
+export type GetPluginNameFromContext<
+  Locale extends Record<string, any>,
+  Key extends LocaleKey<Locale>,
+  ContextualPlugins extends Record<string, Plugin>
+> = KeysOfType<MatchPerPluginName<ContextualPlugins>, Locale[Key]>;

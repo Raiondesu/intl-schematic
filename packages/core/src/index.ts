@@ -1,5 +1,13 @@
 import type { LocaleKey } from './ts.schema';
-import type { PluginContext, PluginInterface, Plugin, PluginRegistry } from './plugins/core';
+import type {
+  PluginContext,
+  PluginInterface,
+  Plugin,
+  PluginRegistry,
+  GetPluginNameFromArray,
+  PMatch,
+  GetPluginFromArray
+} from './plugins/core';
 
 interface TranslationContext {
   plugins?: readonly Plugin[];
@@ -40,6 +48,11 @@ export function createTranslator<
 ): any {
   return (function translate(this: TranslationContext, key: string, ...args: unknown[]) {
     const doc = getLocaleDocument();
+
+    // Skip expensive plugin checks if key is not found anyway
+    if (!(key in doc)) {
+      return key;
+    }
 
     const contextPlugins = this.plugins ?? plugins ?? [];
 
@@ -117,35 +130,9 @@ export function createTranslator<
   }).bind({ plugins });
 }
 
-export type PMatch<P extends readonly Plugin[]> = (
-  [] extends P ? never : P extends readonly Plugin<infer Match, any>[] ? Match : never
-);
-
-type NamePerPlugin<P extends readonly Plugin[]> = {
-  [key in keyof P]: P[key] extends Plugin<any, any, infer Name> ? Name : never;
-};
-
-type MatchPerPlugin<P extends readonly Plugin[], Names extends NamePerPlugin<P> = NamePerPlugin<P>> = {
-  [key in keyof Names & keyof P & `${number}` as Names[key]]: P[key] extends Plugin<infer Match, any> ? Match : never;
-};
-
-type InfoPerPlugin<P extends readonly Plugin[], Names extends NamePerPlugin<P> = NamePerPlugin<P>> = {
-  [key in keyof Names & keyof P & `${number}` as Names[key]]: P[key] extends Plugin<any, any, any, infer Info> ? Info : never;
-};
-
-type PluginPerPlugin<P extends readonly Plugin[], Names extends NamePerPlugin<P> = NamePerPlugin<P>> = {
-  [key in keyof Names & keyof P & `${number}` as Names[key]]: P[key] extends Plugin ? P[key] : never;
-};
-
-type KeysOfType<O, T> = {
-  [K in keyof O]: T extends O[K] ? K : never
-}[keyof O];
-
 export type SimpleTranslationFunction<LocaleDoc extends Record<string, any>> = {
   (key: LocaleKey<LocaleDoc>): string;
 };
-
-type FlatType<T> = T extends object ? { [K in keyof T]: FlatType<T[K]> } : T;
 
 export type TranslationFunction<
   LocaleDoc extends Record<string, any>,
@@ -159,10 +146,10 @@ export type TranslationFunction<
    */
   <
     K extends LocaleKey<LocaleDoc>,
-    PluginKey extends KeysOfType<MatchPerPlugin<P>, LocaleDoc[K]> = KeysOfType<MatchPerPlugin<P>, LocaleDoc[K]>,
-    _Signature = FlatType<PluginRegistry<LocaleDoc, K, InfoPerPlugin<P>[PluginKey], PluginPerPlugin<P>>[PluginKey]['signature']>
+    PluginKey extends keyof PluginRegistry = GetPluginNameFromArray<LocaleDoc, K, P>,
+    _Signature = GetPluginFromArray<LocaleDoc, K, P, PluginKey>['signature']
   >(
     key: K,
-    ...args: PluginRegistry<LocaleDoc, K, InfoPerPlugin<P>[PluginKey], PluginPerPlugin<P>>[PluginKey]['args']
+    ...args: GetPluginFromArray<LocaleDoc, K, P, PluginKey>['args']
   ): string;
 }

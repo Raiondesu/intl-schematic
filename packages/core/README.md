@@ -56,7 +56,7 @@ and [`DisplayNames`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Ref
 ```js
 import { createTranslator } from 'intl-schematic';
 import { defaultPlugins } from 'intl-schematic/plugins';
-import { defaultProcessors } from 'intl-schematic/processors';
+import { defaultProcessors } from 'intl-schematic/processors/default';
 
 const getDocument = () => ({
   price: {

@@ -10,7 +10,8 @@ declare module 'intl-schematic/plugins/core' {
 
 function match(value: unknown): value is (...args: any) => string {
   return typeof value === 'function';
-};
+}
+
 /**
  * Process a functional record
  *

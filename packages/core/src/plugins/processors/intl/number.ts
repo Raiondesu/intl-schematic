@@ -4,14 +4,12 @@ import { cachedIntl } from './_cache';
  * ```
  * {
  *  "translation-key": {
- *    "processor": { "number": "" },
- *    "parameter": { // Intl.NumberFormat options
+ *    "number": { // Intl.NumberFormat options
  *      "style": "currency",
  *      "currency": "USD",
  *      "currencyDisplay": "symbol",
  *      "trailingZeroDisplay": "stripIfInteger"
- *    },
- *    "input": 0 // fallback
+ *    }
  *  }
  * }
  * ```
