@@ -26,7 +26,7 @@ export default defineConfig(entries.map(entry => ({
   splitting: false,
   platform: 'neutral',
   tsconfig: entry.replace('src', 'tsconfig.json'),
-  external: [/intl-schematic/],
+  external: [/intl-schematic/, 'solid-js', 'rambda'],
   clean: true,
 
   async onSuccess() {
