@@ -10,7 +10,7 @@
 
 A tiny framework-agnostic i18n library (3kb, zero-dependency) that allows to localize and format strings while sparingly using the browser-standard [`Intl` API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl).
 
-`npm i -s intl-schematic`
+`npm i -s intl-schematic@next`
 
 You can also install a nightly build [directly from github](#install-from-github)
 
