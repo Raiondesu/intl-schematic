@@ -30,10 +30,10 @@ const getDocument = () => en;
 
 ```ts
 import { createTranslator } from 'intl-schematic';
-import { NestedPlugin } from '@intl-schematic/plugin-nested';
+import { NestedKeysPlugin } from '@intl-schematic/plugin-nested';
 
 // Notice the plugins array parameter
-const t = createTranslator(getDocument, [NestedPlugin]);
+const t = createTranslator(getDocument, [NestedKeysPlugin]);
 ```
 
 ### Use a translator function

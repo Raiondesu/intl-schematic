@@ -31,7 +31,7 @@ For simple usage examples, see the [main package readme](./packages/core/README.
 - 🔌 **Pluginable**: extend any processing step without limits;
 - 📃 **JSON-validation using a JSON-schema**: intellisense and popup hints right in the translation document;
 - 🧵 **Dynamic strings with custom pre-processors**: write custom translation logic right in JSON;
-- 🔃 **Reference translation keys inside of other translation keys**: all with JSON-compatible syntax;
+- 📑 **Reference translation keys inside of other translation keys**: all with JSON-compatible syntax;
 - 🚫 **No string-interpolation**: translation strings will never be processed or mangled by-default, so all unicode symbols are safe to use;
 - 🌐 **Basic localized formatters**: declare formatting rules and translations in the same place.
 
