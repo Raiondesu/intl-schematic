@@ -5,16 +5,17 @@ function match(value) {
 }
 var ArraysPlugin = (defaultDelimiter = " ") => createPlugin("ArraysPlugin", match, {
   translate(referenceParams, delimiter = defaultDelimiter) {
-    const startsWithIndex = /^\d+:/;
+    const startsWithIndex = /^.*?:/;
     const processReference = (referencedKey) => {
       if (startsWithIndex.test(referencedKey)) {
         const [argIndexName, inputKey] = referencedKey.split(":");
         const argIndex = isNaN(Number(argIndexName)) ? 0 : Number(argIndexName);
-        return [String(referenceParams[inputKey][argIndex])];
+        const references = Array.isArray(referenceParams[inputKey]) ? referenceParams[inputKey] : [referenceParams[inputKey]];
+        return [String(references[argIndex])];
       }
       const result2 = referencedKey in referenceParams ? this.translate(
         referencedKey,
-        ...referenceParams[referencedKey]
+        ...Array.isArray(referenceParams[referencedKey]) ? referenceParams[referencedKey] : [referenceParams[referencedKey]]
       ) : this.translate(referencedKey);
       if (typeof result2 === "string") {
         return [result2];
@@ -29,8 +30,9 @@ var ArraysPlugin = (defaultDelimiter = " ") => createPlugin("ArraysPlugin", matc
       if (typeof referenceParams[refParamK] === "undefined" && refParamK in refK) {
         referenceParams[refParamK] = refK[refParamK];
       } else if (refParamK in refK) {
+        const references = Array.isArray(referenceParams[refParamK]) ? referenceParams[refParamK] : [referenceParams[refParamK]];
         const inlineParams = refK[refParamK];
-        referenceParams[refParamK] = referenceParams[refParamK].map((param, i) => {
+        referenceParams[refParamK] = references.map((param, i) => {
           const inlineParam = inlineParams[i];
           return typeof param === "object" && typeof inlineParam === "object" ? { ...inlineParam, ...param } : param ?? inlineParam;
         });

@@ -39,7 +39,8 @@ function createTranslator(getLocaleDocument, plugins) {
             return pluginResult;
           }
         } catch (error) {
-          console.error(`[intl-schematic] ${plugin.name} error:`, error);
+          console.error(`[intl-schematic] ${plugin.name} error for key "${key}":
+`, error);
         }
       }
     const plainKey = doc[key];

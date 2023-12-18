@@ -40,8 +40,8 @@ function createLocaleResource(getLocale, processors) {
         return [localeDoc.default, locale];
       })
     );
-    const currentLocale = () => localeResource()?.[1] ?? new Intl.Locale(navigator.language);
-    const currentDoc = () => localeResource()?.[0];
+    const currentLocale = () => localeResource.latest?.[1] ?? new Intl.Locale(navigator.language);
+    const currentDoc = () => localeResource.latest?.[0] ?? {};
     return (0, import_intl_schematic.createTranslator)(currentDoc, (0, import_plugin_defaults.defaultPlugins)(currentLocale, processors));
   };
 }
