@@ -84,10 +84,10 @@ export const ArraysPlugin = (defaultDelimiter = ' ') => createPlugin('ArraysPlug
         return [String(referenceParams[inputKey][argIndex])];
       }
 
-      const result = this.translate(
+      const result = referencedKey in referenceParams ? this.translate(
         referencedKey,
         ...referenceParams[referencedKey]
-      );
+      ) : this.translate(referencedKey);
 
       if (typeof result === 'string') {
         return [result];
