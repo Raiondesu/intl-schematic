@@ -1,5 +1,5 @@
 {
-  "name": "tsconfig",
+  "name": "tsupconfig",
   "version": "1.0.0-rc.0",
   "private": true,
   "type": "module",
@@ -15,6 +15,7 @@
     "major": "npm version major"
   },
   "dependencies": {
+    "tsup": "^8.0.1",
     "typescript": "^5.3.2"
   }
 }

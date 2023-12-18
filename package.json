@@ -1,11 +1,12 @@
 {
   "workspaces": [
     "apps/*",
-    "packages/*"
+    "packages/*",
+    "packages/plugins/*"
   ],
   "scripts": {
     "build:schema": "npm run build:schema -w intl-schematic",
-    "build": "npm run build -ws",
+    "build": "turbo build",
     "type-check": "tsc",
     "version": "cross-env-shell \"npm version $npm_package_version --no-git-tag-version -w intl-schematic\" && git add **/package*.json",
     "prerelease": "npm version prerelease --preid=rc",
@@ -21,7 +22,9 @@
   },
   "packageManager": "npm@10.1.0",
   "devDependencies": {
-    "cross-env": "^7.0.3"
+    "cross-env": "^7.0.3",
+    "tsup": "^8.0.1",
+    "turbo": "^1.11.2"
   },
   "version": "1.0.0-rc.0"
 }

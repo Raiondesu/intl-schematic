@@ -1,0 +1,121 @@
+{
+  "name": "@intl-schematic/plugin-processors",
+  "version": "1.0.0-rc.0",
+  "license": "MIT",
+  "repository": {
+    "url": "https://github.com/Raiondesu/intl-schematic"
+  },
+  "main": "dist/index",
+  "module": "dist/index",
+  "types": "src/index",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./src/index.ts"
+    },
+    "./default": {
+      "import": "./dist/default.js",
+      "require": "./dist/default.cjs",
+      "types": "./src/default.ts"
+    },
+    "./dictionary": {
+      "import": "./dist/dictionary.js",
+      "require": "./dist/dictionary.cjs",
+      "types": "./src/dictionary.ts"
+    },
+    "./index": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./src/index.ts"
+    },
+    "./plugin-core": {
+      "import": "./dist/plugin-core.js",
+      "require": "./dist/plugin-core.cjs",
+      "types": "./src/plugin-core.ts"
+    },
+    "./intl/date": {
+      "import": "./dist/intl/date.js",
+      "require": "./dist/intl/date.cjs",
+      "types": "./src/intl/date.ts"
+    },
+    "./intl/display": {
+      "import": "./dist/intl/display.js",
+      "require": "./dist/intl/display.cjs",
+      "types": "./src/intl/display.ts"
+    },
+    "./intl/number": {
+      "import": "./dist/intl/number.js",
+      "require": "./dist/intl/number.cjs",
+      "types": "./src/intl/number.ts"
+    },
+    "./intl/plural": {
+      "import": "./dist/intl/plural.js",
+      "require": "./dist/intl/plural.cjs",
+      "types": "./src/intl/plural.ts"
+    },
+    "./intl/_cache": {
+      "import": "./dist/intl/_cache.js",
+      "require": "./dist/intl/_cache.cjs",
+      "types": "./src/intl/_cache.ts"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      ".": [
+        "./src/index.ts"
+      ],
+      "default": [
+        "./src/default.ts"
+      ],
+      "dictionary": [
+        "./src/dictionary.ts"
+      ],
+      "index": [
+        "./src/index.ts"
+      ],
+      "plugin-core": [
+        "./src/plugin-core.ts"
+      ],
+      "intl/date": [
+        "./src/intl/date.ts"
+      ],
+      "intl/display": [
+        "./src/intl/display.ts"
+      ],
+      "intl/number": [
+        "./src/intl/number.ts"
+      ],
+      "intl/plural": [
+        "./src/intl/plural.ts"
+      ],
+      "intl/_cache": [
+        "./src/intl/_cache.ts"
+      ]
+    }
+  },
+  "scripts": {
+    "build": "tsup src",
+    "dev": "tsc --noEmit -w",
+    "commit-build": "(git diff --quiet && git diff --staged --quiet) || (git commit -am \"Update dist\")",
+    "preversion": "npm run build && npm run commit-build",
+    "prerelease": "npm version prerelease --preid=rc",
+    "pre-patch": "npm version prerelease --preid=rc",
+    "pre-minor": "npm version preminor --preid=rc",
+    "pre-major": "npm version premajor --preid=rc",
+    "patch": "npm version patch",
+    "minor": "npm version minor",
+    "major": "npm version major"
+  },
+  "peerDependencies": {
+    "intl-schematic": "*"
+  },
+  "dependencies": {
+    "@intl-schematic/plugin-locale": "*"
+  },
+  "devDependencies": {
+    "tsconfig": "*",
+    "typescript": "^5.3.2"
+  }
+}

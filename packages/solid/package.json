@@ -1,17 +1,16 @@
 {
   "name": "@intl-schematic/solid",
-  "version": "0.0.3",
+  "version": "1.0.0-rc.0",
   "license": "MIT",
   "repository": {
     "url": "https://github.com/Raiondesu/intl-schematic"
   },
-  "main": "index",
+  "main": "dist/index",
+  "module": "dist/index",
   "types": "index",
   "type": "module",
   "scripts": {
-    "build:es": "tsc --outDir dist/es -t ES2020 --module ES2020",
-    "build:next": "tsc --outDir dist/esnext --module esnext",
-    "build": "npm run build:es && npm run build:next",
+    "build": "tsup src",
     "dev": "tsc --noEmit -w",
     "commit-build": "(git diff --quiet && git diff --staged --quiet) || (git commit -am \"Update dist\")",
     "preversion": "npm run build && npm run commit-build",
@@ -32,6 +31,29 @@
   },
   "dependencies": {
     "rambda": "^8.6.0",
-    "solid-js": "^1.8.6"
+    "solid-js": "^1.8.6",
+    "@intl-schematic/plugin-defaults": "*"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./src/index.ts"
+    },
+    "./index": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./src/index.ts"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      ".": [
+        "./src/index.ts"
+      ],
+      "index": [
+        "./src/index.ts"
+      ]
+    }
   }
 }

@@ -1,0 +1,1 @@
+{"inputs":{"src/index.ts":{"bytes":676,"imports":[{"path":"intl-schematic/plugins","kind":"import-statement","external":true}],"format":"esm"}},"outputs":{"dist/index.cjs":{"imports":[{"path":"intl-schematic/plugins","kind":"require-call","external":true}],"exports":[],"entryPoint":"src/index.ts","inputs":{"src/index.ts":{"bytesInOutput":395}},"bytes":1320}}}

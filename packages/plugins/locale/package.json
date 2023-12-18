@@ -1,16 +1,15 @@
 {
-  "name": "intl-schematic",
+  "name": "@intl-schematic/plugin-locale",
   "version": "1.0.0-rc.0",
   "license": "MIT",
   "repository": {
     "url": "https://github.com/Raiondesu/intl-schematic"
   },
+  "main": "dist/index",
+  "module": "dist/index",
+  "types": "index",
   "type": "module",
-  "module": "dist/index.js",
-  "main": "dist/index.cjs",
-  "types": "src/index",
   "scripts": {
-    "build:schema": "node ./generate-schema.js",
     "build": "tsup src",
     "dev": "tsc --noEmit -w",
     "commit-build": "(git diff --quiet && git diff --staged --quiet) || (git commit -am \"Update dist\")",
@@ -23,10 +22,11 @@
     "minor": "npm version minor",
     "major": "npm version major"
   },
+  "peerDependencies": {
+    "intl-schematic": "*"
+  },
   "devDependencies": {
-    "json-schema-to-typescript": "^13.0.1",
     "tsconfig": "*",
-    "tsupconfig": "*",
     "typescript": "^5.3.2"
   },
   "exports": {
@@ -39,11 +39,6 @@
       "import": "./dist/index.js",
       "require": "./dist/index.cjs",
       "types": "./src/index.ts"
-    },
-    "./plugins": {
-      "import": "./dist/plugins.js",
-      "require": "./dist/plugins.cjs",
-      "types": "./src/plugins.ts"
     }
   },
   "typesVersions": {
@@ -53,9 +48,6 @@
       ],
       "index": [
         "./src/index.ts"
-      ],
-      "plugins": [
-        "./src/plugins.ts"
       ]
     }
   }

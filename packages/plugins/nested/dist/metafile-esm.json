@@ -1,0 +1,1 @@
+{"inputs":{"src/index.ts":{"bytes":1681,"imports":[{"path":"intl-schematic/plugins","kind":"import-statement","external":true}],"format":"esm"}},"outputs":{"dist/index.js":{"imports":[{"path":"intl-schematic/plugins","kind":"import-statement","external":true}],"exports":["NestedKeysPlugin"],"entryPoint":"src/index.ts","inputs":{"src/index.ts":{"bytesInOutput":573}},"bytes":620}}}
