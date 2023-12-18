@@ -55,19 +55,19 @@ and [`DisplayNames`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Ref
 
 ```js
 import { createTranslator } from 'intl-schematic';
-import { defaultPlugins } from 'intl-schematic/plugins';
-import { defaultProcessors } from 'intl-schematic/processors/default';
+import { defaultPlugins, defaultProcessors } from '@intl-schematic/plugin-defaults';
 
 const getDocument = () => ({
   price: {
-   processor: { number: "" },
-   parameter: { // Intl.NumberFormat options
-     style: "currency",
-     currency: "USD",
-     currencyDisplay: "symbol",
-     trailingZeroDisplay: "stripIfInteger"
-   },
-   input: 0 // fallback
+    // Processor name - number - means process with Intl.NumberFormat
+    number: {
+      // Intl.NumberFormat options
+      style: "currency",
+      currency: "USD",
+      currencyDisplay: "symbol",
+      trailingZeroDisplay: "stripIfInteger"
+    },
+    input: 0 // fallback
  }
 });
 
