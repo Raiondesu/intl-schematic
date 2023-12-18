@@ -19,9 +19,9 @@ interface TranslationContext {
  * @param getLocaleDocument should return a translation document
  * @returns a tranlation function that accepts a key to look up in the translation document
  */
-export function createTranslator<Locale extends Record<string, string>>(
-  getLocaleDocument: () => Locale | undefined,
-): SimpleTranslationFunction<Locale>;
+export function createTranslator<LocaleDoc extends Record<string, string>>(
+  getLocaleDocument: () => LocaleDoc | undefined,
+): SimpleTranslationFunction<LocaleDoc>;
 
 /**
  * Creates a translation function (commonly known as `t()` or `$t()`)
@@ -34,7 +34,7 @@ export function createTranslator<
   const P extends readonly Plugin[],
   LocaleDoc extends Record<string, PMatch<P> | string>,
 >(
-  getLocaleDocument: () => LocaleDoc,
+  getLocaleDocument: () => LocaleDoc | undefined,
   plugins: P,
 ): TranslationFunction<LocaleDoc, P>;
 
@@ -42,14 +42,14 @@ export function createTranslator<
   const P extends readonly Plugin[],
   LocaleDoc extends Record<string, PMatch<P> | string>,
 >(
-  getLocaleDocument: () => LocaleDoc,
+  getLocaleDocument: () => LocaleDoc | undefined,
   plugins?: P,
 ): any {
   return (function translate(this: TranslationContext, key: string, ...args: unknown[]) {
     const doc = getLocaleDocument();
 
     // Skip expensive plugin checks if key is not found anyway
-    if (!(key in doc)) {
+    if (!doc || !(key in doc)) {
       return key;
     }
 
@@ -57,16 +57,17 @@ export function createTranslator<
 
     for (const [index, plugin] of contextPlugins.entries())
       if (plugin.match(doc[key], key, doc)) {
-        const pluginContext: PluginContext = createPluginContext.call(this, plugin, index);
+        const pluginContext: PluginContext = createPluginContext.call(this, plugin, index, doc);
 
-        // Do not break if a plugin stops working
         try {
           const pluginResult = plugin.translate.call(pluginContext, ...args);
 
           if (typeof pluginResult === 'string') {
             return pluginResult;
           }
-        } catch {}
+        } catch (error) {
+          console.error(`[intl-schematic] ${plugin.name} error:`, error);
+        }
       }
 
     const plainKey = doc[key];
@@ -77,7 +78,8 @@ export function createTranslator<
     function createPluginContext(
       this: TranslationContext,
       plugin: Plugin,
-      index: number
+      index: number,
+      doc: LocaleDoc
     ): PluginContext {
       const contextualPlugins = contextPlugins.reduce<PluginContext['plugins']>((obj, pl) => ({
         ...obj,
