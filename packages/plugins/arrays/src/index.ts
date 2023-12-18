@@ -16,11 +16,13 @@ declare module 'intl-schematic/plugins' {
                         ContextualPlugins[PluginName]['info'],
                         ContextualPlugins
                       >[PluginName] extends PluginRecord<infer Args>
-                        ? Args
+                        ? [] extends Args ? never : Args
                         : unknown
                     : unknown
                   : unknown;
             } : {
+              // In case references for the key weren't recognized,
+              // iterate show user all locale keys' parameter types as options
               [key in LocaleKey<Locale>]?:
                 GetPluginNameFromContext<Locale, key, ContextualPlugins> extends infer PluginName
                   ? PluginName extends keyof PluginRegistry
@@ -37,13 +39,20 @@ declare module 'intl-schematic/plugins' {
         delimiter?: string | ((translatedArray: string[], defaultDelimiter: string) => string),
       ];
 
-      // Extracts reference keys from arrays and detects their processors
+      // Extracts referenced keys from arrays and detects their processors and signatures
       // to display them to the user
       signature: {
-        [key in keyof Exclude<Locale[Key][number], string> & LocaleKey<Locale>]: [
-          GetPluginNameFromContext<Locale, key, ContextualPlugins>,
-          Locale[key]
-        ];
+        [key in keyof Exclude<Locale[Key][number], string> & LocaleKey<Locale>]:
+          GetPluginNameFromContext<Locale, key, ContextualPlugins> extends infer PluginName
+            ? PluginName extends keyof PluginRegistry
+              ? PluginRegistry<Locale, key,
+                  ContextualPlugins[PluginName]['info'],
+                  ContextualPlugins
+                >[PluginName] extends PluginRecord<any, any, infer Signature>
+                  ? [PluginName, Signature]
+                  : PluginName
+              : PluginName
+            : Locale[key];
       };
     };
   }
