@@ -14,6 +14,10 @@ export const defaultProcessors = {
   number: numberFormat,
   plural: pluralRules,
   display: displayNames,
+  'intl/date': dateFormat,
+  'intl/number': numberFormat,
+  'intl/plural': pluralRules,
+  'intl/display': displayNames,
 };
 
 export * from './intl/_cache';
