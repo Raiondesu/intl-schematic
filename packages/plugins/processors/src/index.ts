@@ -55,8 +55,10 @@ export const ProcessorsPlugin = <P extends Processors>(processors: P) => {
       const keys = Object.keys(value);
       const other: string[] = [];
       const processorKeys = keys.filter(k => k in processors ? true : (other.push(k), false));
+      const legacyKeys = ['input', 'parameter', 'processor'];
 
-      return processorKeys.length === 1 && other.every(k => k === 'input');
+      return processorKeys.length === 1 && other.every(k => k === 'input')
+        || processorKeys.length === 0 && other.every(k => legacyKeys.includes(k));
     },
     {
       info: processors,
