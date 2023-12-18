@@ -66,7 +66,7 @@ export function createTranslator<
             return pluginResult;
           }
         } catch (error) {
-          console.error(`[intl-schematic] ${plugin.name} error:`, error);
+          console.error(`[intl-schematic] ${plugin.name} error for key "${key}":\n`, error);
         }
       }
 
