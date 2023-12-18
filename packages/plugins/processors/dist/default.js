@@ -59,7 +59,11 @@ var defaultProcessors = {
   date: dateFormat,
   number: numberFormat,
   plural: pluralRules,
-  display: displayNames
+  display: displayNames,
+  "intl/date": dateFormat,
+  "intl/number": numberFormat,
+  "intl/plural": pluralRules,
+  "intl/display": displayNames
 };
 export {
   cachedIntl,
