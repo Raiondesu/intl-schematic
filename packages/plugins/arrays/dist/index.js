@@ -10,12 +10,12 @@ var ArraysPlugin = (defaultDelimiter = " ") => createPlugin("ArraysPlugin", matc
       if (startsWithIndex.test(referencedKey)) {
         const [argIndexName, inputKey] = referencedKey.split(":");
         const argIndex = isNaN(Number(argIndexName)) ? 0 : Number(argIndexName);
-        const references = Array.isArray(referenceParams[inputKey]) ? referenceParams[inputKey] : [referenceParams[inputKey]];
+        const references = normalizeRefs(referenceParams, inputKey);
         return [String(references[argIndex])];
       }
       const result2 = referencedKey in referenceParams ? this.translate(
         referencedKey,
-        ...Array.isArray(referenceParams[referencedKey]) ? referenceParams[referencedKey] : [referenceParams[referencedKey]]
+        ...normalizeRefs(referenceParams, referencedKey)
       ) : this.translate(referencedKey);
       if (typeof result2 === "string") {
         return [result2];
@@ -28,10 +28,10 @@ var ArraysPlugin = (defaultDelimiter = " ") => createPlugin("ArraysPlugin", matc
       }
       const refParamK = Object.keys(refK)[0];
       if (typeof referenceParams[refParamK] === "undefined" && refParamK in refK) {
-        referenceParams[refParamK] = refK[refParamK];
+        referenceParams[refParamK] = normalizeRefs(refK, refParamK);
       } else if (refParamK in refK) {
-        const references = Array.isArray(referenceParams[refParamK]) ? referenceParams[refParamK] : [referenceParams[refParamK]];
-        const inlineParams = refK[refParamK];
+        const references = normalizeRefs(referenceParams, refParamK);
+        const inlineParams = normalizeRefs(refK, refParamK);
         referenceParams[refParamK] = references.map((param, i) => {
           const inlineParam = inlineParams[i];
           return typeof param === "object" && typeof inlineParam === "object" ? { ...inlineParam, ...param } : param ?? inlineParam;
@@ -43,6 +43,9 @@ var ArraysPlugin = (defaultDelimiter = " ") => createPlugin("ArraysPlugin", matc
       return result.join(delimiter);
     }
     return delimiter(result, defaultDelimiter);
+    function normalizeRefs(referenceMap, referenceKey) {
+      return Array.isArray(referenceMap[referenceKey]) ? referenceMap[referenceKey] : [referenceMap[referenceKey]];
+    }
   }
 });
 export {
