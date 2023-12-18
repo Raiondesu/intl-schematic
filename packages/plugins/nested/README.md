@@ -30,7 +30,7 @@ import { NestedKeysPlugin } from '@intl-schematic/plugin-nested';
 const t = createTranslator(getDocument, [NestedKeysPlugin]);
 ```
 
-### Use a translator function
+### Use the translator function
 
 ```ts
 console.log(t('hello', 'world')); // `Hello, world!`

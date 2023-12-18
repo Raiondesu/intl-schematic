@@ -7,7 +7,7 @@ Adds the ability to use custom processors for records in translation documents.
 - [Usage](#usage)
   - [Define a translation document factory](#define-a-translation-document-factory)
   - [Create a translator function (`t()`)](#create-a-translator-function-t)
-  - [Use a translator function](#use-a-translator-function)
+  - [Use the translator function](#use-a-translator-function)
   - [Document record format](#document-record-format)
 - [Processors](#processors)
 - [Processor API](#processor-api)
@@ -29,7 +29,7 @@ const getDocument = () => ({
       trailingZeroDisplay: "stripIfInteger"
     },
 
-    // OR use a full processor name for clarity
+    // OR use the full processor name for clarity
     'intl/number': {
       // Intl.NumberFormat options
       style: "currency",
@@ -67,7 +67,7 @@ const t = createTranslator(getDocument, [
 ]);
 ```
 
-### Use a translator function
+### Use the translator function
 
 ```ts
 console.log(t('birthday', new Date(1997, 7, 9))); // Aug 9, 1997

@@ -22,7 +22,7 @@ import { FunctionsPlugin } from '@intl-schematic/plugin-functions';
 const t = createTranslator(getDocument, [FunctionsPlugin]);
 ```
 
-### Use a translator function
+### Use the translator function
 
 ```ts
 console.log(t('hello', 'Bob')); // `Hello, Bob!`

@@ -34,11 +34,35 @@ const getDocument = () => ({
     }
   },
 
-  gift: [
-    "Buy this birthday gift for"
+  'for price': [
+    "for",
     { "price": [0] }, // references the `price` key with fallback
+  ],
+
+  'until birthday': [
     "until",
     { "birthday": [] } // references the `birthday` key
+  ],
+
+  gift: [
+    "Buy this birthday gift",
+    "for price",
+    "until birthday"
+  ],
+
+  gifts: {
+    'intl/plural': {
+      one: 'gift',
+      other: 'gifts',
+      many: 'gifts',
+    }
+  },
+
+  'gifts amount': [
+    // Reference to the 0-th argument of `gifts`
+    '0:gifts',
+    // Reference to the `gifts` key
+    { 'gifts': 0 }
   ]
 });
 ```
@@ -60,15 +84,50 @@ const t = createTranslator(getDocument, [
 ]);
 ```
 
-### Use a translator function
+### Use the translator function
 
 ```ts
-console.log(t('gift', { price: [123], birthday: [new Date(2023, 7, 9)] }));
-// Buy this birthday gift for $123 until Aug 9, 2023
+t('for price', {
+  // Pass parameters for the key reference
+  price: [123]
+});
+// for $123
+
+t('gifts amount', {
+  // Pass parameters for the key reference
+  gifts: [41]
+});
+// 41 gift
+
+t('gifts amount', {
+  // Pass parameters for the key reference
+  gifts: [42]
+});
+// 42 gifts
 
 // Optional processor config override
-console.log(t('gift', { price: [123, { currency: 'EUR' }], birthday: [new Date(2023, 7, 9)] }));
-// Buy this birthday gift for €123 until Aug 9, 2023
+t('for price', { price: [123, { currency: 'EUR' }] });
+// for €123
+
+// Custom separator
+t('for price', { price: [123] }, ' - ');
+// for - €123
+
+// Deep key cross-reference
+t('gift', {
+  'for price': [{ price: [123] }],
+  'until birthday': [{ birthday: [new Date(2023, 7, 9)] }]
+})
+// Buy this birthday gift for €123 until - Aug 9, 2023
+
+// Custom separator strategy
+t('gift', {
+  'for price': [{ price: [123] }, ' just '],
+  'until birthday': [new Date(2023, 7, 9), ' - ']
+}, (lines) => lines.join('\n'));
+// Buy this birthday gift
+// for just €123
+// until - Aug 9, 2023
 
 
 // Parameter auto-complete and type-checking!
@@ -77,12 +136,12 @@ console.log(t('gift', { price: [123, { currency: 'EUR' }], birthday: [new Date(2
 t('gift', new Date());
 
 // TS Error: Argument of type {} is not assignable to parameter of type {...}.
-//           Missing properties: 'birthday', 'gift'
+//           Missing properties: 'until birthday', 'for price'
 t('gift', {  });
 
 // TS Error: Argument of type Date is not assignable to parameter of type number.
-t('gift', { price: [new Date(), { currency: 'EUR' }], birthday: [new Date(2023, 7, 9)] });
+t('for price', { price: [new Date(), { currency: 'EUR' }] });
 
-// TS Error: Expected 2 arguments, but got 1.
+// TS Error: Expected 2-3 arguments, but got 1.
 t('gift');
 ```

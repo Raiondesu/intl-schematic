@@ -36,7 +36,7 @@ declare module 'intl-schematic/plugins' {
                   : unknown;
             }
           : unknown,
-        delimiter?: string | ((translatedArray: string[], defaultDelimiter: string) => string),
+        separator?: string | ((translatedArray: string[], defaultSeparator: string) => string),
       ];
 
       // Extracts referenced keys from arrays and detects their processors and signatures
@@ -74,14 +74,14 @@ function match(value: unknown): value is Array<string | Record<string, unknown>>
  * ```
  *
  * Will find all translation keys referenced, resolve them
- * and join all elements using a custom delimiter (space by-default).
+ * and join all elements using a custom separator (space by-default).
  *
- * @param defaultDelimiter a string to join the array elements by, default is space
+ * @param defaultSeparator a string to join the array elements by, default is space
  */
-export const ArraysPlugin = (defaultDelimiter = ' ') => createPlugin('ArraysPlugin', match, {
+export const ArraysPlugin = (defaultSeparator = ' ') => createPlugin('ArraysPlugin', match, {
   translate(
     referenceParams: Record<string, unknown[]>,
-    delimiter: string | ((arr: string[], dDelimiter: string) => string) = defaultDelimiter
+    separator: string | ((arr: string[], dSeparator: string) => string) = defaultSeparator
   ) {
     const startsWithIndex = /^.*?:/;
 
@@ -135,11 +135,11 @@ export const ArraysPlugin = (defaultDelimiter = ' ') => createPlugin('ArraysPlug
       return [...arr, ...processReference(refParamK)];
     }, []);
 
-    if (typeof delimiter === 'string') {
-      return result.join(delimiter);
+    if (typeof separator === 'string') {
+      return result.join(separator);
     }
 
-    return delimiter(result, defaultDelimiter);
+    return separator(result, defaultSeparator);
 
     function normalizeRefs(referenceMap: Record<string, unknown>, referenceKey: string) {
       return Array.isArray(referenceMap[referenceKey])

@@ -20,7 +20,7 @@ A tiny library (3kb, zero-dependency) that allows to localize and format strings
 
 - [Define a translation document factory](#define-a-translation-document-factory)
 - [Create a translator function (`t()`)](#create-a-translator-function-t)
-- [Use a translator function](#use-a-translator-function)
+- [Use the translator function](#use-a-translator-function)
 - [Add default plugins and processors](#add-default-plugins-and-processors)
 
 ## Usage<!-- omit from toc -->
@@ -52,7 +52,7 @@ const t = createTranslator(getDocument, [
 ]);
 ```
 
-### Use a translator function
+### Use the translator function
 
 ```js
 console.log(t('hello')); // `Hello, World!`

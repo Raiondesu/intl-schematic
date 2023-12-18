@@ -17,15 +17,12 @@ This package also exports everything from the included plugins.
 
 ```ts
 import { createTranslator } from 'intl-schematic';
-import { defaultPlugins, defaultProcessors } from '@intl-schematic/plugin-defaults';
+import { defaultPlugins } from '@intl-schematic/plugin-defaults';
 
 const getLocale = () => new Intl.Locale(navigator.language);
 
 // Notice the plugins array parameter
-const t = createTranslator(getDocument, defaultPlugins(
-  getLocale
-  defaultProcessors
-));
+const t = createTranslator(getDocument, defaultPlugins(getLocale));
 ```
 
 Then use according to the instructions of included plugins.
