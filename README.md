@@ -71,12 +71,18 @@ Full list of packages at the moment:
 - [`intl-schematic`](./packages/core/) - main package
 - [`@intl-schematic/solid`](./packages/solid/) - reactive adapter for [`solid-js`](https://www.solidjs.com)
 - [Plugins](./packages/plugins/) - allow using custom formats in translation documents - not just strings:
-  - [`@intl-schematic/plugin-defaults`](./packages/plugins/defaults/) - recommended collection of plugins that should be useful to most applications
-  - [`@intl-schematic/plugin-arrays`](./packages/plugins/arrays/) (included in **defaults**) - use arrays to cross-reference keys and define complex multiline texts
-  - [`@intl-schematic/plugin-functions`](./packages/plugins/functions/) - use plain functions directly in translation documents with type-checked parameters
-  - [`@intl-schematic/plugin-locale`](./packages/plugins/locale/) (included in **defaults**) - provider plugin, allows other plugins to use the provided `Intl.Locale` instance
-  - [`@intl-schematic/plugin-nested`](./packages/plugins/nested/) - access nested keys in deep multi-level objects
-  - [`@intl-schematic/plugin-processors`](./packages/plugins/processors/) (included in **defaults**) - apply custom and default processors to format the user inputs
+  - [`@intl-schematic/plugin-defaults`](./packages/plugins/defaults/)
+    - recommended collection of plugins that should be useful to most applications
+  - [`@intl-schematic/plugin-arrays`](./packages/plugins/arrays/) (included in **defaults**)
+    - use arrays to cross-reference keys and define complex multiline texts
+  - [`@intl-schematic/plugin-functions`](./packages/plugins/functions/)
+    - use plain functions directly in translation documents with type-checked parameters
+  - [`@intl-schematic/plugin-locale`](./packages/plugins/locale/) (included in **defaults**)
+    - provider plugin, allows other plugins to use the provided `Intl.Locale` instance
+  - [`@intl-schematic/plugin-nested`](./packages/plugins/nested/)
+    - access nested keys in deep multi-level objects
+  - [`@intl-schematic/plugin-processors`](./packages/plugins/processors/) (included in **defaults**)
+    - apply custom and default processors to format the user inputs
 
 - [`tsconfig`](./packages/tsconfig/) - typescript config used by the packages
 
