@@ -74,20 +74,29 @@ export const ArraysPlugin = (defaultDelimiter = ' ') => createPlugin('ArraysPlug
     referenceParams: Record<string, unknown[]>,
     delimiter: string | ((arr: string[], dDelimiter: string) => string) = defaultDelimiter
   ) {
-    const startsWithIndex = /^\d+:/;
+    const startsWithIndex = /^.*?:/;
 
     const processReference = (referencedKey: string): string[] => {
       if (startsWithIndex.test(referencedKey)) {
         const [argIndexName, inputKey] = referencedKey.split(':');
         const argIndex = isNaN(Number(argIndexName)) ? 0 : Number(argIndexName);
+        const references = Array.isArray(referenceParams[inputKey])
+          ? referenceParams[inputKey]
+          : [referenceParams[inputKey]];
 
-        return [String(referenceParams[inputKey][argIndex])];
+        return [String(references[argIndex])];
       }
 
-      const result = referencedKey in referenceParams ? this.translate(
-        referencedKey,
-        ...referenceParams[referencedKey]
-      ) : this.translate(referencedKey);
+      const result = referencedKey in referenceParams
+        ? this.translate(
+          referencedKey,
+          ...(
+            Array.isArray(referenceParams[referencedKey])
+            ? referenceParams[referencedKey]
+            : [referenceParams[referencedKey]]
+          )
+        )
+        : this.translate(referencedKey);
 
       if (typeof result === 'string') {
         return [result];
@@ -103,11 +112,16 @@ export const ArraysPlugin = (defaultDelimiter = ' ') => createPlugin('ArraysPlug
 
       const refParamK = Object.keys(refK)[0];
 
+
       if (typeof referenceParams[refParamK] === 'undefined' && refParamK in refK) {
         referenceParams[refParamK] = refK[refParamK];
       } else if (refParamK in refK) {
+        const references = Array.isArray(referenceParams[refParamK])
+          ? referenceParams[refParamK]
+          : [referenceParams[refParamK]];
+
         const inlineParams = refK[refParamK];
-        referenceParams[refParamK] = referenceParams[refParamK]
+        referenceParams[refParamK] = references
           .map((param, i) => {
             const inlineParam = inlineParams[i];
 
