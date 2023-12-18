@@ -4,10 +4,10 @@ Adds the ability to use nested keys in translation documents.
 
 `npm i -s @intl-schematic/plugin-nested`
 
-### Define a translation document
+### Define a translation document factory
 
 ```ts
-const en = {
+const getDocument = () => ({
   'hello': {
     'world': 'Hello, world!',
     'stranger': 'Hello, stranger!'
@@ -17,13 +17,7 @@ const en = {
       'baz': "Foo Bar Baz!"
     }
   }
-};
-```
-
-### Define a function that return a translation document
-
-```ts
-const getDocument = () => en;
+});
 ```
 
 ### Create a translator function (`t()`)

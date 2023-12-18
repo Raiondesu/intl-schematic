@@ -18,8 +18,7 @@ A tiny library (3kb, zero-dependency) that allows to localize and format strings
 - 📃 **JSON-validation using a JSON-schema**: intellisense and popup hints right in the translation document;
 - 🚫 **No string-interpolation**: translation strings will never be processed or mangled by-default, so all unicode symbols are safe to use;
 
-- [Define a translation document](#define-a-translation-document)
-- [Define a function that returns a translation document](#define-a-function-that-returns-a-translation-document)
+- [Define a translation document factory](#define-a-translation-document-factory)
 - [Create a translator function (`t()`)](#create-a-translator-function-t)
 - [Use a translator function](#use-a-translator-function)
 - [Add default plugins and processors](#add-default-plugins-and-processors)
@@ -30,18 +29,12 @@ Comprehensive documentation is in progress.
 
 See a simplified example below and don't be afraid to take a look into the sources to find out more.
 
-### Define a translation document
+### Define a translation document factory
 
 ```js
-const en = {
+const getDocument = () => ({
   "hello": "Hello, World!"
-};
-```
-
-### Define a function that returns a translation document
-
-```js
-const getDocument = () => en;
+});
 ```
 
 ### Create a translator function (`t()`)
@@ -104,5 +97,5 @@ const t = createTranslator(getDocument, defaultPlugins(
   defaultProcessors
 ));
 
-console.log(t('price', 123)); // "US$123"
+console.log(t('price', 123)); // "$123"
 ```

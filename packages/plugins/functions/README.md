@@ -4,18 +4,12 @@ Adds the ability to use plain functions in translation documents.
 
 `npm i -s @intl-schematic/plugin-functions`
 
-### Define a translation document
+### Define a translation document factory
 
 ```ts
-const en = {
+const getDocument = () => ({
   "hello": (name: string) => `Hello, ${name}!`
-};
-```
-
-### Define a function that return a translation document
-
-```ts
-const getDocument = () => en;
+});
 ```
 
 ### Create a translator function (`t()`)
