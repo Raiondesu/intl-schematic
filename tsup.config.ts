@@ -1,5 +1,6 @@
 import { defineConfig } from 'tsup';
 import { readdir, readFile, writeFile } from 'fs/promises';
+import { existsSync } from 'fs';
 import { blue, bold } from 'colorette';
 import { fdir } from 'fdir';
 import { join } from 'path/posix';
@@ -8,7 +9,12 @@ const entries = new fdir()
   .withBasePath()
   .withPathSeparator('/')
   .onlyDirs()
-  .exclude((dirName) => ['.turbo', 'dist', 'src', 'tsconfig', 'tsupconfig'].includes(dirName))
+  .exclude((dirName) => (
+    ['.turbo', 'dist', 'src', 'tsconfig', 'tsupconfig'].includes(dirName)
+  ))
+  .filter((path) => (
+    existsSync(join(path, 'package.json'))
+  ))
   .withMaxDepth(2)
   .crawl('packages')
   .sync()
