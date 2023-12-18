@@ -77,7 +77,7 @@ import { defaultProcessors } from '@intl-schematic/plugin-processors/default';
 
 // Notice the plugins array parameter
 const t = createTranslator(getDocument, [
-  ArraysPlugin,
+  ArraysPlugin(' '/* you can pass any string as a default separator */),
   // Here, we will use the default processors,
   // but it's also possible to create custom processors
   ProcessorsPlugin(defaultProcessors)
