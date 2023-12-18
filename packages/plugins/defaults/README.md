@@ -4,4 +4,28 @@ This is a collection of plugins that should be of use to most applications in ne
 
 ## Included plugins
 
-- [`@intl-schematic/plugin`]
+- [`@intl-schematic/plugin-arrays`](../arrays/)
+  - use plain functions directly in translation documents with type-checked parameters
+- [`@intl-schematic/plugin-locale`](../locale/)
+  - provider plugin, allows other plugins to use the provided `Intl.Locale` instance
+- [`@intl-schematic/plugin-processors`](../processors/)
+  - apply custom and default processors to format the user inputs
+
+This package also exports everything from the included plugins.
+
+### Usage
+
+```ts
+import { createTranslator } from 'intl-schematic';
+import { defaultPlugins, defaultProcessors } from '@intl-schematic/plugin-defaults';
+
+const getLocale = () => new Intl.Locale(navigator.language);
+
+// Notice the plugins array parameter
+const t = createTranslator(getDocument, defaultPlugins(
+  getLocale
+  defaultProcessors
+));
+```
+
+Then use according to the instructions of included plugins.
