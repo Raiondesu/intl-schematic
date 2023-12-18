@@ -49,7 +49,7 @@ declare module 'intl-schematic/plugins' {
   }
 }
 
-function match(value: unknown): value is Array<string | Record<string, unknown[]>> {
+function match(value: unknown): value is Array<string | Record<string, unknown>> {
   return Array.isArray(value);
 }
 
@@ -80,9 +80,7 @@ export const ArraysPlugin = (defaultDelimiter = ' ') => createPlugin('ArraysPlug
       if (startsWithIndex.test(referencedKey)) {
         const [argIndexName, inputKey] = referencedKey.split(':');
         const argIndex = isNaN(Number(argIndexName)) ? 0 : Number(argIndexName);
-        const references = Array.isArray(referenceParams[inputKey])
-          ? referenceParams[inputKey]
-          : [referenceParams[inputKey]];
+        const references = normalizeRefs(referenceParams, inputKey);
 
         return [String(references[argIndex])];
       }
@@ -90,11 +88,7 @@ export const ArraysPlugin = (defaultDelimiter = ' ') => createPlugin('ArraysPlug
       const result = referencedKey in referenceParams
         ? this.translate(
           referencedKey,
-          ...(
-            Array.isArray(referenceParams[referencedKey])
-            ? referenceParams[referencedKey]
-            : [referenceParams[referencedKey]]
-          )
+          ...normalizeRefs(referenceParams, referencedKey)
         )
         : this.translate(referencedKey);
 
@@ -114,13 +108,11 @@ export const ArraysPlugin = (defaultDelimiter = ' ') => createPlugin('ArraysPlug
 
 
       if (typeof referenceParams[refParamK] === 'undefined' && refParamK in refK) {
-        referenceParams[refParamK] = refK[refParamK];
+        referenceParams[refParamK] = normalizeRefs(refK, refParamK);
       } else if (refParamK in refK) {
-        const references = Array.isArray(referenceParams[refParamK])
-          ? referenceParams[refParamK]
-          : [referenceParams[refParamK]];
+        const references = normalizeRefs(referenceParams, refParamK);
 
-        const inlineParams = refK[refParamK];
+        const inlineParams = normalizeRefs(refK, refParamK);
         referenceParams[refParamK] = references
           .map((param, i) => {
             const inlineParam = inlineParams[i];
@@ -139,6 +131,12 @@ export const ArraysPlugin = (defaultDelimiter = ' ') => createPlugin('ArraysPlug
     }
 
     return delimiter(result, defaultDelimiter);
+
+    function normalizeRefs(referenceMap: Record<string, unknown>, referenceKey: string) {
+      return Array.isArray(referenceMap[referenceKey])
+        ? referenceMap[referenceKey] as unknown[]
+        : [referenceMap[referenceKey]];
+    }
   }
 });
 
