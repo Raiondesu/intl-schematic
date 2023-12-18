@@ -20,7 +20,8 @@
     "major": "npm version major"
   },
   "peerDependencies": {
-    "intl-schematic": "*"
+    "intl-schematic": "*",
+    "solid-js": "^1.8.6"
   },
   "devDependencies": {
     "tsconfig": "*",
@@ -28,8 +29,7 @@
   },
   "dependencies": {
     "@intl-schematic/plugin-defaults": "*",
-    "rambda": "^8.6.0",
-    "solid-js": "^1.8.6"
+    "rambda": "^8.6.0"
   },
   "exports": {
     ".": {
