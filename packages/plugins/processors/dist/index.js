@@ -24,7 +24,8 @@ var ProcessorsPlugin = (processors) => {
       const keys = Object.keys(value);
       const other = [];
       const processorKeys = keys.filter((k) => k in processors ? true : (other.push(k), false));
-      return processorKeys.length === 1 && other.every((k) => k === "input");
+      const legacyKeys = ["input", "parameter", "processor"];
+      return processorKeys.length === 1 && other.every((k) => k === "input") || processorKeys.length === 0 && other.every((k) => legacyKeys.includes(k));
     },
     {
       info: processors,

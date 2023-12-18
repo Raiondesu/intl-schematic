@@ -36,10 +36,10 @@ var ArraysPlugin = (defaultDelimiter = " ") => (0, import_plugins.createPlugin)(
         const argIndex = isNaN(Number(argIndexName)) ? 0 : Number(argIndexName);
         return [String(referenceParams[inputKey][argIndex])];
       }
-      const result2 = this.translate(
+      const result2 = referencedKey in referenceParams ? this.translate(
         referencedKey,
         ...referenceParams[referencedKey]
-      );
+      ) : this.translate(referencedKey);
       if (typeof result2 === "string") {
         return [result2];
       }

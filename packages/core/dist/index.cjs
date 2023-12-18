@@ -26,24 +26,25 @@ module.exports = __toCommonJS(src_exports);
 function createTranslator(getLocaleDocument, plugins) {
   return function translate(key, ...args) {
     const doc = getLocaleDocument();
-    if (!(key in doc)) {
+    if (!doc || !(key in doc)) {
       return key;
     }
     const contextPlugins = this.plugins ?? plugins ?? [];
     for (const [index, plugin] of contextPlugins.entries())
       if (plugin.match(doc[key], key, doc)) {
-        const pluginContext = createPluginContext.call(this, plugin, index);
+        const pluginContext = createPluginContext.call(this, plugin, index, doc);
         try {
           const pluginResult = plugin.translate.call(pluginContext, ...args);
           if (typeof pluginResult === "string") {
             return pluginResult;
           }
-        } catch {
+        } catch (error) {
+          console.error(`[intl-schematic] ${plugin.name} error:`, error);
         }
       }
     const plainKey = doc[key];
     return typeof plainKey === "string" ? plainKey : key;
-    function createPluginContext(plugin, index) {
+    function createPluginContext(plugin, index, doc2) {
       const contextualPlugins = contextPlugins.reduce((obj, pl) => ({
         ...obj,
         [pl.name]: createPluginInterface(pl)
@@ -52,12 +53,12 @@ function createTranslator(getLocaleDocument, plugins) {
         name: plugin.name,
         originalCallArgs: args,
         originalKey: key,
-        originalValue: doc[key],
+        originalValue: doc2[key],
         ...this.pluginContext,
         plugins: contextualPlugins,
-        doc,
+        doc: doc2,
         key,
-        value: doc[key],
+        value: doc2[key],
         translate: translateFromContext
       };
       return createdContext;
@@ -72,7 +73,7 @@ function createTranslator(getLocaleDocument, plugins) {
           translate: (subkey, ...args2) => pt.translate.call({
             ...createdContext,
             key: subkey,
-            value: doc[subkey]
+            value: doc2[subkey]
           }, ...args2),
           match: pt.match,
           info: pt.info
