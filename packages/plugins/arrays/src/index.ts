@@ -9,7 +9,7 @@ declare module 'intl-schematic/plugins' {
         references: keyof Exclude<Locale[Key][number], string> extends infer Keys
           ? Keys extends LocaleKey<Locale>
             ? {
-              [key in Keys & LocaleKey<Locale>]:
+              [key in Keys]:
                 GetPluginNameFromContext<Locale, key, ContextualPlugins> extends infer PluginName
                   ? PluginName extends keyof PluginRegistry
                     ? PluginRegistry<Locale, key,
@@ -20,7 +20,19 @@ declare module 'intl-schematic/plugins' {
                         : unknown
                     : unknown
                   : unknown;
-            } : unknown
+            } : {
+              [key in LocaleKey<Locale>]?:
+                GetPluginNameFromContext<Locale, key, ContextualPlugins> extends infer PluginName
+                  ? PluginName extends keyof PluginRegistry
+                    ? PluginRegistry<Locale, key,
+                        ContextualPlugins[PluginName]['info'],
+                        ContextualPlugins
+                      >[PluginName] extends PluginRecord<infer Args>
+                        ? Args
+                        : unknown
+                    : unknown
+                  : unknown;
+            }
           : unknown,
         delimiter?: string | ((translatedArray: string[], defaultDelimiter: string) => string),
       ];
