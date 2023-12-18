@@ -17,7 +17,7 @@ var __copyProps = (to, from, except, desc) => {
 };
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-// src/plugin-core.ts
+// packages/plugins/processors/src/plugin-core.ts
 var plugin_core_exports = {};
 __export(plugin_core_exports, {
   getLocalizedProcessors: () => getLocalizedProcessors
@@ -32,7 +32,3 @@ var getLocalizedProcessors = (processors, locale) => {
     [key]: processors[key](locale)
   }), {});
 };
-// Annotate the CommonJS export names for ESM import in node:
-0 && (module.exports = {
-  getLocalizedProcessors
-});

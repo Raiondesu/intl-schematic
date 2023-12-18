@@ -1,4 +1,4 @@
-// src/dictionary.ts
+// packages/plugins/processors/src/dictionary.ts
 var dictionary = () => (options, key) => (input) => {
   const _input = typeof input === "string" ? { key: input, fallback: key } : {
     fallback: ("default" in input ? input.default : "fallback" in input ? input.fallback : void 0) ?? key,

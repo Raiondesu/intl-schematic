@@ -1,4 +1,4 @@
-// src/index.ts
+// packages/plugins/arrays/src/index.ts
 import { createPlugin } from "intl-schematic/plugins";
 function match(value) {
   return Array.isArray(value);

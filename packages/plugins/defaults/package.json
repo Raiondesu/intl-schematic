@@ -10,10 +10,7 @@
   "types": "index",
   "type": "module",
   "scripts": {
-    "build": "tsup src",
     "dev": "tsc --noEmit -w",
-    "commit-build": "(git diff --quiet && git diff --staged --quiet) || (git commit -am \"Update dist\")",
-    "preversion": "npm run build && npm run commit-build",
     "prerelease": "npm version prerelease --preid=rc",
     "pre-patch": "npm version prerelease --preid=rc",
     "pre-minor": "npm version preminor --preid=rc",
@@ -26,8 +23,8 @@
     "intl-schematic": "*"
   },
   "dependencies": {
-    "@intl-schematic/plugin-locale": "*",
     "@intl-schematic/plugin-arrays": "*",
+    "@intl-schematic/plugin-locale": "*",
     "@intl-schematic/plugin-processors": "*"
   },
   "devDependencies": {

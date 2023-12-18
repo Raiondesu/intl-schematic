@@ -17,7 +17,7 @@ var __copyProps = (to, from, except, desc) => {
 };
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-// src/intl/_cache.ts
+// packages/plugins/processors/src/intl/_cache.ts
 var cache_exports = {};
 __export(cache_exports, {
   cachedIntl: () => cachedIntl
@@ -52,7 +52,3 @@ var cachedIntl = (intl, convert, process) => {
     };
   };
 };
-// Annotate the CommonJS export names for ESM import in node:
-0 && (module.exports = {
-  cachedIntl
-});

@@ -81,7 +81,6 @@ export const ProcessorsPlugin = <P extends Processors>(processors: P) => {
           ? this.value.parameter
           : this.value[processorName];
 
-        // Delete undefined keys to make defaults bypass them in the spread later
         const mergedInput = this.value.input ? mergeInputs(
           this.value.input,
           input

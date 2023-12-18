@@ -17,14 +17,14 @@ var __copyProps = (to, from, except, desc) => {
 };
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-// src/intl/display.ts
+// packages/plugins/processors/src/intl/display.ts
 var display_exports = {};
 __export(display_exports, {
   displayNames: () => displayNames
 });
 module.exports = __toCommonJS(display_exports);
 
-// src/intl/_cache.ts
+// packages/plugins/processors/src/intl/_cache.ts
 var cachedIntl = (intl, convert, process) => {
   const cache = {};
   const processOptions = process?.options;
@@ -55,7 +55,7 @@ var cachedIntl = (intl, convert, process) => {
   };
 };
 
-// src/intl/display.ts
+// packages/plugins/processors/src/intl/display.ts
 var DisplayNames = class {
   displayNames;
   constructor(locale, options) {
@@ -66,7 +66,3 @@ var DisplayNames = class {
   }
 };
 var displayNames = cachedIntl(DisplayNames, (x) => x);
-// Annotate the CommonJS export names for ESM import in node:
-0 && (module.exports = {
-  displayNames
-});

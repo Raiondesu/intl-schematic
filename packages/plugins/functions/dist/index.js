@@ -1,4 +1,4 @@
-// src/index.ts
+// packages/plugins/functions/src/index.ts
 import { createPlugin } from "intl-schematic/plugins";
 function match(value) {
   return typeof value === "function";

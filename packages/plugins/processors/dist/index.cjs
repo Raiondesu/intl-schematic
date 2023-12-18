@@ -17,7 +17,7 @@ var __copyProps = (to, from, except, desc) => {
 };
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-// src/index.ts
+// packages/plugins/processors/src/index.ts
 var src_exports = {};
 __export(src_exports, {
   ProcessorsPlugin: () => ProcessorsPlugin,
@@ -26,7 +26,7 @@ __export(src_exports, {
 module.exports = __toCommonJS(src_exports);
 var import_plugins = require("intl-schematic/plugins");
 
-// src/plugin-core.ts
+// packages/plugins/processors/src/plugin-core.ts
 var getLocalizedProcessors = (processors, locale) => {
   if (!locale) {
     return {};
@@ -37,7 +37,7 @@ var getLocalizedProcessors = (processors, locale) => {
   }), {});
 };
 
-// src/index.ts
+// packages/plugins/processors/src/index.ts
 var ProcessorsPlugin = (processors) => {
   const localizedProcessorsByLocale = {};
   return (0, import_plugins.createPlugin)(
@@ -87,8 +87,3 @@ function mergeInputs(baseInput, input) {
   const mergedInput = typeof baseInput === "object" && typeof input === "object" ? { ...baseInput, ...input } : input ?? baseInput;
   return mergedInput;
 }
-// Annotate the CommonJS export names for ESM import in node:
-0 && (module.exports = {
-  ProcessorsPlugin,
-  getLocalizedProcessors
-});

@@ -17,14 +17,14 @@ var __copyProps = (to, from, except, desc) => {
 };
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-// src/intl/number.ts
+// packages/plugins/processors/src/intl/number.ts
 var number_exports = {};
 __export(number_exports, {
   numberFormat: () => numberFormat
 });
 module.exports = __toCommonJS(number_exports);
 
-// src/intl/_cache.ts
+// packages/plugins/processors/src/intl/_cache.ts
 var cachedIntl = (intl, convert, process) => {
   const cache = {};
   const processOptions = process?.options;
@@ -55,9 +55,5 @@ var cachedIntl = (intl, convert, process) => {
   };
 };
 
-// src/intl/number.ts
+// packages/plugins/processors/src/intl/number.ts
 var numberFormat = cachedIntl(Intl.NumberFormat, Number);
-// Annotate the CommonJS export names for ESM import in node:
-0 && (module.exports = {
-  numberFormat
-});

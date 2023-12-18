@@ -1,4 +1,4 @@
-// src/intl/_cache.ts
+// packages/plugins/processors/src/intl/_cache.ts
 var cachedIntl = (intl, convert, process) => {
   const cache = {};
   const processOptions = process?.options;
@@ -29,10 +29,10 @@ var cachedIntl = (intl, convert, process) => {
   };
 };
 
-// src/intl/date.ts
+// packages/plugins/processors/src/intl/date.ts
 var dateFormat = cachedIntl(Intl.DateTimeFormat, (date) => new Date(date));
 
-// src/intl/display.ts
+// packages/plugins/processors/src/intl/display.ts
 var DisplayNames = class {
   displayNames;
   constructor(locale, options) {
@@ -44,17 +44,17 @@ var DisplayNames = class {
 };
 var displayNames = cachedIntl(DisplayNames, (x) => x);
 
-// src/intl/number.ts
+// packages/plugins/processors/src/intl/number.ts
 var numberFormat = cachedIntl(Intl.NumberFormat, Number);
 
-// src/intl/plural.ts
+// packages/plugins/processors/src/intl/plural.ts
 var pluralRules = (locale) => {
   const plurals = new Intl.PluralRules(locale.language);
   const plural = (variants) => (amount) => variants[plurals.select(amount)] ?? Object.values(variants)[0] ?? String(plurals.select(amount));
   return plural;
 };
 
-// src/default.ts
+// packages/plugins/processors/src/default.ts
 var defaultProcessors = {
   date: dateFormat,
   number: numberFormat,

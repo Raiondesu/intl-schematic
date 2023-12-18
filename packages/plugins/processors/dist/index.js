@@ -1,7 +1,7 @@
-// src/index.ts
+// packages/plugins/processors/src/index.ts
 import { createPlugin } from "intl-schematic/plugins";
 
-// src/plugin-core.ts
+// packages/plugins/processors/src/plugin-core.ts
 var getLocalizedProcessors = (processors, locale) => {
   if (!locale) {
     return {};
@@ -12,7 +12,7 @@ var getLocalizedProcessors = (processors, locale) => {
   }), {});
 };
 
-// src/index.ts
+// packages/plugins/processors/src/index.ts
 var ProcessorsPlugin = (processors) => {
   const localizedProcessorsByLocale = {};
   return createPlugin(

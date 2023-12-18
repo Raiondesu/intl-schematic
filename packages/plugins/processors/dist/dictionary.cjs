@@ -17,7 +17,7 @@ var __copyProps = (to, from, except, desc) => {
 };
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-// src/dictionary.ts
+// packages/plugins/processors/src/dictionary.ts
 var dictionary_exports = {};
 __export(dictionary_exports, {
   dictionary: () => dictionary
@@ -34,7 +34,3 @@ var dictionary = () => (options, key) => (input) => {
     return _input.fallback ?? key;
   }
 };
-// Annotate the CommonJS export names for ESM import in node:
-0 && (module.exports = {
-  dictionary
-});

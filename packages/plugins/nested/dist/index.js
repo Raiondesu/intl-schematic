@@ -1,4 +1,4 @@
-// src/index.ts
+// packages/plugins/nested/src/index.ts
 import { createPlugin } from "intl-schematic/plugins";
 function match(value) {
   return !!value && typeof value === "object" && Object.values(value).some(match);

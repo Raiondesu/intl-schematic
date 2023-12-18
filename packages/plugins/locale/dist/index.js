@@ -1,4 +1,4 @@
-// src/index.ts
+// packages/plugins/locale/src/index.ts
 import { createPlugin } from "intl-schematic/plugins";
 var LocaleProviderPlugin = (currentLocale) => createPlugin(
   "Locale",

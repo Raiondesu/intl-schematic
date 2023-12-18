@@ -1,4 +1,4 @@
-// src/intl/_cache.ts
+// packages/plugins/processors/src/intl/_cache.ts
 var cachedIntl = (intl, convert, process) => {
   const cache = {};
   const processOptions = process?.options;
@@ -29,7 +29,7 @@ var cachedIntl = (intl, convert, process) => {
   };
 };
 
-// src/intl/number.ts
+// packages/plugins/processors/src/intl/number.ts
 var numberFormat = cachedIntl(Intl.NumberFormat, Number);
 export {
   numberFormat

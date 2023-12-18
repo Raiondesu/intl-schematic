@@ -1,4 +1,4 @@
-// src/plugin-core.ts
+// packages/plugins/processors/src/plugin-core.ts
 var getLocalizedProcessors = (processors, locale) => {
   if (!locale) {
     return {};

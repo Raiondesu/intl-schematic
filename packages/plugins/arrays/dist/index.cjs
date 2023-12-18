@@ -17,7 +17,7 @@ var __copyProps = (to, from, except, desc) => {
 };
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-// src/index.ts
+// packages/plugins/arrays/src/index.ts
 var src_exports = {};
 __export(src_exports, {
   ArraysPlugin: () => ArraysPlugin
@@ -66,8 +66,4 @@ var ArraysPlugin = (defaultDelimiter = " ") => (0, import_plugins.createPlugin)(
     }
     return delimiter(result, defaultDelimiter);
   }
-});
-// Annotate the CommonJS export names for ESM import in node:
-0 && (module.exports = {
-  ArraysPlugin
 });

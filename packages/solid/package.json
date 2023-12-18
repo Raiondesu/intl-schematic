@@ -10,10 +10,7 @@
   "types": "index",
   "type": "module",
   "scripts": {
-    "build": "tsup src",
     "dev": "tsc --noEmit -w",
-    "commit-build": "(git diff --quiet && git diff --staged --quiet) || (git commit -am \"Update dist\")",
-    "preversion": "npm run build && npm run commit-build",
     "prerelease": "npm version prerelease --preid=rc",
     "pre-patch": "npm version prerelease --preid=rc",
     "pre-minor": "npm version preminor --preid=rc",
@@ -30,9 +27,9 @@
     "typescript": "^5.3.2"
   },
   "dependencies": {
+    "@intl-schematic/plugin-defaults": "*",
     "rambda": "^8.6.0",
-    "solid-js": "^1.8.6",
-    "@intl-schematic/plugin-defaults": "*"
+    "solid-js": "^1.8.6"
   },
   "exports": {
     ".": {

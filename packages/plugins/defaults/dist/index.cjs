@@ -18,7 +18,7 @@ var __copyProps = (to, from, except, desc) => {
 var __reExport = (target, mod, secondTarget) => (__copyProps(target, mod, "default"), secondTarget && __copyProps(secondTarget, mod, "default"));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-// src/index.ts
+// packages/plugins/defaults/src/index.ts
 var src_exports = {};
 __export(src_exports, {
   defaultPlugins: () => defaultPlugins
@@ -37,12 +37,3 @@ var defaultPlugins = (currentLocale, processors, arraysDelimiter = " ") => [
   (0, import_plugin_arrays.ArraysPlugin)(arraysDelimiter),
   (0, import_plugin_processors.ProcessorsPlugin)(processors)
 ];
-// Annotate the CommonJS export names for ESM import in node:
-0 && (module.exports = {
-  defaultPlugins,
-  ...require("@intl-schematic/plugin-arrays"),
-  ...require("@intl-schematic/plugin-locale"),
-  ...require("@intl-schematic/plugin-processors"),
-  ...require("@intl-schematic/plugin-processors/default"),
-  ...require("@intl-schematic/plugin-processors/dictionary")
-});

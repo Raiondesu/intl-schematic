@@ -1,4 +1,4 @@
-// src/index.ts
+// packages/core/src/index.ts
 function createTranslator(getLocaleDocument, plugins) {
   return function translate(key, ...args) {
     const doc = getLocaleDocument();

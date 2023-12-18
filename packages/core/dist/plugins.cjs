@@ -17,14 +17,10 @@ var __copyProps = (to, from, except, desc) => {
 };
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-// src/plugins.ts
+// packages/core/src/plugins.ts
 var plugins_exports = {};
 __export(plugins_exports, {
   createPlugin: () => createPlugin
 });
 module.exports = __toCommonJS(plugins_exports);
 var createPlugin = (name, match, options) => ({ name, match, translate: options.translate ?? (() => void 0), info: options.info });
-// Annotate the CommonJS export names for ESM import in node:
-0 && (module.exports = {
-  createPlugin
-});

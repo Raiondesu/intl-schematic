@@ -17,7 +17,7 @@ var __copyProps = (to, from, except, desc) => {
 };
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-// src/index.ts
+// packages/core/src/index.ts
 var src_exports = {};
 __export(src_exports, {
   createTranslator: () => createTranslator
@@ -81,7 +81,3 @@ function createTranslator(getLocaleDocument, plugins) {
     }
   }.bind({ plugins });
 }
-// Annotate the CommonJS export names for ESM import in node:
-0 && (module.exports = {
-  createTranslator
-});

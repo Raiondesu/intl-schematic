@@ -17,7 +17,7 @@ var __copyProps = (to, from, except, desc) => {
 };
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-// src/intl/plural.ts
+// packages/plugins/processors/src/intl/plural.ts
 var plural_exports = {};
 __export(plural_exports, {
   pluralRules: () => pluralRules
@@ -28,7 +28,3 @@ var pluralRules = (locale) => {
   const plural = (variants) => (amount) => variants[plurals.select(amount)] ?? Object.values(variants)[0] ?? String(plurals.select(amount));
   return plural;
 };
-// Annotate the CommonJS export names for ESM import in node:
-0 && (module.exports = {
-  pluralRules
-});

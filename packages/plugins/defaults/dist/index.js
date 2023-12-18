@@ -1,4 +1,4 @@
-// src/index.ts
+// packages/plugins/defaults/src/index.ts
 import { LocaleProviderPlugin } from "@intl-schematic/plugin-locale";
 import { ArraysPlugin } from "@intl-schematic/plugin-arrays";
 import { ProcessorsPlugin } from "@intl-schematic/plugin-processors";
