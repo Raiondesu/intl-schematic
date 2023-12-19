@@ -421,14 +421,22 @@ it instead simply shows\
 When registering a plugin in the `PluginRegistry`, there might be a need
 to quickly get information about other plugins or use some handy utility types.\
 The `intl-schematic/plugins` module provides several utility types just for this:
-- `GetPluginNameFromContext<LocaleDoc, Key, ContextualPlugins>`
+- ```ts
+  type GetPluginNameFromContext<LocaleDoc, Key, ContextualPlugins>
+  ```
   - Allows to detect and get the plugin name for a specific key in the translation document;
-- `KeysOfType<Object, ValueType>`
+- ```ts
+  type KeysOfType<Object, ValueType>
+  ```
   - Extracts from an object all keys that have values matching the `ValueType`,
     allows to detect any key that would yield `true` for a specific plugin's `match` function;
-- `PluginInterface<LocaleDoc, Key, PluginName>`
+- ```ts
+  type PluginInterface<LocaleDoc, Key, PluginName>
+  ```
   - Constructs the interface for a plugin with name `PluginName` that would be used when processing the specific `Key`;
-- `PluginRecord<Args, Info, Signature>`
+- ```ts
+  type PluginRecord<Args, Info, Signature>
+  ```
   - Mainly used to quickly infer some information about the plugin without rewriting its structure in the types.
 
 These helper types do not need importing, as they are already accessible within the `intl-schematic/plugins` module declaration.
