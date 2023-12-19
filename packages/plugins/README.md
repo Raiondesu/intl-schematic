@@ -344,6 +344,25 @@ where additional information can be provided to the plugin:
   - `ContextualPlugins` - a map of all plugins used in the `t()` invocation, allows to get other plugins'
     type information from the registry.
 
+A plugin is registered using an ambient module declaration for `intl-schematic/plugins`
+
+```ts
+declare module 'intl-schematic/plugins' {
+  export interface PluginRegistry<
+    LocaleDoc, // Translation document
+    Key, // Currently processed key
+    PluginInfo, // Current plugin info
+    ContextualPlugins // Map of all plugins, same as used in the `this` context
+  > {
+    PluginName: {
+      args: unknown[];
+      info?: unknown;
+      signature?: unknown;
+    }
+  }
+}
+```
+
 All plugins are registered by their `name` as the key in the interface, and an object value with the following properties:
   - `args`: a named tuple, directly used as a type for the `t()` function parameters after the key;
     - For example, if `args` is set to `[arg1: string, arg2?: number]`, then the `t()` call will have roughly this signature:
@@ -411,3 +430,5 @@ The `intl-schematic/plugins` module provides several utility types just for this
   - Constructs the interface for a plugin with name `PluginName` that would be used when processing the specific `Key`;
 - `PluginRecord<Args, Info, Signature>`
   - Mainly used to quickly infer some information about the plugin without rewriting its structure in the types.
+
+These helper types do not need importing, as they are already accessible within the `intl-schematic/plugins` module declaration.
