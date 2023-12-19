@@ -27,10 +27,6 @@
     "tsconfig": "*",
     "typescript": "^5.3.2"
   },
-  "dependencies": {
-    "@intl-schematic/plugin-defaults": "*",
-    "rambda": "^8.6.0"
-  },
   "exports": {
     ".": {
       "import": "./dist/index.js",

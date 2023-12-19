@@ -1,17 +1,15 @@
 import { createResource } from 'solid-js';
-import { merge } from 'rambda';
-
-import { Processors, defaultPlugins } from '@intl-schematic/plugin-defaults';
 import { createTranslator } from 'intl-schematic';
+import { Plugin } from 'intl-schematic/plugins';
 
 export interface LocaleResponse<Locale> {
   default: Locale;
   remote?: Promise<Locale | undefined>;
 }
 
-export function createLocaleResource<P extends Processors>(
+export function createLocaleResource<P extends readonly Plugin[]>(
   getLocale: () => Intl.Locale | Promise<Intl.Locale>,
-  processors: P,
+  plugins: (locale: () => Intl.Locale) => P,
 ) {
   return <LocaleDoc extends Record<string, any>>(
     localeImport: (lang: Intl.Locale) => Promise<LocaleResponse<LocaleDoc>>,
@@ -23,7 +21,9 @@ export function createLocaleResource<P extends Processors>(
         .then(([localeDoc, locale]) => {
           localeDoc.remote?.then(loc => {
             if (loc) {
-              mutate((prev) => merge(prev, loc));
+              mutate(([prev, prevLocale] = [localeDoc.default, locale]) => (
+                [{ ...prev, ...loc }, prevLocale]
+              ));
             }
           });
 
@@ -32,8 +32,8 @@ export function createLocaleResource<P extends Processors>(
     );
 
     const currentLocale = () => localeResource.latest?.[1] ?? new Intl.Locale(navigator.language);
-    const currentDoc = () => localeResource.latest?.[0] ?? {} as LocaleDoc;
+    const currentDoc = () => localeResource.latest?.[0];
 
-    return createTranslator(currentDoc, defaultPlugins(currentLocale, processors));
+    return createTranslator(currentDoc, plugins(currentLocale));
   };
 }
