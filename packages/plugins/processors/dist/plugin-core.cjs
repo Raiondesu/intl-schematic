@@ -24,9 +24,6 @@ __export(plugin_core_exports, {
 });
 module.exports = __toCommonJS(plugin_core_exports);
 var getLocalizedProcessors = (processors, locale) => {
-  if (!locale) {
-    return {};
-  }
   return Object.keys(processors).reduce((obj, key) => ({
     ...obj,
     [key]: processors[key](locale)
