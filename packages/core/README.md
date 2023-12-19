@@ -123,7 +123,7 @@ const getDocument = () => ({
 const getLocale = () => new Intl.Locale('en');
 
 const t = createTranslator(getDocument, defaultPlugins(
-  getLocale
+  getLocale,
   defaultProcessors
 ));
 
