@@ -4,14 +4,15 @@
   - [Definition](#definition)
     - [`name`](#name)
     - [`match`](#match)
+    - [`info`](#info)
     - [`translate`](#translate)
       - [`this` context](#this-context)
+        - [Context usage example](#context-usage-example)
       - [Using other plugins](#using-other-plugins)
-    - [`info`](#info)
   - [Advanced type-checking](#advanced-type-checking)
     - [`match` type-guards](#match-type-guards)
     - [`PluginRegistry`](#pluginregistry)
-    - [Generalizing translation types](#generalizing-translation-types)
+      - [Registry utility API](#registry-utility-api)
 
 
 # Plugins API
