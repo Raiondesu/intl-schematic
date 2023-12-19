@@ -32,6 +32,8 @@ See a simplified example below and don't be afraid to take a look into the sourc
 ### Define a translation document factory
 
 ```js
+// In the real world, this function would probably contain
+// a dynamic import of the required translation document
 const getDocument = () => ({
   "hello": "Hello, World!"
 });
