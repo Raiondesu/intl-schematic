@@ -47,5 +47,25 @@
         "./src/index.ts"
       ]
     }
-  }
+  },
+  "author": {
+    "name": "Raiondesu",
+    "email": "ai@raiondesu.dev",
+    "url": "https://github.com/Raiondesu"
+  },
+  "keywords": [
+    "l10n",
+    "i18n",
+    "i18next",
+    "vue-i18n",
+    "intl",
+    "json schema",
+    "formatting",
+    "formatter",
+    "localization",
+    "intl schematic",
+    "plugin",
+    "arrays",
+    "reference"
+  ]
 }
