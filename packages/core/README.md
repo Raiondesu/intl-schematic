@@ -20,12 +20,16 @@ A tiny library (1kb, zero-dependency) that allows to localize and format strings
 
 ## Table of contents<!-- omit from toc -->
 
-- [Define a translation document factory](#define-a-translation-document-factory)
-- [Create a translator function (`t()`)](#create-a-translator-function-t)
-- [Use the translator function](#use-the-translator-function)
-- [Add default plugins and processors](#add-default-plugins-and-processors)
+- [Usage](#usage)
+  - [Define a translation document factory](#define-a-translation-document-factory)
+  - [Create a translator function (`t()`)](#create-a-translator-function-t)
+  - [Use the translator function](#use-the-translator-function)
+- [Plugins](#plugins)
+  - [List](#list)
+  - [Add default plugins and processors](#add-default-plugins-and-processors)
 
-## Usage<!-- omit from toc -->
+
+## Usage
 
 See a simplified example below and don't be afraid to take a look into the sources to find out more.
 
