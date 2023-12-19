@@ -8,24 +8,24 @@
 
 <p align="center">
 
-A tiny library (3kb, zero-dependency) that allows to localize and format strings with infinitely expandable functionality.
+A tiny library (1kb, zero-dependency) that allows to localize and format strings with infinitely expandable functionality.
 
 </p>
 
 - 🦺 **Full type-safety**: full autocomplete on translation keys, typed translation parameters and more;
 - 🎄 **Tree-shakable**: only take what you need;
-- 🔌 **Pluginable**: extend any processing step without limits;
+- 🔌 **Pluginable**: extend any processing step without limits - see the [plugins API](/packages/plugins/) for more;
 - 📃 **JSON-validation using a JSON-schema**: intellisense and popup hints right in the translation document;
 - 🚫 **No string-interpolation**: translation strings will never be processed or mangled by-default, so all unicode symbols are safe to use;
 
+## Table of contents<!-- omit from toc -->
+
 - [Define a translation document factory](#define-a-translation-document-factory)
 - [Create a translator function (`t()`)](#create-a-translator-function-t)
-- [Use the translator function](#use-a-translator-function)
+- [Use the translator function](#use-the-translator-function)
 - [Add default plugins and processors](#add-default-plugins-and-processors)
 
 ## Usage<!-- omit from toc -->
-
-Comprehensive documentation is in progress.
 
 See a simplified example below and don't be afraid to take a look into the sources to find out more.
 
@@ -60,9 +60,9 @@ console.log(t('hello')); // `Hello, World!`
 
 ### Add default plugins and processors
 
-Plugins allow to infinitely expand the functionality of `intl-schematic`. To find out more, see the main [plugins readme](../plugins/).
+Plugins allow to infinitely expand the functionality of `intl-schematic`. To find out more, see the main [plugins readme](/packages/plugins/).
 
-You might want to install [the default plugin collection](../plugins/defaults/):
+You might want to install [the default plugin collection](/packages/plugins/defaults/):
 
 `npm i @intl-schematic/plugin-defaults`
 

@@ -10,7 +10,7 @@ Allows to use arrays as values in translation documents, adds many features to `
 
 ## Usage
 
-As an example of another key that uses a plugin, [`plugin-processors`](../processors/) will be used with default processors.
+As an example of another key that uses a plugin, [`plugin-processors`](/packages/plugins/processors/) will be used with default processors.
 
 ### Define a translation document factory
 

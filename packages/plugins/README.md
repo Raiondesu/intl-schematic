@@ -144,7 +144,7 @@ See [advanced type checking](#advanced-type-checking) for details.
 
 > `unknown`
 
-This property is exactly what enables [the locale plugin](./locale/) to work.
+This property is exactly what enables [the locale plugin](/packages/plugins/locale/) to work.
 
 It allows plugins to provide any information at runtime to other plugins (as well as to itself),
 via accessing the plugin by its name:
@@ -174,7 +174,7 @@ If `undefined` is returned, other matched plugins will be applied to the string
 
 #### `this` context
 
-> For the full type definition, see the [`PluginContext` type](../core/src/plugins.ts#L58)
+> For the full type definition, see the [`PluginContext` type](/packages/core/src/plugins.ts#L58)
 > ```ts
 > interface PluginContext<TypeMatch> {
 >   // Current plugin's name
@@ -256,12 +256,12 @@ t('key', 'Some cool', 'custom', '!');
 The context allows to use other plugins freely: get their information,
 check if a value matches them, or even invoke their `translate` function given the right parameters.
 
-The most straightforward example of how this can be useful is [the tiny locale plugin](./locale/).
+The most straightforward example of how this can be useful is [the tiny locale plugin](/packages/plugins/locale/).
 
 Normally, `intl-schematic` doesn't need to be directly aware of the user's locale,\
 as it leaves determining the correct translation document to the developer
-to supply in the [`getLocaleDocument`](../core/src/index.ts#L23) parameter.\
-But other plugins, such as [the processors plugin](./processors/), may need the current user's locale
+to supply in the [`getLocaleDocument`](/packages/core/src/index.ts#L23) parameter.\
+But other plugins, such as [the processors plugin](/packages/plugins/processors/), may need the current user's locale
 to properly tune their functionality.
 
 Hence, the locale plugin can request this information from the user **once**
@@ -320,19 +320,19 @@ which allows typescript to determine which plugin is the closest match for the s
 While the type predicate can match against something generic, like `Record<string, any>`,
 it can also be used to require a very specific signature for the value to be matched against.
 
-> See [the processors plugin](./processors/src/index.ts#L51) match function for a comprehensive example.
+> See [the processors plugin](/packages/plugins/processors/src/index.ts#L51) match function for a comprehensive example.
 
 In other words, the closer the `match` type predicate reflects
 what the `match` function actually checks for, the easier it is for typescript
 to correctly detect that the plugin is used for the specific key.
 
-*Provider* plugins (like [the locale plugin](./locale/)) usually set the `match` predicate
+*Provider* plugins (like [the locale plugin](/packages/plugins/locale/)) usually set the `match` predicate
 to `value is never` in order to not interfere with other plugins' type matching.
 
 ### `PluginRegistry`
 
 If a plugin needs type-checking and auto-complete for its translation arguments to enable a smooth developer experience,
-it can be registered in the [`PluginRegistry`](../core/src/plugins.ts#L32) interface as a [`PluginRecord`](../core/src/plugins.ts#L3).
+it can be registered in the [`PluginRegistry`](/packages/core/src/plugins.ts#L32) interface as a [`PluginRecord`](/packages/core/src/plugins.ts#L3).
 
 In short, the `PluginRegistry` captures all registered plugins' definitions
 to be placed in the context of the translator function invocation - `t('specific key')`,
@@ -347,7 +347,7 @@ All plugins are registered by their `name` as the key in the interface, and an o
   - `args`: a named tuple, directly used as a type for the `t()` function parameters after the key;
     - For example, if `args` is set to `[arg1: string, arg2?: number]`, then the `t()` call will have roughly this signature:
       `t(key: string, arg1: string, arg2?: number)`;
-  - `info`: a context-defined plugin info, see [the locale plugin](./locale/) for a simple example;
+  - `info`: a context-defined plugin info, see [the locale plugin](/packages/plugins/locale/) for a simple example;
   - `signature`: any additional contextual information to display to the developer along with typehints for `t()`, the **plugin's signature**, if you will;
     - Might be useful for letting the developer know about some additional context for the currently selected key - information about other keys it references, for example, or its signature in the translation document.
 
@@ -385,9 +385,9 @@ declare module 'intl-schematic/plugins' {
 t('key', '0', '1', '2', '3') // TS Error: Expected 1-4 arguments, but got 5.
 ```
 
-For a simple working example see [the nested plugin](./nested/src/index.ts).\
-For more advanced examples see [the processors plugin](./processors/src/index.ts)
-or [the arrays plugin](./arrays/src/index.ts) - which automaticaly infers
+For a simple working example see [the nested plugin](/packages/plugins/nested/src/index.ts).\
+For more advanced examples see [the processors plugin](/packages/plugins/processors/src/index.ts)
+or [the arrays plugin](/packages/plugins/arrays/src/index.ts) - which automaticaly infers
 referenced keys' plugin types using the `PluginRegistry`.
 
 Notice how in all examples, all types in the `PluginRegistry` are written in-line, without wrapping them in helper/utility types or interfaces.\

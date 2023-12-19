@@ -2,7 +2,7 @@
 
 Adds the ability to use custom processors for records in translation documents.
 
-Requires [`@intl-schematic/plugin-locale`](../locale/) to properly function!
+Requires [`@intl-schematic/plugin-locale`](/packages/plugins/locale/) to properly function!
 
 `npm i -s @intl-schematic/plugin-processors @intl-schematic/plugin-locale`
 
@@ -18,7 +18,7 @@ Requires [`@intl-schematic/plugin-locale`](../locale/) to properly function!
 ## Usage
 
 > ⚠⚠⚠\
-> This plugin requires [`@intl-schematic/plugin-locale`](../locale/) to properly function!\
+> This plugin requires [`@intl-schematic/plugin-locale`](/packages/plugins/locale/) to properly function!\
 > It **can** work without the locale plugin (hence why it isn't included),\
 > but in this case processors' results might be improperly cached.\
 > It's up to you to decide if that's okay for your specific use-case.
@@ -188,7 +188,7 @@ to format any number passed as a second argument to translator function;
     }
     ```
 
-- `dictionary` - allows to use the translation record as a dictionary, simplified variant of the [`nested` plugin](../nested/), but with a depth level of 1 and ability to define a fallback in case of a wrong key.
+- `dictionary` - allows to use the translation record as a dictionary, simplified variant of the [`nested` plugin](/packages/plugins/nested/), but with a depth level of 1 and ability to define a fallback in case of a wrong key.
   - example:
     ```ts
     const doc = {

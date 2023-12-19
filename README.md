@@ -8,17 +8,15 @@
 
 <div align="center">
 
-A tiny framework-agnostic i18n library (3kb, zero-dependency) that allows to localize and format strings while sparingly using the browser-standard [`Intl` API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl).
+A tiny framework-agnostic i18n library (1-3kb, zero-dependency) that allows to localize and format strings while sparingly using the browser-standard [`Intl` API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl).
 
-`npm i -s intl-schematic@next`
+`npm i -s intl-schematic`
 
 You can also install a nightly build [directly from github](#install-from-github)
 
-For simple usage examples, see the [main package readme](./packages/core/README.md)
+For simple usage examples, see the [main package readme](/packages/core/README.md)
 
 [List of packages](#packages)
-
-> ⚠ This is an early work-in-progress public prototype, use with caution! ⚠
 
 </div>
 
@@ -28,7 +26,7 @@ For simple usage examples, see the [main package readme](./packages/core/README.
 
 - 🦺 **Full type-safety**: full autocomplete on translation keys, typed translation parameters and more;
 - 🎄 **Tree-shakable**: only take what you need;
-- 🔌 **Pluginable**: extend any processing step without limits;
+- 🔌 **Pluginable**: extend any processing step without limits - see the [plugins API](/packages/plugins/) for more;
 - 📃 **JSON-validation using a JSON-schema**: intellisense and popup hints right in the translation document;
 - 🧵 **Dynamic strings with custom pre-processors**: write custom translation logic right in JSON;
 - 📑 **Reference translation keys inside of other translation keys**: all with JSON-compatible syntax;
@@ -52,39 +50,37 @@ This library will try to avoid these common pitfalls, while retaining a small si
 ## No-goals
 
 This library will **not** support:
-- **Translation key nesting using dot-notation**: needlessly complicates key lookup and maintenance, instead use namespaced keys or the [`nested` plugin](./packages/plugins/nested);
+- **Translation key nesting using dot-notation**: needlessly complicates key lookup and maintenance, instead use namespaced keys or the [`nested` plugin](/packages/plugins/nested);
 - **String interpolation**: while custom plugins and processors can do anything with the translated string,
 the library by-itself does not and will not do any processing on the strings.
 
 ## Contributing
 
-Since this is a very early unstable version, major refactors might be underway right now.
-
-To contribute, create a branch and make a PR to `main`, or [create an issue](https://github.com/Raiondesu/intl-schematic/issues/new).
+To contribute, create a branch and make a PR to `dev`, or [create an issue](https://github.com/Raiondesu/intl-schematic/issues/new).
 
 ### Packages
 
 This project utilizes a monorepo structure based on [npm workspaces](https://docs.npmjs.com/cli/v7/using-npm/workspaces/),\
-with the main package being, of course, [`intl-schematic`](./packages/core/).
+with the main package being, of course, [`intl-schematic`](/packages/core/).
 
 Full list of packages at the moment:
-- [`intl-schematic`](./packages/core/) - main package
-- [`@intl-schematic/solid`](./packages/solid/) - reactive adapter for [`solid-js`](https://www.solidjs.com)
-- [Plugins](./packages/plugins/) - allow using custom formats in translation documents - not just strings:
-  - [`@intl-schematic/plugin-defaults`](./packages/plugins/defaults/)
+- [`intl-schematic`](/packages/core/) - main package
+- [`@intl-schematic/solid`](/packages/solid/) - reactive adapter for [`solid-js`](https://www.solidjs.com)
+- [Plugins](/packages/plugins/) - allow using custom formats in translation documents - not just strings:
+  - [`@intl-schematic/plugin-defaults`](/packages/plugins/defaults/)
     - recommended collection of plugins that should be useful to most applications
-  - [`@intl-schematic/plugin-arrays`](./packages/plugins/arrays/) (included in **defaults**)
+  - [`@intl-schematic/plugin-arrays`](/packages/plugins/arrays/) (included in **defaults**)
     - use arrays to cross-reference keys and define complex multiline texts
-  - [`@intl-schematic/plugin-functions`](./packages/plugins/functions/)
+  - [`@intl-schematic/plugin-functions`](/packages/plugins/functions/)
     - use plain functions directly in translation documents with type-checked parameters
-  - [`@intl-schematic/plugin-locale`](./packages/plugins/locale/) (included in **defaults**)
+  - [`@intl-schematic/plugin-locale`](/packages/plugins/locale/) (included in **defaults**)
     - provider plugin, allows other plugins to use the provided `Intl.Locale` instance
-  - [`@intl-schematic/plugin-nested`](./packages/plugins/nested/)
+  - [`@intl-schematic/plugin-nested`](/packages/plugins/nested/)
     - access nested keys in deep multi-level objects
-  - [`@intl-schematic/plugin-processors`](./packages/plugins/processors/) (included in **defaults**)
+  - [`@intl-schematic/plugin-processors`](/packages/plugins/processors/) (included in **defaults**)
     - apply custom and default processors to format the user inputs
 
-- [`tsconfig`](./packages/tsconfig/) - typescript config used by the packages
+- [`tsconfig`](/packages/tsconfig/) - typescript config used by the packages
 
 ### Local development
 

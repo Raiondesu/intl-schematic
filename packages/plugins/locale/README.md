@@ -2,7 +2,7 @@
 
 A provider-plugin, doesn't affect the translation process directly,
 but allows other plugins to use a user-provided `Intl.Locale` instance,
-using the [plugins API](../).
+using the [plugins API](/packages/plugins/).
 
 `npm i -s @intl-schematic/plugin-locale`
 
