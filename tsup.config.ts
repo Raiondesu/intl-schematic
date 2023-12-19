@@ -18,7 +18,6 @@ const entries = new fdir()
   .withMaxDepth(2)
   .crawl('packages')
   .sync()
-  .slice(1)
   .map(p => join(p, 'src'));
 
 const CLI = blue('CLI');
