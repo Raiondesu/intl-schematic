@@ -159,7 +159,7 @@ export interface TranslationDocument {
   [key: string]: unknown;
 }
 
-export type LocaleKey<Locale extends TranslationDocument> = Exclude<keyof Locale, '$schema'>;
+export type LocaleKey<LocaleDoc extends TranslationDocument> = Exclude<keyof LocaleDoc, '$schema'>;
 
 export type ExtraPartial<I> = {
   [P in keyof I]?: I[P] | null | undefined;

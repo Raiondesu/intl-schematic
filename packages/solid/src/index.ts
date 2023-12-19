@@ -13,8 +13,8 @@ export function createLocaleResource<P extends Processors>(
   getLocale: () => Intl.Locale | Promise<Intl.Locale>,
   processors: P,
 ) {
-  return <Locale extends Record<string, any>>(
-    localeImport: (lang: Intl.Locale) => Promise<LocaleResponse<Locale>>,
+  return <LocaleDoc extends Record<string, any>>(
+    localeImport: (lang: Intl.Locale) => Promise<LocaleResponse<LocaleDoc>>,
   ) => {
     const [localeResource, { mutate }] = createResource(
       getLocale,
@@ -32,7 +32,7 @@ export function createLocaleResource<P extends Processors>(
     );
 
     const currentLocale = () => localeResource.latest?.[1] ?? new Intl.Locale(navigator.language);
-    const currentDoc = () => localeResource.latest?.[0] ?? {} as Locale;
+    const currentDoc = () => localeResource.latest?.[0] ?? {} as LocaleDoc;
 
     return createTranslator(currentDoc, defaultPlugins(currentLocale, processors));
   };

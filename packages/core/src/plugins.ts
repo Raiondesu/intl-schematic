@@ -215,7 +215,7 @@ export type GetPluginFromArray<
  * from a plugin context
  */
 export type GetPluginNameFromContext<
-  Locale extends Record<string, any>,
-  Key extends LocaleKey<Locale>,
+  LocaleDoc extends Record<string, any>,
+  Key extends LocaleKey<LocaleDoc>,
   ContextualPlugins extends Record<string, Plugin>
-> = KeysOfType<MatchPerPluginName<ContextualPlugins>, Locale[Key]>;
+> = KeysOfType<MatchPerPluginName<ContextualPlugins>, LocaleDoc[Key]>;
