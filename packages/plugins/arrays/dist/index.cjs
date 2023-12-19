@@ -27,8 +27,8 @@ var import_plugins = require("intl-schematic/plugins");
 function match(value) {
   return Array.isArray(value);
 }
-var ArraysPlugin = (defaultDelimiter = " ") => (0, import_plugins.createPlugin)("ArraysPlugin", match, {
-  translate(referenceParams, delimiter = defaultDelimiter) {
+var ArraysPlugin = (defaultSeparator = " ") => (0, import_plugins.createPlugin)("ArraysPlugin", match, {
+  translate(referenceParams, separator = defaultSeparator) {
     const startsWithIndex = /^.*?:/;
     const processReference = (referencedKey) => {
       if (startsWithIndex.test(referencedKey)) {
@@ -63,10 +63,10 @@ var ArraysPlugin = (defaultDelimiter = " ") => (0, import_plugins.createPlugin)(
       }
       return [...arr, ...processReference(refParamK)];
     }, []);
-    if (typeof delimiter === "string") {
-      return result.join(delimiter);
+    if (typeof separator === "string") {
+      return result.join(separator);
     }
-    return delimiter(result, defaultDelimiter);
+    return separator(result, defaultSeparator);
     function normalizeRefs(referenceMap, referenceKey) {
       return Array.isArray(referenceMap[referenceKey]) ? referenceMap[referenceKey] : [referenceMap[referenceKey]];
     }

@@ -3,8 +3,8 @@ import { createPlugin } from "intl-schematic/plugins";
 function match(value) {
   return Array.isArray(value);
 }
-var ArraysPlugin = (defaultDelimiter = " ") => createPlugin("ArraysPlugin", match, {
-  translate(referenceParams, delimiter = defaultDelimiter) {
+var ArraysPlugin = (defaultSeparator = " ") => createPlugin("ArraysPlugin", match, {
+  translate(referenceParams, separator = defaultSeparator) {
     const startsWithIndex = /^.*?:/;
     const processReference = (referencedKey) => {
       if (startsWithIndex.test(referencedKey)) {
@@ -39,10 +39,10 @@ var ArraysPlugin = (defaultDelimiter = " ") => createPlugin("ArraysPlugin", matc
       }
       return [...arr, ...processReference(refParamK)];
     }, []);
-    if (typeof delimiter === "string") {
-      return result.join(delimiter);
+    if (typeof separator === "string") {
+      return result.join(separator);
     }
-    return delimiter(result, defaultDelimiter);
+    return separator(result, defaultSeparator);
     function normalizeRefs(referenceMap, referenceKey) {
       return Array.isArray(referenceMap[referenceKey]) ? referenceMap[referenceKey] : [referenceMap[referenceKey]];
     }
