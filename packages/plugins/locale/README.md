@@ -8,13 +8,16 @@ using the [plugins API](../).
 
 ```ts
 import { createTranslator } from 'intl-schematic';
-import { LocalePlugin } from '@intl-schematic/plugin-locale';
+import { LocaleProviderPlugin } from '@intl-schematic/plugin-locale';
 
 const getUserLocale = () => new Intl.Locale(navigator.language);
 
 // Notice the plugins array parameter
 const t = createTranslator(getDocument, [
-  LocalePlugin(getUserLocale)
+  LocaleProviderPlugin(getUserLocale),
+  // ... all plugins supplied here
+  // can now use `this.plugins.Locale.info()`
+  // to access the user locale
 ]);
 ```
 
