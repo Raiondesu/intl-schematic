@@ -3,7 +3,7 @@
   "version": "1.0.0-rc.2",
   "license": "MIT",
   "repository": {
-    "url": "https://github.com/Raiondesu/intl-schematic/packages/plugins/default"
+    "url": "git+https://github.com/Raiondesu/intl-schematic.git/packages/plugins/default"
   },
   "main": "dist/index",
   "module": "dist/index",
