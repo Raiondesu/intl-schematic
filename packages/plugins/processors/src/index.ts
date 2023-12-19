@@ -66,9 +66,11 @@ export const ProcessorsPlugin = <P extends Processors>(processors: P) => {
       info: processors,
 
       translate(input: InputObject, parameter: ParameterObject) {
-        const locale = this.plugins.Locale?.info();
+        const locale = this.plugins.Locale?.info() ?? new Intl.Locale('ia');
+
+        // Do not use caching if locale wasn't provided
         const localizedProcessors = (
-          localizedProcessorsByLocale[String(locale?.baseName)] ??= getLocalizedProcessors(processors, locale)
+          localizedProcessorsByLocale[String(locale.baseName)] ??= getLocalizedProcessors(processors, locale)
         );
 
         const processorName = 'processor' in this.value && typeof this.value.processor === 'object'

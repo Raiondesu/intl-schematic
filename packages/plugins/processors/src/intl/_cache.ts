@@ -13,7 +13,7 @@ type ToPartsFormat<Formatter extends IntlFormatter<unknown>> = {
 
 export const cachedIntl: {
   <IntlOptions extends object, Value, Formatter extends IntlFormatter<Value>>(
-    intl: new (locales?: string | string[], options?: IntlOptions) => Formatter,
+    intl: new (locales: Intl.LocalesArgument, options?: IntlOptions) => Formatter,
     convert: (value: string) => Value,
     process?: {
       options?: (options: IntlOptions) => IntlOptions,
@@ -21,7 +21,7 @@ export const cachedIntl: {
   ): (locale: Intl.Locale) => (options: IntlOptions, key: string) => FormatFunction<Value, IntlOptions> & ToPartsFormat<Formatter>;
 
   <IntlOptions extends object, Value, Formatter extends IntlFormatter<Value>, CustomFormat extends FormatFunction<any, IntlOptions>>(
-    intl: new (locales?: string | string[], options?: IntlOptions) => Formatter,
+    intl: new (locales: Intl.LocalesArgument, options?: IntlOptions) => Formatter,
     convert: (value: string) => Value,
     process?: {
       options?: (options: IntlOptions) => IntlOptions,
@@ -29,7 +29,7 @@ export const cachedIntl: {
     },
   ): (locale: Intl.Locale) => (options: IntlOptions, key: string) => CustomFormat & ToPartsFormat<Formatter>;
 } = <IntlOptions extends object, Value, Formatter extends IntlFormatter<Value>, CustomFormat extends FormatFunction<any, IntlOptions>>(
-  intl: new (locales?: string | string[], options?: IntlOptions) => Formatter,
+  intl: new (locales: Intl.LocalesArgument, options?: IntlOptions) => Formatter,
   convert: (value: string) => Value,
   process?: {
     options?: (options: IntlOptions) => IntlOptions,
@@ -44,13 +44,13 @@ export const cachedIntl: {
     const localeCache = (cache[locale.baseName] ??= {});
 
     return (options: IntlOptions, key: string) => {
-      let formatter = localeCache[key] ??= new intl(locale.language, processOptions?.(options) ?? options);
+      let formatter = localeCache[key] ??= new intl(locale, processOptions?.(options) ?? options);
 
       const format = (value: string | Value, _options?: IntlOptions) => {
         if (_options) {
           const newOptions = { ...options, ..._options };
           const cacheKey = key + JSON.stringify(newOptions);
-          formatter = localeCache[cacheKey] ??= new intl(locale.language, newOptions);
+          formatter = localeCache[cacheKey] ??= new intl(locale, newOptions);
         };
 
         try {

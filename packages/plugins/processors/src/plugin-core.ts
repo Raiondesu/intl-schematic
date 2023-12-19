@@ -8,11 +8,7 @@ export type Processor<HandlesType = any, Parameter = any> = (locale: Intl.Locale
 
 export type Processors<HandleTypes = any> = Record<string, Processor<HandleTypes>>;
 
-export const getLocalizedProcessors = (processors: Processors, locale: Intl.Locale | undefined) => {
-  if (!locale) {
-    return {};
-  }
-
+export const getLocalizedProcessors = (processors: Processors, locale: Intl.Locale) => {
   return Object.keys((processors)).reduce((obj, key: keyof Processors) => ({
     ...obj,
     [key]: (processors)[key](locale),

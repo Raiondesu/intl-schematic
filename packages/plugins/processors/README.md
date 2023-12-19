@@ -2,8 +2,6 @@
 
 Adds the ability to use custom processors for records in translation documents.
 
-Requires [`@intl-schematic/plugin-locale`](/packages/plugins/locale/) to properly function!
-
 `npm i -s @intl-schematic/plugin-processors @intl-schematic/plugin-locale`
 
 - [Usage](#usage)
@@ -18,9 +16,10 @@ Requires [`@intl-schematic/plugin-locale`](/packages/plugins/locale/) to properl
 ## Usage
 
 > ⚠⚠⚠\
-> This plugin requires [`@intl-schematic/plugin-locale`](/packages/plugins/locale/) to properly function!\
+> This plugin requires [`@intl-schematic/plugin-locale`](/packages/plugins/locale/) to properly cache processors and supply correct formatting information!\
 > It **can** work without the locale plugin (hence why it isn't included),\
-> but in this case processors' results might be improperly cached.\
+> but in this case formatting will be limited to international format (`ia` locale)\
+> and the results of processors will never be cached, which will hurt performance.\
 > It's up to you to decide if that's okay for your specific use-case.
 
 ### Define a translation document factory
@@ -70,7 +69,8 @@ import { defaultProcessors } from '@intl-schematic/plugin-processors/default';
 
 // Notice the plugins array parameter
 const t = createTranslator(getDocument, [
-  // Requires the LocaleProviderPlugin to work properly
+  // Requires the LocaleProviderPlugin to cache processors properly,
+  // but can work without it
   LocaleProviderPlugin(() => new Intl.Locale(navigator.language)),
 
   // Here, we will use the default processors,
