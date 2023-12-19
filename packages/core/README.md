@@ -60,9 +60,37 @@ const t = createTranslator(getDocument, [
 console.log(t('hello')); // `Hello, World!`
 ```
 
-### Add default plugins and processors
+## Plugins
 
-Plugins allow to infinitely expand the functionality of `intl-schematic`. To find out more, see the main [plugins readme](/packages/plugins/).
+This is by far the main strength of the library.
+
+Translating keys relies on simple key-value lookup, and most libraries
+add many unnecessary features on top of this primitive functionality.
+
+`intl-schematic` instead provides a way to extend both its functionality and type definitions in a comprehensive enough way,
+so that anyone can pick and choose what exact features are needed for their project without any bloat whatsoever.
+
+In other words, plugins allow to almost infinitely expand the functionality of `intl-schematic`.
+
+To find out more, see the main [plugins readme](/packages/plugins/).
+
+### List
+
+Current list of all official plugins is as follows:
+- [`@intl-schematic/plugin-defaults`](/packages/plugins/defaults/)
+  - recommended collection of plugins that should be useful to most applications
+- [`@intl-schematic/plugin-arrays`](/packages/plugins/arrays/) (included in **defaults**)
+  - use arrays to cross-reference keys and define complex multiline texts
+- [`@intl-schematic/plugin-functions`](/packages/plugins/functions/)
+  - use plain functions directly in translation documents with type-checked parameters
+- [`@intl-schematic/plugin-locale`](/packages/plugins/locale/) (included in **defaults**)
+  - provider plugin, allows other plugins to use the provided `Intl.Locale` instance
+- [`@intl-schematic/plugin-nested`](/packages/plugins/nested/)
+  - access nested keys in deep multi-level objects
+- [`@intl-schematic/plugin-processors`](/packages/plugins/processors/) (included in **defaults**)
+  - apply custom and default processors to format the user inputs
+
+### Add default plugins and processors
 
 You might want to install [the default plugin collection](/packages/plugins/defaults/):
 
