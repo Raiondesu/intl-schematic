@@ -123,7 +123,7 @@ t('gift', {
 // Custom separator strategy
 t('gift', {
   'for price': [{ price: [123] }, ' just '],
-  'until birthday': [new Date(2023, 7, 9), ' - ']
+  'until birthday': [{ birthday: new Date(2023, 7, 9) }, ' - ']
 }, (lines) => lines.join('\n'));
 // Buy this birthday gift
 // for just €123

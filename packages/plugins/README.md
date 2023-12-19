@@ -217,6 +217,40 @@ to start the translation process for the referenced key and get a string to retu
 > ⚠ This may trigger infinite recursive calls
 > if a key ends up referencing itself, so be careful!
 
+##### Context usage example
+
+Example - a simple plugin that enables custom string interpolation:
+```ts
+// Document
+const getDocument = () => ({
+  key: '{0} interpolated value with {1} syntax{2}'
+})
+//
+
+const InterpolationPlugin = createPlugin(
+  'InterpolationPlugin',
+  // Detect values with the pattern of `{some-number}`, like `{0}`
+  (value): value is string => /{\d}/.test(value), {
+  translate(...args) {
+    return args.reduce(
+      // Index of an argument corresponds with its position in the interpolated string
+      (val, arg, index) => val.replace(`{${index}}`, arg),
+
+      // Note: currently processed value from context,
+      // equal to this.doc[this.key]
+      this.value
+    );
+  }
+});
+
+const t = createTranslator(getDocument, [InterpolationPlugin]);
+
+t('key', 'Is', 'custom', ' even possible?');
+// Is interpolated value with custom syntax even possible?
+t('key', 'Some cool', 'custom', '!');
+// Some cool interpolated value with custom syntax!
+```
+
 #### Using other plugins
 
 The context allows to use other plugins freely: get their information,
@@ -268,8 +302,111 @@ const t = createTranslator(getDocument, [
 
 ## Advanced type-checking
 
+All of the features described above provide the functionality to the plugins,
+making them work and allowing to extend the features of `intl-schematic` almost infinitely.\
+However, this is not enough for typescript to provide helpful type-hints when using the library.
+
+In order to help typescript infer as much information about the plugins that are used for a specific key,
+`intl-schematic` provides 2 main ways to define the needed types both declaratively and imperatively.
+
 ### `match` type-guards
+
+The [`match`](#match) function is typed to require
+having a [type predicate](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates)
+in its return type, disallowing simple `boolean` values entirely.\
+This is needed to enable compile-time type-matching for the keys,
+which allows typescript to determine which plugin is the closest match for the specific key.
+
+While the type predicate can match against something generic, like `Record<string, any>`,
+it can also be used to require a very specific signature for the value to be matched against.
+
+> See [the processors plugin](./processors/src/index.ts#L51) match function for a comprehensive example.
+
+In other words, the closer the `match` type predicate reflects
+what the `match` function actually checks for, the easier it is for typescript
+to correctly detect that the plugin is used for the specific key.
+
+*Provider* plugins (like [the locale plugin](./locale/)) usually set the `match` predicate
+to `value is never` in order to not interfere with other plugins' type matching.
 
 ### `PluginRegistry`
 
-### Generalizing translation types
+If a plugin needs type-checking and auto-complete for its translation arguments to enable a smooth developer experience,
+it can be registered in the [`PluginRegistry`](../core/src/plugins.ts#L32) interface as a [`PluginRecord`](../core/src/plugins.ts#L3).
+
+In short, the `PluginRegistry` captures all registered plugins' definitions
+to be placed in the context of the translator function invocation - `t('specific key')`,
+where additional information can be provided to the plugin:
+  - `LocaleDoc` - the current translation document;
+  - `Key` - the key currently being translated (`specific key` in the example above);
+  - `PluginInfo` - aggregator type, contains the `info` type of all matched plugins, can be used to infer the info for the specific plugin;
+  - `ContextualPlugins` - a map of all plugins used in the `t()` invocation, allows to get other plugins'
+    type information from the registry.
+
+All plugins are registered by their `name` as the key in the interface, and an object value with the following properties:
+  - `args`: a named tuple, directly used as a type for the `t()` function parameters after the key;
+    - For example, if `args` is set to `[arg1: string, arg2?: number]`, then the `t()` call will have roughly this signature:
+      `t(key: string, arg1: string, arg2?: number)`;
+  - `info`: a context-defined plugin info, see [the locale plugin](./locale/) for a simple example;
+  - `signature`: any additional contextual information to display to the developer along with typehints for `t()`, the **plugin's signature**, if you will;
+    - Might be useful for letting the developer know about some additional context for the currently selected key - information about other keys it references, for example, or its signature in the translation document.
+
+For the `InterpolationPlugin` from the [context usage example](#context-usage-example),
+a plugin registry record can look like this (very simplified "pseudocode" example):
+
+```ts
+declare module 'intl-schematic/plugins' {
+  // The signature type parameters' names must match exactly to the original signature
+  export interface PluginRegistry<
+    LocaleDoc, // Translation document
+    Key, // Currently processed key
+    PluginInfo, // Current plugin info
+    ContextualPlugins // Map of all plugins, same as used in the `this` context
+  > {
+    // Plugin's name must match the `name` property of the plugin exactly
+    InterpolationPlugin: {
+      // Here we extract the numbers in curly braces - `/{\d+}/` - from the value
+      args: LocaleDoc[Key] extends infer Value
+        ? Value extends `${string}{${number}}${string}`
+          ? Value extends `${string}{${infer Indecies}}${string}`
+            // and create a string tuple with the length corresponding to those numbers.
+            ? (string[] & { length: Indecies })
+            // If the amount isn't detected, simply give unlimited arguments
+            : string[]
+          : string[]
+        // If the pattern isn't detected - simply allow anything,
+        // because the plugin won't match anyway
+        : unknown[];
+    };
+  }
+}
+
+// Now we have type hints
+t('key', '0', '1', '2', '3') // TS Error: Expected 1-4 arguments, but got 5.
+```
+
+For a simple working example see [the nested plugin](./nested/src/index.ts).\
+For more advanced examples see [the processors plugin](./processors/src/index.ts)
+or [the arrays plugin](./arrays/src/index.ts) - which automaticaly infers
+referenced keys' plugin types using the `PluginRegistry`.
+
+Notice how in all examples, all types in the `PluginRegistry` are written in-line, without wrapping them in helper/utility types or interfaces.\
+This is done in order for typescript to correctly simplify the types before showing them to the developer, which makes type hints a lot more useful, as instead of displaying something like\
+`type number is not assignable to type KeyParameterType<{ ... }, 'some key', { some: string }>`,\
+it instead simply shows\
+`type number is not assignable to type string`.
+
+#### Registry utility API
+
+When registering a plugin in the `PluginRegistry`, there might be a need
+to quickly get information about other plugins or use some handy utility types.\
+The `intl-schematic/plugins` module provides several utility types just for this:
+- `GetPluginNameFromContext<LocaleDoc, Key, ContextualPlugins>`
+  - Allows to detect and get the plugin name for a specific key in the translation document;
+- `KeysOfType<Object, ValueType>`
+  - Extracts from an object all keys that have values matching the `ValueType`,
+    allows to detect any key that would yield `true` for a specific plugin's `match` function;
+- `PluginInterface<LocaleDoc, Key, PluginName>`
+  - Constructs the interface for a plugin with name `PluginName` that would be used when processing the specific `Key`;
+- `PluginRecord<Args, Info, Signature>`
+  - Mainly used to quickly infer some information about the plugin without rewriting its structure in the types.
