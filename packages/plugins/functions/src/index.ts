@@ -1,9 +1,9 @@
 import { createPlugin } from 'intl-schematic/plugins';
 
 declare module 'intl-schematic/plugins' {
-  export interface PluginRegistry<Locale, Key> {
+  export interface PluginRegistry<LocaleDoc, Key> {
     Functions: {
-      args: Locale[Key] extends (...args: infer Args) => string ? Args : [];
+      args: LocaleDoc[Key] extends (...args: infer Args) => string ? Args : [];
     };
   }
 }

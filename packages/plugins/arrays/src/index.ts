@@ -2,17 +2,17 @@ import { LocaleKey } from 'intl-schematic';
 import { createPlugin } from 'intl-schematic/plugins';
 
 declare module 'intl-schematic/plugins' {
-  export interface PluginRegistry<Locale, Key, PluginInfo, ContextualPlugins> {
+  export interface PluginRegistry<LocaleDoc, Key, PluginInfo, ContextualPlugins> {
     ArraysPlugin: {
       // Any attempt to externalize these types leads to a rat race between a type simplifier and a type inferer
       args: [
-        references: keyof Exclude<Locale[Key][number], string> extends infer Keys
-          ? Keys extends LocaleKey<Locale>
+        references: keyof Exclude<LocaleDoc[Key][number], string> extends infer Keys
+          ? Keys extends LocaleKey<LocaleDoc>
             ? {
               [key in Keys]:
-                GetPluginNameFromContext<Locale, key, ContextualPlugins> extends infer PluginName
+                GetPluginNameFromContext<LocaleDoc, key, ContextualPlugins> extends infer PluginName
                   ? PluginName extends keyof PluginRegistry
-                    ? PluginRegistry<Locale, key,
+                    ? PluginRegistry<LocaleDoc, key,
                         ContextualPlugins[PluginName]['info'],
                         ContextualPlugins
                       >[PluginName] extends PluginRecord<infer Args>
@@ -23,10 +23,10 @@ declare module 'intl-schematic/plugins' {
             } : {
               // In case references for the key weren't recognized,
               // iterate show user all locale keys' parameter types as options
-              [key in LocaleKey<Locale>]?:
-                GetPluginNameFromContext<Locale, key, ContextualPlugins> extends infer PluginName
+              [key in LocaleKey<LocaleDoc>]?:
+                GetPluginNameFromContext<LocaleDoc, key, ContextualPlugins> extends infer PluginName
                   ? PluginName extends keyof PluginRegistry
-                    ? PluginRegistry<Locale, key,
+                    ? PluginRegistry<LocaleDoc, key,
                         ContextualPlugins[PluginName]['info'],
                         ContextualPlugins
                       >[PluginName] extends PluginRecord<infer Args>
@@ -42,17 +42,17 @@ declare module 'intl-schematic/plugins' {
       // Extracts referenced keys from arrays and detects their processors and signatures
       // to display them to the user
       signature: {
-        [key in keyof Exclude<Locale[Key][number], string> & LocaleKey<Locale>]:
-          GetPluginNameFromContext<Locale, key, ContextualPlugins> extends infer PluginName
+        [key in keyof Exclude<LocaleDoc[Key][number], string> & LocaleKey<LocaleDoc>]:
+          GetPluginNameFromContext<LocaleDoc, key, ContextualPlugins> extends infer PluginName
             ? PluginName extends keyof PluginRegistry
-              ? PluginRegistry<Locale, key,
+              ? PluginRegistry<LocaleDoc, key,
                   ContextualPlugins[PluginName]['info'],
                   ContextualPlugins
                 >[PluginName] extends PluginRecord<any, any, infer Signature>
                   ? [PluginName, Signature]
                   : PluginName
               : PluginName
-            : Locale[key];
+            : LocaleDoc[key];
       };
     };
   }

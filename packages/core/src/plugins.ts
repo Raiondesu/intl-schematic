@@ -30,8 +30,8 @@ export interface PluginRecord<
  * tracks all plugins included throughout the project to simplify type-checking
  */
 export interface PluginRegistry<
-  Locale extends Record<string, any> = Record<string, any>,
-  Key extends LocaleKey<Locale> = LocaleKey<Locale>,
+  LocaleDoc extends Record<string, any> = Record<string, any>,
+  Key extends LocaleKey<LocaleDoc> = LocaleKey<LocaleDoc>,
   PluginInfo = unknown,
   ContextualPlugins extends Record<keyof PluginRegistry, Plugin> = Record<string, Plugin>
 > {

@@ -5,25 +5,25 @@ import type {} from '@intl-schematic/plugin-locale';
 import { InputObject, ParameterObject, Processor, Processors, getLocalizedProcessors } from './plugin-core';
 
 declare module 'intl-schematic/plugins' {
-  export interface PluginRegistry<Locale, Key, PluginInfo> {
+  export interface PluginRegistry<LocaleDoc, Key, PluginInfo> {
     ProcessorsPlugin: {
       // Any attempt to externalize these types leads to a rat race between a type simplifier and a type inferer
       args: PluginInfo extends Processors
-        ? 'processor' extends keyof Locale[Key]
+        ? 'processor' extends keyof LocaleDoc[Key]
           // legacy format
           ? { [key in keyof PluginInfo]: PluginInfo[key] extends Processor<infer Input, infer Param>
               ? [input: Input, parameter?: Param] : never;
-            }[Extract<keyof PluginInfo, keyof Locale[Key]['processor']>]
+            }[Extract<keyof PluginInfo, keyof LocaleDoc[Key]['processor']>]
           // new format
           : { [key in keyof PluginInfo]: PluginInfo[key] extends Processor<infer Input, infer Param>
               ? [input: Input, parameter?: Param] : never;
-            }[Extract<keyof PluginInfo, keyof Locale[Key]>]
+            }[Extract<keyof PluginInfo, keyof LocaleDoc[Key]>]
         : [input?: unknown, parameter?: unknown];
 
       info: Processors;
 
       // Extracts a processor and a parameter from a translation key to display
-      signature: Locale[Key];
+      signature: LocaleDoc[Key];
     };
   }
 }
@@ -47,7 +47,9 @@ export const ProcessorsPlugin = <P extends Processors>(processors: P) => {
   const localizedProcessorsByLocale: Record<string, Record<string, ReturnType<Processor>>> = {};
 
   return createPlugin('ProcessorsPlugin',
-    function isParametrized(value: unknown): value is ParametrizedTranslationRecord<Extract<keyof P, string>> | LegacyParametrizedTranslationRecord {
+    function isParametrized(value: unknown):
+      value is ParametrizedTranslationRecord<Extract<keyof P, string>> | LegacyParametrizedTranslationRecord
+    {
       if (typeof value !== 'object' || value == null) {
         return false;
       }
