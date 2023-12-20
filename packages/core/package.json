@@ -9,6 +9,7 @@
   "module": "dist/index.js",
   "main": "dist/index.cjs",
   "types": "src/index",
+  "esnext": "src/index",
   "scripts": {
     "build:schema": "node ./generate-schema.js",
     "dev": "tsc --noEmit -w",

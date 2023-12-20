@@ -8,6 +8,7 @@
   "main": "dist/index",
   "module": "dist/index",
   "types": "src/index",
+  "esnext": "src/index",
   "type": "module",
   "exports": {
     ".": {

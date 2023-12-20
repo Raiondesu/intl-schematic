@@ -1,14 +1,14 @@
 # `@intl-schematic/plugin-processors`<!-- omit from toc -->
 
-Adds the ability to use custom processors for records in translation documents.
+Adds the ability to use custom processors for properties in translation documents.
 
 `npm i -s @intl-schematic/plugin-processors @intl-schematic/plugin-locale`
 
 - [Usage](#usage)
   - [Define a translation document factory](#define-a-translation-document-factory)
   - [Create a translator function (`t()`)](#create-a-translator-function-t)
-  - [Use the translator function](#use-a-translator-function)
-  - [Document record format](#document-record-format)
+  - [Use the translator function](#use-the-translator-function)
+  - [Document property format](#document-property-format)
 - [Processors](#processors)
 - [Processor API](#processor-api)
 
@@ -102,13 +102,13 @@ t('price', 42, { lol: 'kek' });
 t('birthday');
 ```
 
-### Document record format
+### Document property format
 
 In order to apply a processor to a specific key in a document,
 its value must be in the following format:
 
 ```ts
-interface ProcessedRecord {
+interface ProcessedProperty {
   [processorName: string]: unknown; // Processor parameter here
   input: unknown; // This value will be used as a fallback parameter
 }
@@ -188,7 +188,7 @@ to format any number passed as a second argument to translator function;
     }
     ```
 
-- `dictionary` - allows to use the translation record as a dictionary, simplified variant of the [`nested` plugin](/packages/plugins/nested/), but with a depth level of 1 and ability to define a fallback in case of a wrong key.
+- `dictionary` - allows to use the translation property as a dictionary, simplified variant of the [`nested` plugin](/packages/plugins/nested/), but with a depth level of 1 and ability to define a fallback in case of a wrong key.
   - example:
     ```ts
     const doc = {
@@ -232,7 +232,7 @@ There are two main types that govern a processor's behavior:
     a fallback can be defined in the translation document\
     in case the user accidentally provides `undefined` or `null`
 
-When defining a record in the translation document, simply use an objecto to define the value.
+When defining a property in the translation document, simply use an object to define the value.
 In this object both types can be supplied via different keys:
 `ProcessorParameter` is supplied to the key with the name of the processor,
 while `ProcessorInput` is supplied to the `input` key.
