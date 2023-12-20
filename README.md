@@ -44,7 +44,7 @@ console.log(t('hello')); // `Hello, World!`
 - 🦺 **Full type-safety**: full autocomplete on translation keys, typed translation parameters and more;
 - 🎄 **Tree-shakable**: only take what you need;
 - 🔌 **Pluginable**: extend any processing step without limits - see the [plugins API](/packages/plugins/) for more;
-- 📃 **JSON-validation using a JSON-schema**: intellisense and popup hints right in the translation document;
+- 📃 **JSON-validation using a [JSON-schema](/packages/core/README.md#using-with-json-schema)**: intellisense and popup hints right in the translation document;
 - 🧵 **Dynamic strings with custom pre-processors**: write custom translation logic right in JSON;
 - 📑 **Reference translation keys inside of other translation keys**: all with JSON-compatible syntax;
 - 🚫 **No string-interpolation**: translation strings will never be processed or mangled by-default, so all unicode symbols are safe to use;

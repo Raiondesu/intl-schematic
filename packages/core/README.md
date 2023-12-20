@@ -16,7 +16,7 @@ that allows to localize and format strings with infinitely expandable functional
 - 🦺 **Full type-safety**: full autocomplete on translation keys, typed translation parameters and more;
 - 🎄 **Tree-shakable**: only take what you need;
 - 🔌 **Pluginable**: extend any processing step without limits - see the [plugins API](/packages/plugins/) for more;
-- 📃 **JSON-validation using a JSON-schema**: intellisense and popup hints right in the translation document;
+- 📃 **JSON-validation using a [JSON-schema](#using-with-json-schema)**: intellisense and popup hints right in the translation document;
 - 🚫 **No string-interpolation**: translation strings will never be processed or mangled by-default, so all unicode symbols are safe to use;
 
 ## Table of contents<!-- omit from toc -->
@@ -30,6 +30,7 @@ that allows to localize and format strings with infinitely expandable functional
 - [Plugins](#plugins)
   - [List](#list)
   - [Add default plugins and processors](#add-default-plugins-and-processors)
+- [Using with JSON-schema](#using-with-json-schema)
 
 
 ## Basic Usage
@@ -137,7 +138,7 @@ If you want an integration for your favorite framework, feel free to contibute o
 
 This is by far the main strength of the library.
 
-Translating keys relies on simple key-value lookup, and most libraries
+Translating keys relies on simple key-value lookup, and most i18n libraries
 add many unnecessary features on top of this primitive functionality.
 
 `intl-schematic` instead provides a way to extend both its functionality and type definitions in a comprehensive enough way,
@@ -202,3 +203,60 @@ const t = createTranslator(getDocument, defaultPlugins(
 
 console.log(t('price', 123)); // "$123"
 ```
+
+## Using with JSON-schema
+
+`intl-schematic`, as well as its plugins, defines a JSON-schema API designed specifically to allow type-checking JSON translation documents.
+
+To define a JSON-schema for your translation documents, simply create a `.schema.json` file with this template:
+```json
+// translation.schema.json
+{
+  "$ref": "./node_modules/intl-schematic/translation.schema.json",
+  "additionalProperties": {
+    "anyOf": [
+      // Definition for the default string key-value pair
+      {
+        "$ref": "./node_modules/intl-schematic/property.schema.json",
+      }
+      // Add references to more allowed types for your schema
+      /* for example, @intl-schematic/plugin-processors definition:
+      {
+        "$ref": "./node_modules/@intl-schematic/plugin-processors/property.schema.json"
+      }
+      */
+    ]
+  }
+}
+```
+
+And then use it in your translation document:
+
+```json
+// en.json
+{
+  // Path to the schema from the example above
+  "$schema": "./translation.schema.json",
+  "key": "Translation"
+}
+```
+
+```js
+import translation from './en.json';
+
+const t = createTranslator(() => translation);
+
+// Etc., see example at the start of this file
+```
+
+> Note: the `$schema` key will be automatically excluded\
+> from type hints for `t()` for your convenience!
+
+### Plugins that define a `property.schema.json`
+
+Not all plugins have a `property.schema.json` file, not all of them need to.\
+Here's a list of the ones that do:
+- [`@intl-schematic/plugin-arrays`](/packages/plugins/arrays/) (included in **defaults**)
+  - use arrays to cross-reference keys and define complex multiline texts
+- [`@intl-schematic/plugin-processors`](/packages/plugins/processors/) (included in **defaults**)
+  - apply custom and default processors to format the user inputs
