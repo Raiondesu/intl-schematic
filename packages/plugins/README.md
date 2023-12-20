@@ -211,7 +211,7 @@ If `undefined` is returned, other matched plugins will be applied to the string
 This context allows plugins to exchange information
 and invoke the translation function recursively on different keys.
 
-For example, if a plugin knows it's matched value contains a reference to another key,
+For example, if a plugin knows its matched value contains a reference to another key,
 it can call `this.translate(referencedKey, ...neededArgs)`
 to start the translation process for the referenced key and get a string to return.
 
