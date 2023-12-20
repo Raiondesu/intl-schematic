@@ -1,4 +1,4 @@
-import { defineConfig } from 'tsup';
+import { defineConfig, Options } from 'tsup';
 import { readdir, readFile, writeFile } from 'fs/promises';
 import { existsSync } from 'fs';
 import { cyan, bold, yellow, green } from 'colorette';
@@ -45,17 +45,19 @@ export default defineConfig(() => Promise.all(entries.map(async entry => {
 
   return ({
     entry: [entry],
+    clean: true,
     outDir: entry.replace('src', 'dist'),
     format: ['cjs' as const, 'esm' as const],
     metafile: true,
     splitting: false,
+    target: 'es2020',
     platform: 'neutral' as const,
     tsconfig: entry.replace('src', 'tsconfig.json'),
-    external: dependencies,
-    clean: true,
+
+    skipNodeModulesBundle: true,
+    // external: dependencies,
 
     async onSuccess() {
-
       const outputs = (await readdir(cwd('./dist'), { recursive: true }))
         .map(p => p.replace('\\', '/'))
         .filter(o => /\.js$/.test(o));
@@ -90,8 +92,5 @@ export default defineConfig(() => Promise.all(entries.map(async entry => {
 
       await writeFile(cwd('./package.json'), JSON.stringify(packageInfo, null, 2));
     },
-    // banner: {
-    //   js: `/*\n${readFileSync('./LICENSE').toString('utf-8')}*/`
-    // }
-  });
+  } satisfies Options);
 })));

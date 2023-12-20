@@ -66,7 +66,11 @@ function createTranslator(getLocaleDocument, plugins) {
       function translateFromContext(subkey, ...args2) {
         return translate.call({
           plugins: subkey !== key ? contextPlugins : contextPlugins?.slice(index),
-          pluginContext: createdContext
+          pluginContext: {
+            ...createdContext,
+            key: subkey,
+            value: doc2[subkey]
+          }
         }, subkey, ...args2);
       }
       function createPluginInterface(pt) {

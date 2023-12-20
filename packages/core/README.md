@@ -8,7 +8,7 @@
 
 <p align="center">
 
-A tiny framework-agnostic i18n library (1kb, zero-dependency)
+A tiny framework-agnostic i18n library (1kb gzip, zero-dependency)
 that allows to localize and format strings with infinitely expandable functionality.
 
 </p>

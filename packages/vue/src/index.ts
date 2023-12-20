@@ -1,4 +1,4 @@
-import { ref, computed, Ref, watch } from 'vue';
+import { ref, Ref, watch } from 'vue';
 import { createTranslator } from 'intl-schematic';
 import { Plugin } from 'intl-schematic/plugins';
 
