@@ -24,6 +24,7 @@
   },
   "packageManager": "npm@10.1.0",
   "devDependencies": {
+    "@types/node": "^20.10.5",
     "colorette": "^2.0.20",
     "cross-env": "^7.0.3",
     "fdir": "^6.1.1",

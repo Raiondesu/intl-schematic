@@ -74,7 +74,7 @@ export default defineConfig(() => Promise.all(entries.map(async entry => {
           require: './dist/' + path.replace('.js', '.cjs'),
           types: './src/' + path.replace('.js', '.ts')
         }
-      }), {});
+      }), {} as Record<string, Record<string, string>>);
 
       console.log(pathsLog);
       JSON.stringify(exportPaths, null, 2)
@@ -87,10 +87,10 @@ export default defineConfig(() => Promise.all(entries.map(async entry => {
         '*': Object.keys(exportPaths).reduce((obj, p) => ({
           ...obj,
           [p.replace('./', '')]: [exportPaths[p].types],
-        }), {}),
+        }), {} as Record<string, string[]>),
       };
 
-      await writeFile(cwd('./package.json'), JSON.stringify(packageInfo, null, 2));
+      await writeFile(cwd('./package.json'), JSON.stringify(packageInfo, null, 2) + '\n');
     },
   } satisfies Options);
 })));
