@@ -108,9 +108,7 @@
     "major": "npm version major"
   },
   "peerDependencies": {
-    "intl-schematic": "*"
-  },
-  "dependencies": {
+    "intl-schematic": "*",
     "@intl-schematic/plugin-locale": "*"
   },
   "devDependencies": {
