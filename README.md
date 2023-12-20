@@ -46,7 +46,6 @@ I've grown frustrated with current implementations of popular l10n/i18n librarie
 
 This library will try to avoid these common pitfalls, while retaining a small size and good performance.
 
-
 ## No-goals
 
 This library will **not** support:
@@ -66,6 +65,7 @@ with the main package being, of course, [`intl-schematic`](/packages/core/).
 Full list of packages at the moment:
 - [`intl-schematic`](/packages/core/) - main package
 - [`@intl-schematic/solid`](/packages/solid/) - reactive adapter for [`solid-js`](https://www.solidjs.com)
+- [`@intl-schematic/vue`](/packages/vue/) (WIP) - reactive adapter for [`vue`](https://vuejs.org)
 - [Plugins](/packages/plugins/) - allow using custom formats in translation documents - not just strings:
   - [`@intl-schematic/plugin-defaults`](/packages/plugins/defaults/)
     - recommended collection of plugins that should be useful to most applications
