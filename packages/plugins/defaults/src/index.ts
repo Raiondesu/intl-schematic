@@ -1,6 +1,5 @@
 import { LocaleProviderPlugin } from '@intl-schematic/plugin-locale';
 import { ArraysPlugin } from '@intl-schematic/plugin-arrays';
-import { defaultProcessors } from '@intl-schematic/plugin-processors/default';
 import { Processors, ProcessorsPlugin } from '@intl-schematic/plugin-processors';
 import { Plugin } from 'intl-schematic/plugins';
 
@@ -12,7 +11,7 @@ import { Plugin } from 'intl-schematic/plugins';
  * - Process translation keys with custom processors
  * - Join and cross-reference translation records using arrays and object
  */
-export const defaultPlugins = <P extends Processors = typeof defaultProcessors>(
+export const defaultPlugins = <P extends Processors>(
   currentLocale: () => Intl.Locale | undefined,
   processors: P,
   arraysDelimiter = ' '
