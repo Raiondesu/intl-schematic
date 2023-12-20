@@ -8,7 +8,8 @@
 
 <p align="center">
 
-A tiny library (1kb, zero-dependency) that allows to localize and format strings with infinitely expandable functionality.
+A tiny framework-agnostic i18n library (1kb, zero-dependency)
+that allows to localize and format strings with infinitely expandable functionality.
 
 </p>
 
@@ -20,16 +21,18 @@ A tiny library (1kb, zero-dependency) that allows to localize and format strings
 
 ## Table of contents<!-- omit from toc -->
 
-- [Usage](#usage)
+- [Basic Usage](#basic-usage)
   - [Define a translation document factory](#define-a-translation-document-factory)
   - [Create a translator function (`t()`)](#create-a-translator-function-t)
   - [Use the translator function](#use-the-translator-function)
+- [Using with reactive frameworks](#using-with-reactive-frameworks)
+  - [Current framework integrations](#current-framework-integrations)
 - [Plugins](#plugins)
   - [List](#list)
   - [Add default plugins and processors](#add-default-plugins-and-processors)
 
 
-## Usage
+## Basic Usage
 
 See a simplified example below and don't be afraid to take a look into the sources to find out more.
 
@@ -63,6 +66,72 @@ const t = createTranslator(getDocument, [
 ```js
 console.log(t('hello')); // `Hello, World!`
 ```
+
+## Using with reactive frameworks
+
+Many other i18n libraries require deep integration into a specific UI-framework.\
+This, however, is not the case with `intl-schematic`, due to its framework-agnostic and isomorphic architecture.
+
+The only requirement to make it behave "natively" for a certain framework,
+is to simply add a reactive dependency to a closure of `getLocaleDocument` function (the first argument of `createTranslator`).
+
+Here's an example in a "reactive pseudocode":
+
+```tsx
+// Define a reactive variable;
+// Solid
+const userLocale = createSignal(new Intl.Locale('en'));
+// Vue
+const userLocale = ref(new Intl.Locale('en'));
+
+const fetchDocument = () => {
+  // Somehow get a value from the reactive variable
+  const language = get(userLocale).language;
+  // Suppose you have a translation document in the `locales` folder
+  return import(`/locales/${language}.json`);
+};
+
+// Create a reactive variable for a translation document
+const currentDocument = createSignal();
+
+// Then, in a reactive context (like a UI component)
+const t = createTranslator(
+  // If this function is invoked in a reactive context,
+  // the framework will most likely track this as a reactive dependency
+  () => get(currentDocument)
+);
+
+// useEffect/watch/computed
+createEffect(() => {
+  // Since calling `fetchDocument`
+  // involves getting a value from a reactive variable,
+  // this is tracked as a reactive dependency and will re-run accordingly
+  fetchDocument()
+    .then(newDocument => set(currentDocument, newDocument));
+});
+
+<p>{t('some key')}</p> // Some text
+
+// Then change the locale
+set(userLocale, new Intl.Locale('es'));
+
+// The text re-renders automatically once the new translation document is fetched
+<p>{t('some key')}</p> // Algún texto
+```
+
+Even though something like this is fairly trivial to implement,
+given a basic knowledge of any specific UI-framework,
+`intl-schematic` still offers some "in-house"-made integrations:
+
+### Current framework integrations
+
+- [`@intl-schematic/solid`](/packages/solid/) - reactive adapter for [`solid-js`](https://www.solidjs.com)
+  - Creates a reactive [resource](https://www.solidjs.com/docs/latest/api#createresource)
+    with the locale document and user's locale
+    that is then passed in a closure to `intl-schematic` and user-defined plugins
+- [`@intl-schematic/vue`](/pacakges/vue/) - Work in progress
+
+If you want an integration for your favorite framework, feel free to contibute or [create an issue](https://github.com/Raiondesu/intl-schematic/issues/new)!
 
 ## Plugins
 
