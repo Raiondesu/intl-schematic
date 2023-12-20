@@ -15,6 +15,7 @@ that allows to localize and format strings with infinitely expandable functional
 
 - 🦺 **Full type-safety**: full autocomplete on translation keys, typed translation parameters and more;
 - 🎄 **Tree-shakable**: only take what you need;
+- 🧩 **Easily integrates with UI-frameworks**: we don't play favorites here - [every framework can use this](#using-with-reactive-frameworks);
 - 🔌 **Pluginable**: extend any processing step without limits - see the [plugins API](/packages/plugins/) for more;
 - 📃 **JSON-validation using a [JSON-schema](#using-with-json-schema)**: intellisense and popup hints right in the translation document;
 - 🚫 **No string-interpolation**: translation strings will never be processed or mangled by-default, so all unicode symbols are safe to use;
