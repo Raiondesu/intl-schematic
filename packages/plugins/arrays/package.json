@@ -9,6 +9,7 @@
   "module": "dist/index",
   "types": "src/index",
   "esnext": "src/index",
+  "sideEffects": false,
   "type": "module",
   "scripts": {
     "dev": "tsc --noEmit -w",
