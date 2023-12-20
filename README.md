@@ -55,7 +55,7 @@ the library by-itself does not and will not do any processing on the strings.
 
 ## Contributing
 
-To contribute, create a branch and make a PR to `dev`, or [create an issue](https://github.com/Raiondesu/intl-schematic/issues/new).
+To contribute, create a branch and make a PR to `main`, or [create an issue](https://github.com/Raiondesu/intl-schematic/issues/new).
 
 ### Packages
 
@@ -106,8 +106,7 @@ to rebuild any changed packages.
 In order to evaluate and test the newest version that is yet to be released on npm, simply install from github:
 
 ```
-# you can set either main or dev branch at the end
-npm install 'https://gitpkg.now.sh/Raiondesu/intl-schematic/packages/core?dev'
+npm install 'https://gitpkg.now.sh/Raiondesu/intl-schematic/packages/core?main'
 ```
 
 > ⚠ **Nightly builds are unstable and may be broken** ⚠
