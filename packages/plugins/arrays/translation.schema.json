@@ -1,0 +1,34 @@
+{
+    "title": "Array translation record",
+    "description": "This record simply allows to get the value string by the key, value can be an array to help break one-line texts in multiple lines for readability or to reference other translation records by their keys",
+    "type": ["array"],
+    "items": {
+        "anyOf": [{
+            "title": "Reference to an argument of another record processed by a plugin (parametrized translation record)",
+            "description": "Value must refer to a record that is already referenced in this array",
+            "type": "string",
+            "pattern": "\\d+:.+"
+        }, {
+            "title": "A single part of a plain-string translation record",
+            "description": "Can be a reference key of another translation record",
+            "type": "string"
+        }, {
+            "title": "A reference to a parametrized translation record",
+            "description": "Inserts the parametrized value into the string, provide an object with key that references the record and a value to serve as parameters if applicable. If the key doesn't reference a parametrized record, simply leave the array empty - [].",
+            "type": "object",
+            "patternProperties": {
+                "^.+$": {
+                    "title": "A reference to a parametrized translation record",
+                    "type": "array"
+                }
+            },
+            "maxProperties": 1,
+            "minProperties": 1
+        }]
+    },
+    "examples": [
+        "Translated text",
+        ["Long", "translated", "text"],
+        ["Long", "translated", "text with", { "keys/reference-multiple": [] }, "to other translation records"]
+    ]
+}

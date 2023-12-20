@@ -1,0 +1,327 @@
+{
+	"definitions": {
+		"Intl.DateTimeFormatOptions": {
+			"additionalProperties": false,
+			"properties": {
+				"day": {
+					"enum": [
+						"numeric",
+						"2-digit"
+					],
+					"type": "string"
+				},
+				"era": {
+					"enum": [
+						"long",
+						"short",
+						"narrow"
+					],
+					"type": "string"
+				},
+				"formatMatcher": {
+					"enum": [
+						"best fit",
+						"basic"
+					],
+					"type": "string"
+				},
+				"hour": {
+					"enum": [
+						"numeric",
+						"2-digit"
+					],
+					"type": "string"
+				},
+				"hour12": {
+					"type": "boolean"
+				},
+				"localeMatcher": {
+					"enum": [
+						"best fit",
+						"lookup"
+					],
+					"type": "string"
+				},
+				"minute": {
+					"enum": [
+						"numeric",
+						"2-digit"
+					],
+					"type": "string"
+				},
+				"month": {
+					"enum": [
+						"numeric",
+						"2-digit",
+						"long",
+						"short",
+						"narrow"
+					],
+					"type": "string"
+				},
+				"second": {
+					"enum": [
+						"numeric",
+						"2-digit"
+					],
+					"type": "string"
+				},
+				"timeZone": {
+					"type": "string"
+				},
+				"timeZoneName": {
+					"enum": [
+						"short",
+						"long",
+						"shortOffset",
+						"longOffset",
+						"shortGeneric",
+						"longGeneric"
+					],
+					"type": "string"
+				},
+				"weekday": {
+					"enum": [
+						"long",
+						"short",
+						"narrow"
+					],
+					"type": "string"
+				},
+				"year": {
+					"enum": [
+						"numeric",
+						"2-digit"
+					],
+					"type": "string"
+				}
+			},
+			"type": "object"
+		},
+		"Intl.DisplayNamesFallback": {
+			"enum": [
+				"code",
+				"none"
+			],
+			"type": "string"
+		},
+		"Intl.DisplayNamesLanguageDisplay": {
+			"enum": [
+				"dialect",
+				"standard"
+			],
+			"type": "string"
+		},
+		"Intl.DisplayNamesOptions": {
+			"additionalProperties": false,
+			"properties": {
+				"fallback": {
+					"$ref": "#/definitions/Intl.DisplayNamesFallback"
+				},
+				"languageDisplay": {
+					"$ref": "#/definitions/Intl.DisplayNamesLanguageDisplay"
+				},
+				"localeMatcher": {
+					"$ref": "#/definitions/Intl.RelativeTimeFormatLocaleMatcher"
+				},
+				"style": {
+					"$ref": "#/definitions/Intl.RelativeTimeFormatStyle"
+				},
+				"type": {
+					"$ref": "#/definitions/Intl.DisplayNamesType"
+				}
+			},
+			"required": [
+				"type"
+			],
+			"type": "object"
+		},
+		"Intl.DisplayNamesType": {
+			"enum": [
+				"language",
+				"region",
+				"script",
+				"calendar",
+				"dateTimeField",
+				"currency"
+			],
+			"type": "string"
+		},
+		"Intl.NumberFormatOptions": {
+			"additionalProperties": false,
+			"properties": {
+				"currency": {
+					"type": "string"
+				},
+				"currencySign": {
+					"type": "string"
+				},
+				"localeMatcher": {
+					"type": "string"
+				},
+				"maximumFractionDigits": {
+					"type": "number"
+				},
+				"maximumSignificantDigits": {
+					"type": "number"
+				},
+				"minimumFractionDigits": {
+					"type": "number"
+				},
+				"minimumIntegerDigits": {
+					"type": "number"
+				},
+				"minimumSignificantDigits": {
+					"type": "number"
+				},
+				"style": {
+					"type": "string"
+				},
+				"useGrouping": {
+					"type": "boolean"
+				}
+			},
+			"type": "object"
+		},
+		"Intl.RelativeTimeFormatLocaleMatcher": {
+			"enum": [
+				"lookup",
+				"best fit"
+			],
+			"type": "string"
+		},
+		"Intl.RelativeTimeFormatStyle": {
+			"enum": [
+				"long",
+				"short",
+				"narrow"
+			],
+			"type": "string"
+		},
+		"PluralOptions": {
+			"additionalProperties": false,
+			"properties": {
+				"few": {
+					"type": "string"
+				},
+				"many": {
+					"type": "string"
+				},
+				"one": {
+					"type": "string"
+				},
+				"other": {
+					"type": "string"
+				},
+				"two": {
+					"type": "string"
+				},
+				"zero": {
+					"type": "string"
+				}
+			},
+			"required": [
+				"zero",
+				"one",
+				"two",
+				"few",
+				"many",
+				"other"
+			],
+			"type": "object"
+		}
+	},
+	"title": "Proccessed translation record",
+	"description": "Allows to apply different pre-set functions - processors - to an input value with an object parameter before returning a localized string",
+	"type": "object",
+	"additionalProperties": false,
+	"minProperties": 1,
+	"maxProperties": 2,
+	"patternProperties": {
+		"^.+$": {
+			"title": "Parameter object for the processor",
+			"description": "Parameter to pass into the processor function before passing in the input. the key that this object is set to is the name of the processor to be applied",
+			"items": {
+				"title": "A value in the parameter array"
+			},
+			"patternProperties": {
+				"^.*$": {
+					"title": "A key-value in the parameter object"
+				}
+			}
+		}
+	},
+	"properties": {
+		"input": {
+			"title": "Processor Input",
+			"description": "The input arguments to a translation function in the format of 'name': 'default-value'. Provide a default input value for each key.",
+			"items": {
+				"title": "A value in the input array"
+			},
+			"patternProperties": {
+				"^.*$": {
+					"description": "A key in the input object, value is used as a default",
+					"type": [
+						"array",
+						"boolean",
+						"integer",
+						"null",
+						"number",
+						"object",
+						"string"
+					]
+				}
+			}
+		},
+        "number": {
+			"title": "Process this key's input value with Intl.NumberFormat",
+			"description": "Define Intl.NumberFormatOptions in the value to set formatting rules for the input value.",
+			"additionalProperties": false,
+			"type": "object",
+			"$ref": "#/definitions/Intl.NumberFormatOptions"
+        },
+		"intl/number": {
+            "$ref": "#/properties/number"
+		},
+        "date": {
+			"title": "Process this key's input value with Intl.DateTimeFormat",
+			"description": "Define Intl.DateTimeFormatOptions in the value to set formatting rules for the input value.",
+			"additionalProperties": false,
+			"type": "object",
+			"$ref": "#/definitions/Intl.DateTimeFormatOptions"
+        },
+        "intl/date": {
+            "$ref": "#/properties/date"
+        },
+        "plural": {
+			"title": "Process this key's input value with Intl.PluralRules",
+			"description": "Define a map of the `.select()` method results (`few`, `many`, etc.) to translations of the pluralized word",
+			"additionalProperties": false,
+			"type": "object",
+			"$ref": "#/definitions/PluralOptions"
+        },
+        "intl/plural": {
+            "$ref": "#/properties/plural"
+        },
+        "display": {
+			"title": "Process this key's input value with Intl.DisplayNames",
+			"description": "Define Intl.DisplayNamesOptions in the value to set formatting rules for the input value.",
+			"additionalProperties": false,
+			"type": "object",
+			"$ref": "#/definitions/Intl.DisplayNamesOptions"
+        },
+        "intl/display": {
+            "$ref": "#/properties/display"
+        },
+        "dictionary": {
+			"title": "Process this key's input as a key of this object",
+			"description": "Define a dictionary of keys to translated strings.",
+			"type": "object",
+			"patternProperties": {
+                "^.*$": {
+                    "type": "string"
+                }
+            }
+        }
+	}
+}

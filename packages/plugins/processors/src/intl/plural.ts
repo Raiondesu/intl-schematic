@@ -2,7 +2,7 @@
  * ```
  * {
  *  "translation-key": {
- *    "plural": { // Intl.PluralRules options
+ *    "plural": {
  *      "one": "word",
  *      "many": "words"
  *    }
