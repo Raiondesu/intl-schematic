@@ -14,13 +14,30 @@ A tiny framework-agnostic i18n library (1-3kb, zero-dependency) that allows to l
 
 You can also install a nightly build [directly from github](#install-from-github)
 
-For simple usage examples, see the [main package readme](/packages/core/README.md)
+For more usage examples, see the [main package readme](/packages/core/README.md)
 
 [List of packages](#packages)
 
 </div>
 
 ---
+
+### Simple usage example
+
+```ts
+import { createTranslator } from 'intl-schematic';
+
+// Define a translation document factory
+const getDocument = () => ({
+  "hello": "Hello, World!"
+});
+
+// Create a translator function (`t()`)
+const t = createTranslator(getDocument);
+
+// Use the translator function
+console.log(t('hello')); // `Hello, World!`
+```
 
 ## Features
 
