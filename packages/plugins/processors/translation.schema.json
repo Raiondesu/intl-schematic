@@ -1,4 +1,97 @@
 {
+    "title": "Proccessed translation record",
+    "description": "Allows to apply different pre-set functions - processors - to an input value with an object parameter before returning a localized string",
+    "type": "object",
+    "additionalProperties": false,
+    "minProperties": 1,
+    "maxProperties": 2,
+    "patternProperties": {
+        "^.+$": {
+            "title": "Parameter object for the processor",
+            "description": "Parameter to pass into the processor function before passing in the input. the key that this object is set to is the name of the processor to be applied",
+            "items": {
+                "title": "A value in the parameter array"
+            },
+            "patternProperties": {
+                "^.*$": {
+                    "title": "A key-value in the parameter object"
+                }
+            }
+        }
+    },
+    "properties": {
+        "input": {
+            "title": "Processor Input",
+            "description": "The input arguments to a translation function in the format of 'name': 'default-value'. Provide a default input value for each key.",
+            "items": {
+                "title": "A value in the input array"
+            },
+            "patternProperties": {
+                "^.*$": {
+                    "description": "A key in the input object, value is used as a default",
+                    "type": [
+                        "array",
+                        "boolean",
+                        "integer",
+                        "null",
+                        "number",
+                        "object",
+                        "string"
+                    ]
+                }
+            }
+        },
+        "number": {
+            "title": "Process this key's input value with Intl.NumberFormat",
+            "description": "Define Intl.NumberFormatOptions in the value to set formatting rules for the input value.",
+            "additionalProperties": false,
+            "type": "object",
+            "$ref": "#/definitions/Intl.NumberFormatOptions"
+        },
+        "intl/number": {
+            "$ref": "#/properties/number"
+        },
+        "date": {
+            "title": "Process this key's input value with Intl.DateTimeFormat",
+            "description": "Define Intl.DateTimeFormatOptions in the value to set formatting rules for the input value.",
+            "additionalProperties": false,
+            "type": "object",
+            "$ref": "#/definitions/Intl.DateTimeFormatOptions"
+        },
+        "intl/date": {
+            "$ref": "#/properties/date"
+        },
+        "plural": {
+            "title": "Process this key's input value with Intl.PluralRules",
+            "description": "Define a map of the `.select()` method results (`few`, `many`, etc.) to translations of the pluralized word",
+            "additionalProperties": false,
+            "type": "object",
+            "$ref": "#/definitions/PluralOptions"
+        },
+        "intl/plural": {
+            "$ref": "#/properties/plural"
+        },
+        "display": {
+            "title": "Process this key's input value with Intl.DisplayNames",
+            "description": "Define Intl.DisplayNamesOptions in the value to set formatting rules for the input value.",
+            "additionalProperties": false,
+            "type": "object",
+            "$ref": "#/definitions/Intl.DisplayNamesOptions"
+        },
+        "intl/display": {
+            "$ref": "#/properties/display"
+        },
+        "dictionary": {
+            "title": "Process this key's input as a key of this object",
+            "description": "Define a dictionary of keys to translated strings.",
+            "type": "object",
+            "patternProperties": {
+                "^.*$": {
+                    "type": "string"
+                }
+            }
+        }
+    },
     "definitions": {
         "Intl.DateTimeFormatOptions": {
             "additionalProperties": false,
@@ -229,99 +322,6 @@
                 "other"
             ],
             "type": "object"
-        }
-    },
-    "title": "Proccessed translation record",
-    "description": "Allows to apply different pre-set functions - processors - to an input value with an object parameter before returning a localized string",
-    "type": "object",
-    "additionalProperties": false,
-    "minProperties": 1,
-    "maxProperties": 2,
-    "patternProperties": {
-        "^.+$": {
-            "title": "Parameter object for the processor",
-            "description": "Parameter to pass into the processor function before passing in the input. the key that this object is set to is the name of the processor to be applied",
-            "items": {
-                "title": "A value in the parameter array"
-            },
-            "patternProperties": {
-                "^.*$": {
-                    "title": "A key-value in the parameter object"
-                }
-            }
-        }
-    },
-    "properties": {
-        "input": {
-            "title": "Processor Input",
-            "description": "The input arguments to a translation function in the format of 'name': 'default-value'. Provide a default input value for each key.",
-            "items": {
-                "title": "A value in the input array"
-            },
-            "patternProperties": {
-                "^.*$": {
-                    "description": "A key in the input object, value is used as a default",
-                    "type": [
-                        "array",
-                        "boolean",
-                        "integer",
-                        "null",
-                        "number",
-                        "object",
-                        "string"
-                    ]
-                }
-            }
-        },
-        "number": {
-            "title": "Process this key's input value with Intl.NumberFormat",
-            "description": "Define Intl.NumberFormatOptions in the value to set formatting rules for the input value.",
-            "additionalProperties": false,
-            "type": "object",
-            "$ref": "#/definitions/Intl.NumberFormatOptions"
-        },
-        "intl/number": {
-            "$ref": "#/properties/number"
-        },
-        "date": {
-            "title": "Process this key's input value with Intl.DateTimeFormat",
-            "description": "Define Intl.DateTimeFormatOptions in the value to set formatting rules for the input value.",
-            "additionalProperties": false,
-            "type": "object",
-            "$ref": "#/definitions/Intl.DateTimeFormatOptions"
-        },
-        "intl/date": {
-            "$ref": "#/properties/date"
-        },
-        "plural": {
-            "title": "Process this key's input value with Intl.PluralRules",
-            "description": "Define a map of the `.select()` method results (`few`, `many`, etc.) to translations of the pluralized word",
-            "additionalProperties": false,
-            "type": "object",
-            "$ref": "#/definitions/PluralOptions"
-        },
-        "intl/plural": {
-            "$ref": "#/properties/plural"
-        },
-        "display": {
-            "title": "Process this key's input value with Intl.DisplayNames",
-            "description": "Define Intl.DisplayNamesOptions in the value to set formatting rules for the input value.",
-            "additionalProperties": false,
-            "type": "object",
-            "$ref": "#/definitions/Intl.DisplayNamesOptions"
-        },
-        "intl/display": {
-            "$ref": "#/properties/display"
-        },
-        "dictionary": {
-            "title": "Process this key's input as a key of this object",
-            "description": "Define a dictionary of keys to translated strings.",
-            "type": "object",
-            "patternProperties": {
-                "^.*$": {
-                    "type": "string"
-                }
-            }
         }
     }
 }
