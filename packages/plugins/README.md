@@ -307,7 +307,7 @@ All of the features described above provide the functionality to the plugins,
 making them work and allowing to extend the features of `intl-schematic` almost infinitely.\
 However, this is not enough for typescript to provide helpful type-hints when using the library.
 
-In order to help typescript infer as much information about the plugins that are used for a specific key,
+In order to help typescript infer as much information as possible about the plugins that are used for a specific key,
 `intl-schematic` provides 2 main ways to define the needed types both declaratively and imperatively.
 
 ### `match` type-guards
