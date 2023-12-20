@@ -1,12 +1,10 @@
 {
-    "title": "Proccessed translation record",
+    "title": "Proccessed translation property",
     "description": "Allows to apply different pre-set functions - processors - to an input value with an object parameter before returning a localized string",
     "type": "object",
-    "additionalProperties": false,
-    "minProperties": 1,
-    "maxProperties": 2,
+    "propertyNames": true,
     "patternProperties": {
-        "^.+$": {
+        "(!input)": {
             "title": "Parameter object for the processor",
             "description": "Parameter to pass into the processor function before passing in the input. the key that this object is set to is the name of the processor to be applied",
             "items": {
@@ -19,7 +17,7 @@
             }
         }
     },
-    "properties": {
+    "additionalProperties": {
         "input": {
             "title": "Processor Input",
             "description": "The input arguments to a translation function in the format of 'name': 'default-value'. Provide a default input value for each key.",
@@ -28,58 +26,171 @@
             },
             "patternProperties": {
                 "^.*$": {
-                    "description": "A key in the input object, value is used as a default",
-                    "type": [
-                        "array",
-                        "boolean",
-                        "integer",
-                        "null",
-                        "number",
-                        "object",
-                        "string"
-                    ]
+                    "description": "A key in the input object, value is used as a default"
                 }
             }
+        }
+    },
+    "examples": [
+        {
+            "number": {
+                "style": "currency"
+            },
+            "input": 0
         },
+        {
+            "intl/number": {
+                "style": "currency"
+            },
+            "input": 0
+        },
+        {
+            "date": {
+                "day": "2-digit",
+                "month": "2-digit"
+            }
+        },
+        {
+            "intl/date": {
+                "day": "2-digit",
+                "month": "2-digit"
+            }
+        },
+        {
+            "plural": {}
+        },
+        {
+            "intl/plural": {}
+        },
+        {
+            "display": {}
+        },
+        {
+            "intl/display": {}
+        },
+        {
+            "dictionary": {},
+            "input": {
+                "fallback": ""
+            }
+        }
+    ],
+    "oneOf": [
+        {
+            "required": [
+                "number"
+            ],
+            "dependencies": {
+                "input": [
+                    "number"
+                ]
+            }
+        },
+        {
+            "required": [
+                "intl/number"
+            ],
+            "dependencies": {
+                "input": [
+                    "intl/number"
+                ]
+            }
+        },
+        {
+            "required": [
+                "date"
+            ],
+            "dependencies": {
+                "input": [
+                    "date"
+                ]
+            }
+        },
+        {
+            "required": [
+                "intl/date"
+            ],
+            "dependencies": {
+                "input": [
+                    "intl/date"
+                ]
+            }
+        },
+        {
+            "required": [
+                "plural"
+            ],
+            "dependencies": {
+                "input": [
+                    "plural"
+                ]
+            }
+        },
+        {
+            "required": [
+                "intl/plural"
+            ],
+            "dependencies": {
+                "input": [
+                    "intl/plural"
+                ]
+            }
+        },
+        {
+            "required": [
+                "display"
+            ],
+            "dependencies": {
+                "input": [
+                    "display"
+                ]
+            }
+        },
+        {
+            "required": [
+                "intl/display"
+            ],
+            "dependencies": {
+                "input": [
+                    "intl/display"
+                ]
+            }
+        },
+        {
+            "required": [
+                "dictionary"
+            ],
+            "dependencies": {
+                "input": [
+                    "dictionary"
+                ]
+            }
+        }
+    ],
+    "properties": {
         "number": {
-            "title": "Process this key's input value with Intl.NumberFormat",
-            "description": "Define Intl.NumberFormatOptions in the value to set formatting rules for the input value.",
-            "additionalProperties": false,
-            "type": "object",
-            "$ref": "#/definitions/Intl.NumberFormatOptions"
+            "$ref": "#/definitions/number-prop"
         },
         "intl/number": {
-            "$ref": "#/properties/number"
+            "$ref": "#/definitions/number-prop"
         },
         "date": {
-            "title": "Process this key's input value with Intl.DateTimeFormat",
-            "description": "Define Intl.DateTimeFormatOptions in the value to set formatting rules for the input value.",
-            "additionalProperties": false,
-            "type": "object",
-            "$ref": "#/definitions/Intl.DateTimeFormatOptions"
+            "$ref": "#/definitions/date-prop"
         },
         "intl/date": {
-            "$ref": "#/properties/date"
+            "$ref": "#/definitions/date-prop"
         },
         "plural": {
-            "title": "Process this key's input value with Intl.PluralRules",
-            "description": "Define a map of the `.select()` method results (`few`, `many`, etc.) to translations of the pluralized word",
-            "additionalProperties": false,
-            "type": "object",
-            "$ref": "#/definitions/PluralOptions"
+            "$ref": "#/definitions/plural-prop"
         },
         "intl/plural": {
-            "$ref": "#/properties/plural"
+            "$ref": "#/definitions/plural-prop"
         },
         "display": {
-            "title": "Process this key's input value with Intl.DisplayNames",
-            "description": "Define Intl.DisplayNamesOptions in the value to set formatting rules for the input value.",
-            "additionalProperties": false,
-            "type": "object",
-            "$ref": "#/definitions/Intl.DisplayNamesOptions"
+            "$ref": "#/definitions/display-prop"
         },
         "intl/display": {
-            "$ref": "#/properties/display"
+            "$ref": "#/definitions/display-prop"
         },
         "dictionary": {
             "title": "Process this key's input as a key of this object",
@@ -93,6 +204,34 @@
         }
     },
     "definitions": {
+        "display-prop": {
+            "title": "Process this key's input value with Intl.DisplayNames",
+            "description": "Define Intl.DisplayNamesOptions in the value to set formatting rules for the input value.",
+            "additionalProperties": false,
+            "type": "object",
+            "$ref": "#/definitions/Intl.DisplayNamesOptions"
+        },
+        "plural-prop": {
+            "title": "Process this key's input value with Intl.PluralRules",
+            "description": "Define a map of the `.select()` method results (`few`, `many`, etc.) to translations of the pluralized word",
+            "additionalProperties": false,
+            "type": "object",
+            "$ref": "#/definitions/PluralOptions"
+        },
+        "date-prop": {
+            "title": "Process this key's input value with Intl.DateTimeFormat",
+            "description": "Define Intl.DateTimeFormatOptions in the value to set formatting rules for the input value.",
+            "additionalProperties": false,
+            "type": "object",
+            "$ref": "#/definitions/Intl.DateTimeFormatOptions"
+        },
+        "number-prop": {
+            "title": "Process this key's input value with Intl.NumberFormat",
+            "description": "Define Intl.NumberFormatOptions in the value to set formatting rules for the input value.",
+            "additionalProperties": false,
+            "type": "object",
+            "$ref": "#/definitions/Intl.NumberFormatOptions"
+        },
         "Intl.DateTimeFormatOptions": {
             "additionalProperties": false,
             "properties": {

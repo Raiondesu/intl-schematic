@@ -1,5 +1,11 @@
 {
     "type": "object",
     "title": "Translation document",
-    "description": "Contains various localized strings that can be accessed with a key"
+    "description": "Contains various localized strings that can be accessed with a key",
+    "properties": {
+        "$schema": {
+            "type": "string",
+            "title": "Reference to the translation document schema definition"
+        }
+    }
 }

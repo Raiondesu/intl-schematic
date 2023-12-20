@@ -1,0 +1,34 @@
+{
+    "title": "Array translation property",
+    "description": "This property simply allows to get the value string by the key, value can be an array to help break one-line texts in multiple lines for readability or to reference other translation propertys by their keys",
+    "type": ["array"],
+    "items": {
+        "anyOf": [{
+            "title": "Reference to an argument of another property processed by a plugin (parametrized translation property)",
+            "description": "Value must refer to a property that is already referenced in this array",
+            "type": "string",
+            "pattern": "\\d+:.+"
+        }, {
+            "title": "A single part of a plain-string translation property",
+            "description": "Can be a reference key of another translation property",
+            "type": "string"
+        }, {
+            "title": "A reference to a parametrized translation property",
+            "description": "Inserts the parametrized value into the string, provide an object with key that references the property and a value to serve as parameters if applicable. If the key doesn't reference a parametrized property, simply leave the array empty - [].",
+            "type": "object",
+            "patternProperties": {
+                "^.+$": {
+                    "title": "A reference to a parametrized translation property",
+                    "type": "array"
+                }
+            },
+            "maxProperties": 1,
+            "minProperties": 1
+        }]
+    },
+    "examples": [
+        "Translated text",
+        ["Long", "translated", "text"],
+        ["Long", "translated", "text with", { "keys/reference-multiple": [] }, "to other translation propertys"]
+    ]
+}
