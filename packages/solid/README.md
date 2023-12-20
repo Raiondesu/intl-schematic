@@ -18,7 +18,7 @@ const getDocument = (locale: Intl.Locale) => import(`/locales/${locale.baseName}
 const createTranslator = createLocaleResource(
   // Asynchronous locale fetching
   () => Promise.resolve(new Intl.Locale(navigator.language)),
-  (locale: Intl.Locale) => [/* Array of custom plugins */]
+  (getLocale: () => Intl.Locale) => [/* Array of custom plugins */]
 )
 
 export default function SolidComponent() {

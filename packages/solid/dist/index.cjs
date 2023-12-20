@@ -24,24 +24,22 @@ __export(src_exports, {
 });
 module.exports = __toCommonJS(src_exports);
 var import_solid_js = require("solid-js");
-var import_rambda = require("rambda");
-var import_plugin_defaults = require("@intl-schematic/plugin-defaults");
 var import_intl_schematic = require("intl-schematic");
-function createLocaleResource(getLocale, processors) {
+function createLocaleResource(getLocale, plugins) {
   return (localeImport) => {
     const [localeResource, { mutate }] = (0, import_solid_js.createResource)(
       getLocale,
       (localePromise) => Promise.resolve(localePromise).then((loc) => Promise.all([localeImport(loc), loc])).then(([localeDoc, locale]) => {
         localeDoc.remote?.then((loc) => {
           if (loc) {
-            mutate((prev) => (0, import_rambda.merge)(prev, loc));
+            mutate(([prev, prevLocale] = [localeDoc.default, locale]) => [{ ...prev, ...loc }, prevLocale]);
           }
         });
         return [localeDoc.default, locale];
       })
     );
     const currentLocale = () => localeResource.latest?.[1] ?? new Intl.Locale(navigator.language);
-    const currentDoc = () => localeResource.latest?.[0] ?? {};
-    return (0, import_intl_schematic.createTranslator)(currentDoc, (0, import_plugin_defaults.defaultPlugins)(currentLocale, processors));
+    const currentDoc = () => localeResource.latest?.[0];
+    return (0, import_intl_schematic.createTranslator)(currentDoc, plugins(currentLocale));
   };
 }
