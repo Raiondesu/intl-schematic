@@ -110,7 +110,11 @@ export function createTranslator<
           plugins: subkey !== key
             ? contextPlugins
             : contextPlugins?.slice(index),
-          pluginContext: createdContext,
+          pluginContext: {
+            ...createdContext,
+            key: subkey,
+            value: doc[subkey],
+          },
         }, subkey, ...args)
       }
 
