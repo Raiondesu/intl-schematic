@@ -211,12 +211,11 @@ If `undefined` is returned, other matched plugins will be applied to the string
 This context allows plugins to exchange information
 and invoke the translation function recursively on different keys.
 
-For example, if a plugin knows its matched value contains a reference to another key,
-it can call `this.translate(referencedKey, ...neededArgs)`
-to start the translation process for the referenced key and get a string to return.
+For example, a plugin can call `this.translate(anotherKey, ...neededArgs)`
+to start the translation process for any other key and get a string to return.
 
 > ⚠ This may trigger infinite recursive calls
-> if a key ends up referencing itself, so be careful!
+> if a plugin ends up calling `this.translate` on the same key, so be careful!
 
 ##### Context usage example
 
@@ -225,14 +224,14 @@ Example - a simple plugin that enables custom string interpolation:
 // Document
 const getDocument = () => ({
   key: '{0} interpolated value with {1} syntax{2}'
-})
-//
+// this allows TS to infer value types too
+} as const);
 
 const InterpolationPlugin = createPlugin(
   'InterpolationPlugin',
   // Detect values with the pattern of `{some-number}`, like `{0}`
-  (value): value is string => /{\d}/.test(value), {
-  translate(...args) {
+  (value): value is string => typeof value === 'string' && /{\d}/.test(value), {
+  translate(...args: string[]) {
     return args.reduce(
       // Index of an argument corresponds with its position in the interpolated string
       (val, arg, index) => val.replace(`{${index}}`, arg),
@@ -372,9 +371,21 @@ All plugins are registered by their `name` as the key in the interface, and an o
     - Might be useful for letting the developer know about some additional context for the currently selected key - information about other keys it references, for example, or its signature in the translation document.
 
 For the `InterpolationPlugin` from the [context usage example](#context-usage-example),
-a plugin registry record can look like this (very simplified "pseudocode" example):
+a plugin registry record can look like this:
 
 ```ts
+// Utility types
+type CreateArray<Len, El, Arr extends El[] = []> =  Arr['length'] extends Len ? Arr : CreateArray<Len, El, [template: El, ...Arr]>
+type Add<A extends number, B extends number> = [...CreateArray<A, 1>, ...CreateArray<B, 1>]['length'];
+
+// Recursively counts templates in the string
+type CountTemplates<Value extends string, Amount extends number = 1> =
+  Value extends `${string}{${number}}${infer Substring}`
+    ? Substring extends `${string}{${number}}${string}`
+      ? CountTemplates<Substring, Add<Amount, 1> & number>
+      : Amount
+    : false;
+
 declare module 'intl-schematic/plugins' {
   // The signature type parameters' names must match exactly to the original signature
   export interface PluginRegistry<
@@ -388,21 +399,44 @@ declare module 'intl-schematic/plugins' {
       // Here we extract the numbers in curly braces - `/{\d+}/` - from the value
       args: LocaleDoc[Key] extends infer Value
         ? Value extends `${string}{${number}}${string}`
-          ? Value extends `${string}{${infer Indecies}}${string}`
-            // and create a string tuple with the length corresponding to those numbers.
-            ? (string[] & { length: Indecies })
-            // If the amount isn't detected, simply give unlimited arguments
-            : string[]
+          // and create a string array with the length corresponding to those numbers.
+          ? CreateArray<CountTemplates<Value>, string>
+          // If the amount isn't calculable, simply give unlimited arguments
           : string[]
         // If the pattern isn't detected - simply allow anything,
         // because the plugin won't match anyway
         : unknown[];
+
+      // Display to the user how many templates the key needs filled
+      signature: LocaleDoc[Key] extends infer Value
+        ? Value extends `${string}{${number}}${string}`
+          ? `${CountTemplates<Value>} templates`
+          : unknown
+        : unknown;
     };
   }
 }
 
 // Now we have type hints
-t('key', '0', '1', '2', '3') // TS Error: Expected 1-4 arguments, but got 5.
+t('key', 'Some cool', 'custom', ' and types!', '!') // TS Error: Expected 4 arguments, but got 5.
+
+// typehint for `t` is
+// `const t: <"key", "InterpolationPlugin", "3 templates">(key: "key", template: string, template_1: string, template_2: string) => string`
+t('key', 'Some cool', 'custom', ' and types!')
+// Some cool interpolated string with custom syntax and types!
+```
+
+Here, the `args` property allowed us to precisely set the parameter types for `t()`,
+and the `signature` property enabled us to display a convenient message right in the typehint for `t()`!
+
+```ts
+// Typehint without custom plugin signature,
+// here, the developer is forced to read the parameters' types one-by-one,
+// as well as guess their meaning
+const t: <"key", "InterpolationPlugin", unknown>(key: "key", template: string, template_1: string, template_2: string) => string
+
+// Typehint with a custom plugin signature, much more convenient
+const t: <"key", "InterpolationPlugin", "3 templates">(key: "key", template: string, template_1: string, template_2: string) => string
 ```
 
 For a simple working example see [the nested plugin](/packages/plugins/nested/src/index.ts).\
