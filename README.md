@@ -89,9 +89,7 @@ To develop locally, simply clone, and run the following in the root directory:
 npm i -ws
 ```
 
-The project uses TypeScript v5.3+ and
-[json-schema-to-typescript](https://github.com/bcherny/json-schema-to-typescript)
-to transpile a json-schema into usable type definitions.
+The project uses TypeScript v5.3+
 
 #### Build
 
