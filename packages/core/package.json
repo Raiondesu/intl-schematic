@@ -21,7 +21,6 @@
     "major": "npm version major"
   },
   "devDependencies": {
-    "json-schema-to-typescript": "^13.0.1",
     "tsconfig": "*",
     "typescript": "^5.3.2"
   },
