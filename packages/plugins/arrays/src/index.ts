@@ -6,7 +6,7 @@ declare module 'intl-schematic/plugins' {
     ArraysPlugin: {
       // Any attempt to externalize these types leads to a rat race between a type simplifier and a type inferer
       args: [
-        references: keyof Exclude<LocaleDoc[Key][number], string> extends infer Keys
+        references?: keyof Exclude<LocaleDoc[Key][number], string> extends infer Keys
           ? Keys extends LocaleKey<LocaleDoc>
             ? {
               [key in Keys]:
