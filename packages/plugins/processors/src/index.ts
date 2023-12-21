@@ -1,4 +1,4 @@
-import { FlatType } from 'intl-schematic';
+import { ExtraPartial, FlatType } from 'intl-schematic';
 import { createPlugin } from 'intl-schematic/plugins';
 import type {} from '@intl-schematic/plugin-locale';
 
@@ -12,11 +12,11 @@ declare module 'intl-schematic/plugins' {
         ? 'processor' extends keyof LocaleDoc[Key]
           // legacy format
           ? { [key in keyof PluginInfo]: PluginInfo[key] extends Processor<infer Input, infer Param>
-              ? [input: Input, parameter?: Param] : never;
+              ? [input: ExtraPartial<Input>, parameter?: Param] : never;
             }[Extract<keyof PluginInfo, keyof LocaleDoc[Key]['processor']>]
           // new format
           : { [key in keyof PluginInfo]: PluginInfo[key] extends Processor<infer Input, infer Param>
-              ? [input: Input, parameter?: Param] : never;
+              ? [input: ExtraPartial<Input>, parameter?: Param] : never;
             }[Extract<keyof PluginInfo, keyof LocaleDoc[Key]>]
         : [input?: unknown, parameter?: unknown];
 
