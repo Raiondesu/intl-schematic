@@ -1,8 +1,16 @@
 # `@intl-schematic/plugin-processors`<!-- omit from toc -->
 
-Adds the ability to use custom processors for properties in translation documents.
+Adds the ability to use custom processors for properties in translation documents of [`intl-schematic`](/packages/core/).
 
 `npm i -s @intl-schematic/plugin-processors @intl-schematic/plugin-locale`
+
+- 🦺 **Full type-safety**: full autocomplete on translation keys, typed translation parameters and more;
+- 🎄 **Tree-shakable**: only take what you need;
+- 🎈 **Incredibly lightweight**: just over 1kb for the whole package.
+- 📃 **JSON-validation using a [JSON-schema](/packages/core/README.md#using-with-json-schema)**: intellisense and popup hints right in the translation document;
+- 🧵 **Dynamic strings with custom pre-processors**: write custom translation logic right in JSON;
+- 🚫 **No string-interpolation**: translation strings will never be processed or mangled by-default, so all unicode symbols are safe to use;
+- 🌐 **Basic localized formatters**: declare formatting rules and translations in the same place.
 
 - [Usage](#usage)
   - [Define a translation document factory](#define-a-translation-document-factory)

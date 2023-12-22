@@ -1,10 +1,13 @@
 # `@intl-schematic/plugin-arrays`<!-- omit from toc -->
 
 Allows to use arrays as values in translation documents, adds many features to `intl-schematic`:
-- 💬 **Define complex translations**: use array elements as separate lines or join by a custom delimiter
-- 📑 **Reference other keys**: combine and compose multiple keys to save space in the translation document
-- ♻ **Reuse pluginable keys**: pass type-schecked parameters to referenced keys that use plugins
-- ⚙ **Reuse parameters from referenced keys**: reference parameters of other referenced keys to display them directly
+- 🎈 **Incredibly lightweight**: just around 1kb for the whole package.
+- 💬 **Define complex translations**: use array elements as separate lines or join by a custom delimiter;
+- 📑 **Reference other keys**: combine and compose multiple keys to save space in the translation document;
+- ♻ **Reuse pluginable keys**: pass type-schecked parameters to referenced keys that use plugins;
+- ⚙ **Reuse parameters from referenced keys**: reference parameters of other referenced keys to display them directly;
+- 📃 **JSON-validation using a [JSON-schema](/packages/core/README.md#using-with-json-schema)**: intellisense and popup hints right in the translation document;
+- 🚫 **No string-interpolation**: translation strings will never be processed or mangled by-default, so all unicode symbols are safe to use;
 
 `npm i -s @intl-schematic/plugin-arrays`
 
