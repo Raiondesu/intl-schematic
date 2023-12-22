@@ -8,13 +8,17 @@
 
 <div align="center">
 
-A tiny framework-agnostic i18n library (1-3kb, zero-dependency) that allows to localize and format strings while sparingly using the browser-standard [`Intl` API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl).
+A tiny framework-agnostic i18n library (1-3kb, zero-dependency)\
+that allows to localize and format strings\
+while sparingly using the browser-standard [`Intl` API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl).
 
 `npm i -s intl-schematic`
 
-You can also install a nightly build [directly from github](#install-from-github)
+You can also install a nightly build\
+[directly from github](#install-from-github)
 
-For more usage examples, see the [main package readme](/packages/core/README.md)
+For more usage examples, see\
+the [main package readme](/packages/core/README.md)
 
 [List of packages](#packages)
 
@@ -42,14 +46,16 @@ console.log(t('hello')); // `Hello, World!`
 ## Features
 
 - 🦺 **Full type-safety**: full autocomplete on translation keys, typed translation parameters and more;
+- 🌌 **Truly universal**: one-size-fits-all solution - able to suit any project setup;
 - 🎄 **Tree-shakable**: only take what you need;
+- 🎈 **Incredibly lightweight**: less than 1kb for the core package, less than 5kb for every feature imaginable.
 - 🧩 **Easily integrates with UI-frameworks**: we don't play favorites here - [every framework can use this library](/packages/core/README.md#using-with-reactive-frameworks);
 - 🔌 **Pluginable**: extend any processing step without limits - see the [plugins API](/packages/plugins/) for more;
-- 📃 **JSON-validation using a [JSON-schema](/packages/core/README.md#using-with-json-schema)**: intellisense and popup hints right in the translation document;
-- 🧵 **Dynamic strings with custom pre-processors**: write custom translation logic right in JSON;
 - 📑 **Reference translation keys inside of other translation keys**: all with JSON-compatible syntax;
+- 📃 **JSON-validation using a [JSON-schema](/packages/core/README.md#using-with-json-schema)**: intellisense and popup hints right in the translation document;
 - 🚫 **No string-interpolation**: translation strings will never be processed or mangled by-default, so all unicode symbols are safe to use;
 - 🌐 **Basic localized formatters**: declare formatting rules and translations in the same place.
+- 🧵 **Dynamic strings with custom pre-processors**: write custom translation logic right in JSON;
 
 ## Why
 
@@ -66,10 +72,11 @@ This library will try to avoid these common pitfalls, while retaining a small si
 
 ## No-goals
 
-This library will **not** support:
-- **Translation key nesting using dot-notation**: needlessly complicates key lookup and maintenance, instead use namespaced keys or the [`nested` plugin](/packages/plugins/nested);
-- **String interpolation**: while custom plugins and processors can do anything with the translated string,
-the library by-itself does not and will not do any processing on the strings.
+Even though custom plugins can do literally anything with keys, values and translation documents,\
+the core library will **not** support:
+- **Translation key nesting using dot-notation**: needlessly complicates key lookup and maintenance;
+  - Instead use namespaced keys or the [`nested` plugin](/packages/plugins/nested) (supports dot-notation!);
+- **String interpolation**: the library by-itself does not and will not do any processing on the strings.
 
 ## Contributing
 

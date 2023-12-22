@@ -34,6 +34,16 @@
       "require": "./dist/index.cjs",
       "types": "./src/index.ts"
     },
+    "./core": {
+      "import": "./dist/core.js",
+      "require": "./dist/core.cjs",
+      "types": "./src/core.ts"
+    },
+    "./dot": {
+      "import": "./dist/dot.js",
+      "require": "./dist/dot.cjs",
+      "types": "./src/dot.ts"
+    },
     "./index": {
       "import": "./dist/index.js",
       "require": "./dist/index.cjs",
@@ -44,6 +54,12 @@
     "*": {
       ".": [
         "./src/index.ts"
+      ],
+      "core": [
+        "./src/core.ts"
+      ],
+      "dot": [
+        "./src/dot.ts"
       ],
       "index": [
         "./src/index.ts"

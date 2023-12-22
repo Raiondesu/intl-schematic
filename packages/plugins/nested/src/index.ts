@@ -1,22 +1,17 @@
 import { createPlugin } from 'intl-schematic/plugins';
+import type { NestedRecord } from './core';
 
 declare module 'intl-schematic/plugins' {
   export interface PluginRegistry<LocaleDoc, Key> {
     NestedKeys: {
-      args: LocaleDoc[Key] extends string ? [] : Leaves<LocaleDoc[Key]>;
+      args: LocaleDoc[Key] extends NestedRecord ? Leaves<LocaleDoc[Key]> : [];
     };
   }
 }
 
-type Leaf = string;
-
-type NestedRecord = Leaf | {
-  [branch: string]: Leaf | NestedRecord;
-};
-
 type Leaves<T> = T extends object ? {
-  [K in keyof T]: [Exclude<K, symbol>, ...Leaves<T[K]> extends never ? [] : Leaves<T[K]>]
-}[keyof T] : []
+  [K in keyof T]: [subkey: Exclude<K, symbol>, ...Leaves<T[K]> extends never ? [] : Leaves<T[K]>]
+}[keyof T] : [];
 
 function match(value: unknown): value is NestedRecord {
   return (!!value && typeof value === 'object' && Object.values(value).some(match));

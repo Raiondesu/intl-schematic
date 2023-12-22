@@ -188,6 +188,10 @@ export type KeysOfType<O, T> = {
   [K in keyof O]: T extends O[K] ? K : never
 }[keyof O];
 
+export type TypeOfKeys<O, T> = {
+  [K in keyof O]: O[K] extends T ? K : never
+}[keyof O];
+
 /**
  * Gets a name of a plugin that processes a specific key
  * from the initial plugin array
