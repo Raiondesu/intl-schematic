@@ -23,23 +23,7 @@ __export(dot_exports, {
   createDotNester: () => createDotNester
 });
 module.exports = __toCommonJS(dot_exports);
-var import_intl_schematic = require("intl-schematic");
-var import_plugin_nested = require("@intl-schematic/plugin-nested");
-var createDotNester = (t2) => (keys) => {
+var createDotNester = (t) => (keys) => {
   const [key, ...subkeys] = keys.split(".");
-  return t2(key, ...subkeys);
+  return t(key, ...subkeys);
 };
-var getDocument = () => ({
-  "hello": {
-    "world": "Hello, world!",
-    "stranger": "Hello, stranger!"
-  },
-  "foo": {
-    "bar": {
-      "baz": "Foo Bar Baz!"
-    }
-  },
-  "test": ""
-});
-var t = (0, import_intl_schematic.createTranslator)(getDocument, [import_plugin_nested.NestedKeysPlugin]);
-var tn = createDotNester(t);

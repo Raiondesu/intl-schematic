@@ -19,23 +19,3 @@ export const createDotNester = <
   const [key, ...subkeys] = keys.split('.');
   return t(key, ...subkeys);
 }
-
-const getDocument = () => ({
-  'hello': {
-    'world': 'Hello, world!',
-    'stranger': 'Hello, stranger!'
-  },
-  'foo': {
-    'bar': {
-      'baz': "Foo Bar Baz!"
-    }
-  },
-  'test': '',
-});
-import { createTranslator } from 'intl-schematic';
-import { NestedKeysPlugin } from '@intl-schematic/plugin-nested';
-
-// Notice the plugins array parameter
-const t = createTranslator(getDocument, [NestedKeysPlugin]);
-
-const tn = createDotNester(t);
