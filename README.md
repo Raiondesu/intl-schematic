@@ -93,6 +93,7 @@ Full list of packages at the moment:
 - [`intl-schematic`](/packages/core/) - main package
 - [`@intl-schematic/solid`](/packages/solid/) - reactive adapter for [`solid-js`](https://www.solidjs.com)
 - [`@intl-schematic/vue`](/packages/vue/) (WIP) - reactive adapter for [`vue`](https://vuejs.org)
+- [`@intl-schematic/react`](/packages/react/) (WIP) - reactive adapter for [`react`](https://react.com)
 - [Plugins](/packages/plugins/) - allow using custom formats in translation documents - not just strings:
   - [`@intl-schematic/plugin-defaults`](/packages/plugins/defaults/)
     - recommended collection of plugins that should be useful to most applications
