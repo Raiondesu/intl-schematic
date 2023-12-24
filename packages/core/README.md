@@ -222,17 +222,17 @@ To define a JSON-schema for your translation documents, simply create a `.schema
 ```json
 // translation.schema.json
 {
-  "$ref": "./node_modules/intl-schematic/translation.schema.json",
+  "$ref": "https://unpkg.com/intl-schematic/translation.schema.json",
   "additionalProperties": {
     "anyOf": [
       // Definition for the default string key-value pair
       {
-        "$ref": "./node_modules/intl-schematic/property.schema.json",
+        "$ref": "https://unpkg.com/intl-schematic/property.schema.json",
       }
       // Add references to more allowed types for your schema
       /* for example, @intl-schematic/plugin-processors definition:
       {
-        "$ref": "./node_modules/@intl-schematic/plugin-processors/property.schema.json"
+        "$ref": "https://unpkg.com/@intl-schematic/plugin-processors/property.schema.json"
       }
       */
     ]

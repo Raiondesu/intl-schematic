@@ -503,4 +503,4 @@ You can use this as a template:
 }
 ```
 
-Then, a user of the plugin can simply reference this schema as a schema for a property in a translation document.
+Then, a user of the plugin can simply [reference this schema](/packages/core/README.md#using-with-json-schema) as a schema for a property of a translation document.
