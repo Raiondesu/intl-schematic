@@ -270,6 +270,8 @@ Here's a list of the ones that do:
   - use arrays to cross-reference keys and define complex multiline texts
 - [`@intl-schematic/plugin-processors`](/packages/plugins/processors/) (included in **defaults**)
   - apply custom and default processors to format the user inputs
+- [`@intl-schematic/plugin-nested`](/packages/plugins/nested/)
+  - access nested keys in deep multi-level objects
 
 ## No-goals
 

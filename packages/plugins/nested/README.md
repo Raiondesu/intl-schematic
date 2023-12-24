@@ -9,6 +9,7 @@ Adds the ability to use nested keys in translation documents.
   - [Create a translator function (`t()`)](#create-a-translator-function-t)
   - [Use the translator function](#use-the-translator-function)
 - [Dot-notation](#dot-notation)
+- [JSON-schema](#json-schema)
 
 
 ## Basic usage
@@ -92,4 +93,11 @@ tn('hello.world'); // 'Hello, world!'
 
 // Still accepts regular string keys
 tn('regular');
+```
+
+## JSON-schema
+
+To use this plugins' property json schema, simply follow [this instruction](/packages/core/README.md#using-with-json-schema) and reference it using the unpkg link:
+```
+https://unpkg.com/@intl-schematic/plugin-nested/property.schema.json
 ```

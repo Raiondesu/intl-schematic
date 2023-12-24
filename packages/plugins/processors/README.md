@@ -250,3 +250,9 @@ as `ProcessorInput` is required as the second argument,
 while `ProcessorParameter` can optionally be supplied as the third argument
 to override the one defined in the document.
 
+## JSON-schema
+
+To use this plugins' property json schema, simply follow [this instruction](/packages/core/README.md#using-with-json-schema) and reference it using the unpkg link:
+```
+https://unpkg.com/@intl-schematic/plugin-processors/property.schema.json
+```

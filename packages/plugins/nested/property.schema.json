@@ -1,0 +1,25 @@
+{
+    "definitions": {
+        "Branch": {
+            "title": "Nested translation property branch",
+            "description": "This object can be used by the nested plugin to structure translations in nested objects",
+            "type": ["object"],
+            "additionalProperties": {
+                "anyOf": [
+                    {
+                        "$ref": "#/definitions/Branch"
+                    },
+                    {
+                        "$ref": "#/definitions/Leaf"
+                    }
+                ]
+            }
+        },
+        "Leaf": {
+            "title": "Nested translation property leaf",
+            "description": "This string can be accessed by the nested plugin from within a nested translation object",
+            "type": ["string"]
+        }
+    },
+    "$ref": "#/definitions/Branch"
+}

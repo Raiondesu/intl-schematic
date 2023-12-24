@@ -147,3 +147,10 @@ t('for price', { price: [new Date(), { currency: 'EUR' }] });
 // TS Error: Expected 2-3 arguments, but got 1.
 t('gift');
 ```
+
+## JSON-schema
+
+To use this plugins' property json schema, simply follow [this instruction](/packages/core/README.md#using-with-json-schema) and reference it using the unpkg link:
+```
+https://unpkg.com/@intl-schematic/plugin-arrays/property.schema.json
+```
