@@ -275,7 +275,7 @@ Here's a list of the ones that do:
 
 ## No-goals
 
-Even though custom plugins can do literally anything with keys, values and translation documents,\
+Even though custom plugins can do literally anything with keys, values, and translation documents,\
 the core library will **not** support:
 - **Translation key nesting using dot-notation**: needlessly complicates key lookup and maintenance;
   - Instead use namespaced keys or the [`nested` plugin](/packages/plugins/nested) (which supports dot-notation!);
