@@ -13,6 +13,8 @@
     - [`match` type-guards](#match-type-guards)
     - [`PluginRegistry`](#pluginregistry)
       - [Registry utility API](#registry-utility-api)
+  - [JSON-schema](#json-schema)
+    - [Definition](#definition-1)
 
 
 # Plugins API
@@ -474,3 +476,31 @@ The `intl-schematic/plugins` module provides several utility types just for this
   - Mainly used to quickly infer some information about the plugin without rewriting its structure in the types.
 
 These helper types do not need importing, as they are already accessible within the `intl-schematic/plugins` module declaration.
+
+## JSON-schema
+
+A plugin may provide a JSON-schema for a value that satisfies the [`match` type predicate](#match).
+
+By-convention, such files should be named `property.schema.json`.\
+[Here's an example of such a file provided by a plugin](/packages/plugins/arrays/property.schema.json).
+
+This schema is then included directly by a user into their JSON-schema for translation document validation. For more information, see [the core package readme](/packages/core/README.md#using-with-json-schema).
+
+Even if the type isn't that complicated, the JSON-schema can still provide guidance in a form of examples or simple property descriptions.
+
+### Definition
+
+In your plugin's root directory, create a file.
+
+Name it `property.schema.json`.
+
+You can use this as a template:
+```json
+{
+  "title": "Property",
+  "description": "This property simply allows to get the value string by the key, value can be an array to help break one-line texts in multiple lines for readability or to reference other translation propertys by their keys",
+  "type": []
+}
+```
+
+Then, a user of the plugin can simply reference this schema as a schema for a property in a translation document.

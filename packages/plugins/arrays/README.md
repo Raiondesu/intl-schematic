@@ -1,7 +1,6 @@
 # `@intl-schematic/plugin-arrays`<!-- omit from toc -->
 
 Allows to use arrays as values in translation documents, adds many features to `intl-schematic`:
-- 🎈 **Incredibly lightweight**: just around 1kb for the whole package.
 - 💬 **Define complex translations**: use array elements as separate lines or join by a custom delimiter;
 - 📑 **Reference other keys**: combine and compose multiple keys to save space in the translation document;
 - ♻ **Reuse pluginable keys**: pass type-schecked parameters to referenced keys that use plugins;

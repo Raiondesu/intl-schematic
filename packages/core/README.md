@@ -8,13 +8,16 @@
 
 <p align="center">
 
-A tiny framework-agnostic i18n library (1kb gzip, zero-dependency)
+Bravely modern, incredibly tiny, blazingly fast.
+
+THis is a tiny framework-agnostic i18n library (1kb gzip, zero-dependency)
 that allows to localize and format strings with infinitely expandable functionality.
 
 </p>
 
 - 🦺 **Full type-safety**: full autocomplete on translation keys, typed translation parameters and more;
 - 🎄 **Tree-shakable**: only take what you need;
+- 🌌 **Truly universal**: one-size-fits-all solution - able to suit any project setup;
 - 🎈 **Incredibly lightweight**: less than 1kb for the core package, less than 5kb for [every feature imaginable](#list).
 - 🧩 **Easily integrates with UI-frameworks**: we don't play favorites here - [every framework can use this](#using-with-reactive-frameworks);
 - 🔌 **Pluginable**: extend any processing step without limits - see the [plugins API](/packages/plugins/) for more;
@@ -33,6 +36,8 @@ that allows to localize and format strings with infinitely expandable functional
   - [List](#list)
   - [Add default plugins and processors](#add-default-plugins-and-processors)
 - [Using with JSON-schema](#using-with-json-schema)
+  - [Plugins that define a `property.schema.json`](#plugins-that-define-a-propertyschemajson)
+- [No-goals](#no-goals)
 
 
 ## Basic Usage
@@ -132,7 +137,10 @@ given a basic knowledge of any specific UI-framework,
   - Creates a reactive [resource](https://www.solidjs.com/docs/latest/api#createresource)
     with the locale document and user's locale
     that is then passed in a closure to `intl-schematic` and user-defined plugins
-- [`@intl-schematic/vue`](/pacakges/vue/) - Work in progress
+- [`@intl-schematic/vue`](/pacakges/vue/) - reactive adapter for [`vue`](https://vuejs.org)
+  - Utilizes a watcher to reactively fetch the needed document based on user locale
+- [`@intl-schematic/react`](/pacakges/react/) - reactive adapter for [`react`](https://react.com)
+  - Utilizes a `useEffect` hook to reactively fetch the needed document based on user locale
 
 If you want an integration for your favorite framework, feel free to contibute or [create an issue](https://github.com/Raiondesu/intl-schematic/issues/new)!
 
@@ -262,3 +270,11 @@ Here's a list of the ones that do:
   - use arrays to cross-reference keys and define complex multiline texts
 - [`@intl-schematic/plugin-processors`](/packages/plugins/processors/) (included in **defaults**)
   - apply custom and default processors to format the user inputs
+
+## No-goals
+
+Even though custom plugins can do literally anything with keys, values and translation documents,\
+the core library will **not** support:
+- **Translation key nesting using dot-notation**: needlessly complicates key lookup and maintenance;
+  - Instead use namespaced keys or the [`nested` plugin](/packages/plugins/nested) (which supports dot-notation!);
+- **String interpolation**: the library by-itself does not and will not do any processing on the strings.

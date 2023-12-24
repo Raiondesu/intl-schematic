@@ -8,7 +8,9 @@
 
 <div align="center">
 
-A tiny framework-agnostic i18n library (1-3kb, zero-dependency)\
+Bravely modern, incredibly tiny, blazingly fast.
+
+This is a tiny framework-agnostic i18n library (1-3kb, zero-dependency)\
 that allows to localize and format strings\
 while sparingly using the browser-standard [`Intl` API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl).
 
@@ -75,7 +77,7 @@ This library will try to avoid these common pitfalls, while retaining a small si
 Even though custom plugins can do literally anything with keys, values and translation documents,\
 the core library will **not** support:
 - **Translation key nesting using dot-notation**: needlessly complicates key lookup and maintenance;
-  - Instead use namespaced keys or the [`nested` plugin](/packages/plugins/nested) (supports dot-notation!);
+  - Instead use namespaced keys or the [`nested` plugin](/packages/plugins/nested) (which supports dot-notation!);
 - **String interpolation**: the library by-itself does not and will not do any processing on the strings.
 
 ## Contributing
