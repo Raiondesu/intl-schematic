@@ -1,7 +1,7 @@
 // packages/react/src/index.ts
 import { useRef, useEffect } from "react";
 import { createTranslator } from "intl-schematic";
-function createLocaleContext(locale, plugins) {
+function createEffectTranslator(locale, plugins) {
   return (localeImport) => {
     const localeDoc = useRef();
     useEffect((lang = locale?.current) => {
@@ -26,5 +26,5 @@ function createLocaleContext(locale, plugins) {
   };
 }
 export {
-  createLocaleContext
+  createEffectTranslator
 };

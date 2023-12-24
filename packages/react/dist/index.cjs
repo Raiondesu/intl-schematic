@@ -20,12 +20,12 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
 // packages/react/src/index.ts
 var src_exports = {};
 __export(src_exports, {
-  createLocaleContext: () => createLocaleContext
+  createEffectTranslator: () => createEffectTranslator
 });
 module.exports = __toCommonJS(src_exports);
 var import_react = require("react");
 var import_intl_schematic = require("intl-schematic");
-function createLocaleContext(locale, plugins) {
+function createEffectTranslator(locale, plugins) {
   return (localeImport) => {
     const localeDoc = (0, import_react.useRef)();
     (0, import_react.useEffect)((lang = locale?.current) => {
