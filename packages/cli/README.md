@@ -8,6 +8,8 @@ This CLI allows to quickly create such a schema based on the `intl-schematic` pl
 
 ### Using the CLI
 
+> Broken right now, see [manual definition](/packages/core/README.md#manual-definition).
+
 To quickly define the `translation.schema.json` for your translation documents,
 you can run the official [CLI](/packages/cli/) in your project's root:
 
