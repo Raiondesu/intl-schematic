@@ -91,6 +91,7 @@ with the main package being, of course, [`intl-schematic`](/packages/core/).
 
 Full list of packages at the moment:
 - [`intl-schematic`](/packages/core/) - main package
+- [`@intl-schematic/cli`](/packages/cli/) - cli package, used for automating different manual work when setting up the library
 - [`@intl-schematic/solid`](/packages/solid/) - reactive adapter for [`solid-js`](https://www.solidjs.com)
 - [`@intl-schematic/vue`](/packages/vue/) (WIP) - reactive adapter for [`vue`](https://vuejs.org)
 - [`@intl-schematic/react`](/packages/react/) (WIP) - reactive adapter for [`react`](https://react.com)
