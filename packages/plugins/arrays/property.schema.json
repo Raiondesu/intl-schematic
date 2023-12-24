@@ -33,6 +33,7 @@
     "examples": [
         "Translated text",
         ["Multiline", "translated", "text"],
-        ["Long", "translated", "text with", { "keys/reference-multiple": [] }, "to other translation propertys"]
+        ["Long", "translated", "text with", { "keys/reference-multiple": [] }, "to other translation propertys"],
+        ["0:plural amount", { "plural amount": [0] }]
     ]
 }

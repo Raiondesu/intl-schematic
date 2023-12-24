@@ -6,16 +6,17 @@ function match(value) {
 var ArraysPlugin = (defaultSeparator = " ") => createPlugin("ArraysPlugin", match, {
   translate(referenceParamsByKey, separator = defaultSeparator) {
     const startsWithIndex = /^.*?:/;
+    const safeReferences = referenceParamsByKey ?? {};
     const processReference = (referencedKey) => {
       if (startsWithIndex.test(referencedKey)) {
         const [argIndexName, inputKey] = referencedKey.split(":");
         const argIndex = isNaN(Number(argIndexName)) ? 0 : Number(argIndexName);
-        const references = normalizeRefs(referenceParamsByKey, inputKey);
+        const references = normalizeRefs(safeReferences, inputKey);
         return [String(references[argIndex])];
       }
-      const result2 = referencedKey in referenceParamsByKey ? this.translate(
+      const result2 = referencedKey in safeReferences ? this.translate(
         referencedKey,
-        ...normalizeRefs(referenceParamsByKey, referencedKey)
+        ...normalizeRefs(safeReferences, referencedKey)
       ) : this.translate(referencedKey);
       if (typeof result2 === "string") {
         return [result2];
@@ -27,12 +28,12 @@ var ArraysPlugin = (defaultSeparator = " ") => createPlugin("ArraysPlugin", matc
         return [...arr, ...processReference(refK)];
       }
       const refParamKey = Object.keys(refK)[0];
-      if (typeof referenceParamsByKey[refParamKey] === "undefined" && refParamKey in refK) {
-        referenceParamsByKey[refParamKey] = normalizeRefs(refK, refParamKey);
+      if (typeof safeReferences[refParamKey] === "undefined" && refParamKey in refK) {
+        safeReferences[refParamKey] = normalizeRefs(refK, refParamKey);
       } else if (refParamKey in refK) {
-        const referenceParams = normalizeRefs(referenceParamsByKey, refParamKey);
+        const referenceParams = normalizeRefs(safeReferences, refParamKey);
         const inlineParams = normalizeRefs(refK, refParamKey);
-        referenceParamsByKey[refParamKey] = referenceParams.map((param, i) => {
+        safeReferences[refParamKey] = referenceParams.map((param, i) => {
           const inlineParam = inlineParams[i];
           return typeof param === "object" && typeof inlineParam === "object" ? { ...inlineParam, ...param } : param ?? inlineParam;
         });
@@ -44,7 +45,8 @@ var ArraysPlugin = (defaultSeparator = " ") => createPlugin("ArraysPlugin", matc
     }
     return separator(result, defaultSeparator);
     function normalizeRefs(referenceMap, referenceKey) {
-      return Array.isArray(referenceMap[referenceKey]) ? referenceMap[referenceKey] : [referenceMap[referenceKey]];
+      const reference = referenceMap[referenceKey];
+      return Array.isArray(reference) ? reference : reference == null ? [] : [reference];
     }
   }
 });
