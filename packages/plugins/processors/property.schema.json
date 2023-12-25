@@ -15,10 +15,8 @@
                     "title": "A key-value in the parameter object"
                 }
             }
-        }
-    },
-    "additionalProperties": {
-        "input": {
+        },
+        "^input$": {
             "title": "Processor Input",
             "description": "The input arguments to a translation function in the format of 'name': 'default-value'. Provide a default input value for each key.",
             "items": {
@@ -69,105 +67,19 @@
             "intl/display": {}
         },
         {
+            "raw": {}
+        },
+        {
             "dictionary": {},
             "input": {
                 "fallback": ""
             }
         }
     ],
-    "oneOf": [
-        {
-            "required": [
-                "number"
-            ],
-            "dependencies": {
-                "input": [
-                    "number"
-                ]
-            }
-        },
-        {
-            "required": [
-                "intl/number"
-            ],
-            "dependencies": {
-                "input": [
-                    "intl/number"
-                ]
-            }
-        },
-        {
-            "required": [
-                "date"
-            ],
-            "dependencies": {
-                "input": [
-                    "date"
-                ]
-            }
-        },
-        {
-            "required": [
-                "intl/date"
-            ],
-            "dependencies": {
-                "input": [
-                    "intl/date"
-                ]
-            }
-        },
-        {
-            "required": [
-                "plural"
-            ],
-            "dependencies": {
-                "input": [
-                    "plural"
-                ]
-            }
-        },
-        {
-            "required": [
-                "intl/plural"
-            ],
-            "dependencies": {
-                "input": [
-                    "intl/plural"
-                ]
-            }
-        },
-        {
-            "required": [
-                "display"
-            ],
-            "dependencies": {
-                "input": [
-                    "display"
-                ]
-            }
-        },
-        {
-            "required": [
-                "intl/display"
-            ],
-            "dependencies": {
-                "input": [
-                    "intl/display"
-                ]
-            }
-        },
-        {
-            "required": [
-                "dictionary"
-            ],
-            "dependencies": {
-                "input": [
-                    "dictionary"
-                ]
-            }
-        }
-    ],
     "properties": {
+        "input": {
+            "$ref": "#/patternProperties/^input$"
+        },
         "number": {
             "$ref": "#/definitions/number-prop"
         },
