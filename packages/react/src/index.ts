@@ -38,6 +38,7 @@ export function createEffectTranslator<P extends readonly Plugin[]>(
     const currentLocale = () => locale.current ?? new Intl.Locale(navigator.language);
     const currentDoc = () => localeDoc.current;
 
+    // Integrate useMemo/useCallback here for performance and caching
     return createTranslator(currentDoc, plugins(currentLocale));
   };
 }
