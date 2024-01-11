@@ -1,5 +1,3 @@
-import type { LocaleKey } from './';
-
 export interface PluginRecord<
   Args extends unknown[] = unknown[],
   Info extends unknown = unknown,
@@ -159,6 +157,11 @@ export const createPlugin: {
   }
 ): Plugin<Match, Args> => ({ name, match, translate: options.translate ?? (() => undefined), info: options.info });
 
+export interface TranslationDocument {
+  [key: string]: unknown;
+}
+
+export type LocaleKey<LocaleDoc extends TranslationDocument> = Exclude<keyof LocaleDoc, '$schema'>;
 
 export type PMatch<P extends readonly Plugin[]> = (
   [] extends P ? never : P extends readonly Plugin<infer Match, any>[] ? Match : never
@@ -168,7 +171,7 @@ type NamePerPlugin<P extends readonly Plugin[]> = {
   [key in keyof P]: P[key] extends Plugin<any, any, infer Name> ? Name : never;
 };
 
-type MatchPerPlugin<P extends readonly Plugin[], Names extends Record<number, keyof PluginRegistry> = NamePerPlugin<P>> = {
+export type MatchPerPlugin<P extends readonly Plugin[], Names extends Record<number, keyof PluginRegistry> = NamePerPlugin<P>> = {
   [key in keyof Names & keyof P & `${number}` as Names[key]]: P[key] extends Plugin<infer Match, any> ? Match : never;
 };
 
@@ -176,11 +179,11 @@ export type MatchPerPluginName<P extends Record<string, Plugin>> = {
   [key in keyof P]: P[key] extends Plugin<infer Match, any> ? Match : never;
 };
 
-type InfoPerPlugin<P extends readonly Plugin[], Names extends Record<number, keyof PluginRegistry> = NamePerPlugin<P>> = {
+export type InfoPerPlugin<P extends readonly Plugin[], Names extends Record<number, keyof PluginRegistry> = NamePerPlugin<P>> = {
   [key in keyof Names & keyof P & `${number}` as Names[key]]: P[key] extends Plugin<any, any, any, infer Info> ? Info : never;
 };
 
-type PluginPerPlugin<P extends readonly Plugin[], Names extends Record<number, keyof PluginRegistry> = NamePerPlugin<P>> = {
+export type PluginPerPlugin<P extends readonly Plugin[], Names extends Record<number, keyof PluginRegistry> = NamePerPlugin<P>> = {
   [key in Extract<keyof Names & keyof P & `${number}`, keyof PluginRegistry> as Names[key]]: P[key] extends Plugin ? P[key] : never;
 };
 
@@ -199,8 +202,8 @@ export type TypeOfKeys<O, T> = {
 export type GetPluginNameFromArray<
   LocaleDoc extends Record<string, any>,
   K extends LocaleKey<LocaleDoc>,
-  P extends readonly Plugin[]
-> = KeysOfType<MatchPerPlugin<P>, LocaleDoc[K]>;
+  MatchPerP extends Record<keyof PluginRegistry, any>
+> = KeysOfType<MatchPerP, LocaleDoc[K]> & string;
 
 /**
  * Gets information on a plugin that processes a specific key
@@ -209,10 +212,10 @@ export type GetPluginNameFromArray<
 export type GetPluginFromArray<
   LocaleDoc extends Record<string, any>,
   K extends LocaleKey<LocaleDoc>,
-  P extends readonly Plugin[],
   PluginKey extends keyof PluginRegistry,
-  PluginsInfo extends Record<keyof PluginRegistry, any> = InfoPerPlugin<P>,
-> = PluginRegistry<LocaleDoc, K, PluginsInfo[PluginKey], PluginPerPlugin<P>>[PluginKey];
+  PluginsInfo extends Record<keyof PluginRegistry, any>,
+  Plugins extends Record<keyof PluginRegistry, any>,
+> = PluginRegistry<LocaleDoc, K, PluginsInfo[PluginKey], Plugins>[PluginKey] extends infer R extends PluginRecord ? R : never;
 
 /**
  * Gets a name of a plugin that processes a specific key
