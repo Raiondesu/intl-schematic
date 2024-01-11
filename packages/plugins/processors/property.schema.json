@@ -107,7 +107,7 @@
         "dictionary": {
             "title": "Process this key's input as a key of this object",
             "description": "Define a dictionary of keys to translated strings.",
-            "type": "object",
+            "type": ["object", "array"],
             "patternProperties": {
                 "^.*$": {
                     "type": "string"
@@ -298,6 +298,12 @@
                     "type": "string"
                 },
                 "currencySign": {
+                    "type": "string"
+                },
+                "currencyDisplay": {
+                    "type": "string"
+                },
+                "trailingZeroDisplay": {
                     "type": "string"
                 },
                 "localeMatcher": {

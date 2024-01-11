@@ -4,13 +4,13 @@ type ObjectInput = Either<{
   /** Displayed when the key is not found
    * @alias default
    */
-  fallback?: string;
+  fallback?: string | number;
 }, {
   /** Displayed when the key is not found
    * @alias fallback
    * @deprecated use `fallback`
   */
-  default?: string;
+  default?: string | number;
 }> & Either<{
   /**
    * A key to find in the dictionary
@@ -18,14 +18,14 @@ type ObjectInput = Either<{
    * @alias key
    * @deprecated use `key`
   */
-  value: string;
+  value: string | number;
 }, {
   /**
    * A key to find in the dictionary
    *
    * @alias value
    */
-  key: string;
+  key: string | number;
 }>;
 
 /**
@@ -47,8 +47,8 @@ type ObjectInput = Either<{
  * t('variant', { key: null }) // "Choose a variant!"
  * ```
  */
-export const dictionary = () => (options: Record<string, string>, key: string) => (
-  (input: string | ObjectInput) => {
+export const dictionary = () => (options: Record<string | number, string> | string[], key: string) => (
+  (input: string | ObjectInput): string => {
     const _input = typeof input === 'string'
       ? { key: input, fallback: key }
       : {
@@ -65,9 +65,9 @@ export const dictionary = () => (options: Record<string, string>, key: string) =
       };
 
     try {
-      return options && _input.key in options ? options[_input.key] : _input.fallback ?? key;
+      return options && _input.key in options ? options[_input.key as keyof typeof options & number] : String(_input.fallback) ?? key;
     } catch (error) {
-      return _input.fallback ?? key;
+      return String(_input.fallback) ?? key;
     }
   }
 );
