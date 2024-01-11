@@ -5,9 +5,9 @@ var dictionary = () => (options, key) => (input) => {
     key: ("key" in input ? input.key : "value" in input ? input.value : "") ?? ""
   };
   try {
-    return options && _input.key in options ? options[_input.key] : _input.fallback ?? key;
+    return options && _input.key in options ? options[_input.key] : String(_input.fallback) ?? key;
   } catch (error) {
-    return _input.fallback ?? key;
+    return String(_input.fallback) ?? key;
   }
 };
 export {
