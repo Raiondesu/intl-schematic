@@ -1,6 +1,6 @@
 {
   "name": "@intl-schematic/plugin-defaults",
-  "version": "1.0.0-rc.6",
+  "version": "1.0.0-rc.7",
   "license": "MIT",
   "repository": {
     "url": "git+https://github.com/Raiondesu/intl-schematic.git/packages/plugins/default"
