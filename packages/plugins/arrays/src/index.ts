@@ -6,36 +6,26 @@ declare module 'intl-schematic/plugins' {
     ArraysPlugin: {
       // Any attempt to externalize these types leads to a rat race between a type simplifier and a type inferer
       args: [
-        references?: keyof Exclude<LocaleDoc[Key][number], string> extends infer Keys
-          ? Keys extends LocaleKey<LocaleDoc>
-            ? {
-              [key in Keys]:
-                GetPluginNameFromContext<LocaleDoc, key, ContextualPlugins> extends infer PluginName
-                  ? PluginName extends keyof PluginRegistry
-                    ? PluginRegistry<LocaleDoc, key,
-                        ContextualPlugins[PluginName]['info'],
-                        ContextualPlugins
-                      >[PluginName] extends PluginRecord<infer Args>
-                        ? [] extends Args ? never : Args
-                        : unknown
-                    : unknown
-                  : unknown;
-            } : {
-              // In case references for the key weren't recognized,
-              // iterate show user all locale keys' parameter types as options
-              [key in LocaleKey<LocaleDoc>]?:
-                GetPluginNameFromContext<LocaleDoc, key, ContextualPlugins> extends infer PluginName
-                  ? PluginName extends keyof PluginRegistry
-                    ? PluginRegistry<LocaleDoc, key,
-                        ContextualPlugins[PluginName]['info'],
-                        ContextualPlugins
-                      >[PluginName] extends PluginRecord<infer Args>
-                        ? Args
-                        : unknown
-                    : unknown
-                  : unknown;
-            }
-          : unknown,
+        references?: keyof Exclude<LocaleDoc[Key][number], string> extends infer Keys extends LocaleKey<LocaleDoc>
+          ? {
+            [key in Keys]:
+              GetPluginNameFromContext<LocaleDoc, key, ContextualPlugins> extends infer PluginName extends keyof PluginRegistry
+                ? PluginRegistry<LocaleDoc, key,
+                    ContextualPlugins[PluginName]['info'],
+                    ContextualPlugins
+                  >[PluginName]['args']
+                : unknown;
+          } : {
+            // In case if references for the key weren't recognized,
+            // show all locale keys and parameter types as options to the user
+            [key in LocaleKey<LocaleDoc>]?:
+              GetPluginNameFromContext<LocaleDoc, key, ContextualPlugins> extends infer PluginName extends keyof PluginRegistry
+                ? PluginRegistry<LocaleDoc, key,
+                    ContextualPlugins[PluginName]['info'],
+                    ContextualPlugins
+                  >[PluginName]['args']
+                : unknown;
+          },
         separator?: string | ((translatedArray: string[], defaultSeparator: string) => string),
       ];
 
