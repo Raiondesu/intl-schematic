@@ -11,13 +11,11 @@ declare module 'intl-schematic/plugins' {
       args: PluginInfo extends Processors
         ? 'processor' extends keyof LocaleDoc[Key]
           // legacy format
-          ? { [key in keyof PluginInfo]: PluginInfo[key] extends Processor<infer Input, infer Param>
-              ? [input: ExtraPartial<Input>, parameter?: Param] : never;
-            }[Extract<keyof PluginInfo, keyof LocaleDoc[Key]['processor']>]
+          ? PluginInfo[keyof LocaleDoc[Key]['processor'] & keyof PluginInfo] extends Processor<infer Input, infer Param>
+            ? [input: Input, parameter?: Param] : never
           // new format
-          : { [key in keyof PluginInfo]: PluginInfo[key] extends Processor<infer Input, infer Param>
-              ? [input: ExtraPartial<Input>, parameter?: Param] : never;
-            }[Extract<keyof PluginInfo, keyof LocaleDoc[Key]>]
+          : PluginInfo[keyof LocaleDoc[Key] & keyof PluginInfo] extends Processor<infer Input, infer Param>
+            ? [input: Input, parameter?: Param] : never
         : [input?: unknown, parameter?: unknown];
 
       info: Processors;
@@ -48,7 +46,7 @@ export const ProcessorsPlugin = <P extends Processors>(processors: P) => {
 
   return createPlugin('ProcessorsPlugin',
     function isParametrized(value: unknown):
-      value is ParametrizedTranslationRecord<Extract<keyof P, string>> | LegacyParametrizedTranslationRecord
+      value is ParametrizedTranslationRecord<keyof P & string> | LegacyParametrizedTranslationRecord
     {
       if (typeof value !== 'object' || value == null) {
         return false;
@@ -128,7 +126,7 @@ function mergeInputs(
 /**
  * Allows to apply different pre-set functions to the input value with an object parameter before returning a localized string
  */
-export type ParametrizedTranslationRecord<PName extends keyof Processors> = FlatType<{
+export type ParametrizedTranslationRecord<PName extends string> = FlatType<{
   [key in PName]: { [name in key]: ParameterObject; } & {
     [name in Exclude<PName, key>]?: never;
   }
