@@ -73,7 +73,7 @@ export const ProcessorsPlugin = <P extends Processors>(processors: P) => {
 
         const processorName = 'processor' in this.value && typeof this.value.processor === 'object'
           ? Object.keys(this.value.processor)[0]
-          : Object.keys(this.value)[0];
+          : Object.keys(this.value).find(k => k !== 'input') ?? '';
 
         const processor = localizedProcessors[processorName];
 

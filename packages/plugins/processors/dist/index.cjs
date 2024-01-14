@@ -55,7 +55,7 @@ var ProcessorsPlugin = (processors) => {
         var _a;
         const locale = this.plugins.Locale?.info() ?? new Intl.Locale("ia");
         const localizedProcessors = localizedProcessorsByLocale[_a = String(locale.baseName)] ?? (localizedProcessorsByLocale[_a] = getLocalizedProcessors(processors, locale));
-        const processorName = "processor" in this.value && typeof this.value.processor === "object" ? Object.keys(this.value.processor)[0] : Object.keys(this.value)[0];
+        const processorName = "processor" in this.value && typeof this.value.processor === "object" ? Object.keys(this.value.processor)[0] : Object.keys(this.value).find((k) => k !== "input") ?? "";
         const processor = localizedProcessors[processorName];
         if (!processor) {
           return void 0;
