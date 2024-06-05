@@ -8,9 +8,9 @@
 
 <p align="center">
 
-Bravely modern, incredibly tiny, blazingly fast.
+Stupidly simple, incredibly tiny, blazingly fast.
 
-THis is a tiny framework-agnostic i18n library (1kb gzip, zero-dependency)
+This is a tiny framework-agnostic i18n library (1kb gzip, zero-dependency)
 that allows to localize and format strings with infinitely expandable functionality.
 
 </p>

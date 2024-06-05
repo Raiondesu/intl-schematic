@@ -8,7 +8,7 @@
 
 <div align="center">
 
-Bravely modern, incredibly tiny, blazingly fast.
+Stupidly simple, incredibly tiny, blazingly fast.
 
 This is a tiny framework-agnostic i18n library (1-3kb, zero-dependency)\
 that allows to localize and format strings\
