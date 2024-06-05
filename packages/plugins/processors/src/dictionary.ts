@@ -48,20 +48,20 @@ type ObjectInput = Either<{
  * ```
  */
 export const dictionary = () => (options: Record<string | number, string> | string[], key: string) => (
-  (input: string | ObjectInput): string => {
+  (input?: string | ObjectInput): string => {
     const _input = typeof input === 'string'
-      ? { key: input, fallback: key }
+      ? { key: input, fallback: input }
       : {
-        fallback: (
+        fallback: (input && (
           'default' in input ? input.default
           : 'fallback' in input ? input.fallback
           : undefined
-        ) ?? key,
-        key: (
+        )) ?? key,
+        key: (input && (
           'key' in input ? input.key
           : 'value' in input ? input.value
           : ''
-        ) ?? ''
+        )) ?? ''
       };
 
     try {
