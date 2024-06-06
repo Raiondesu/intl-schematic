@@ -25,8 +25,8 @@
     "intl-schematic": "*"
   },
   "dependencies": {
-    "@intl-schematic/plugin-arrays": "^1.0.0-rc.8",
-    "@intl-schematic/plugin-locale": "^1.0.0-rc.8",
+    "@intl-schematic/plugin-arrays": "^1.0.0-rc.7",
+    "@intl-schematic/plugin-locale": "^1.0.0-rc.7",
     "@intl-schematic/plugin-processors": "^1.0.0-rc.9"
   },
   "devDependencies": {
