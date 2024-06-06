@@ -126,7 +126,7 @@ interface ProcessedProperty {
 
 Full list processors included in the plugin:
 
-- `intl/number` (**default**) - uses
+- `intl/number` - uses
 [Intl.NumberFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat)
 to format any number passed as a second argument to translator function;
   - example:
@@ -147,7 +147,7 @@ to format any number passed as a second argument to translator function;
     }
     ```
 
-- `intl/date` (**default**) - same as `intl/number`, but uses
+- `intl/date` - same as `intl/number`, but uses
 [Intl.DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat);
   - example:
     ```ts
@@ -164,7 +164,7 @@ to format any number passed as a second argument to translator function;
     }
     ```
 
-- `intl/display` (**default**) - adapts the [`DisplayNames`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DisplayNames) formatter to the same interface, allowing easy translation of regions, languages, or currency names;
+- `intl/display` - adapts the [`DisplayNames`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DisplayNames) formatter to the same interface, allowing easy translation of regions, languages, or currency names;
   - example:
     ```ts
     const doc = {
@@ -180,7 +180,7 @@ to format any number passed as a second argument to translator function;
     }
     ```
 
-- `intl/plural` (**default**) - adapts the [`PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/PluralRules) formatter to the same interface, accepts a map of the [`.select()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/PluralRules/select) method results (`few`, `many`, etc.) to the required translations, very small and simplistic;
+- `intl/plural` - adapts the [`PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/PluralRules) formatter to the same interface, accepts a map of the [`.select()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/PluralRules/select) method results (`few`, `many`, etc.) to the required translations, very small and simplistic;
   - example:
     ```ts
     const doc = {

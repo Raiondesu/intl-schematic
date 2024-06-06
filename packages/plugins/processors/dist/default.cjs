@@ -34,6 +34,19 @@ __export(default_exports, {
 });
 module.exports = __toCommonJS(default_exports);
 
+// packages/plugins/processors/src/dictionary.ts
+var dictionary = () => (options, key) => (input) => {
+  const _input = typeof input === "string" ? { key: input, fallback: input } : {
+    fallback: (input && ("default" in input ? input.default : "fallback" in input ? input.fallback : void 0)) ?? key,
+    key: (input && ("key" in input ? input.key : "value" in input ? input.value : "")) ?? ""
+  };
+  try {
+    return options && _input.key in options ? options[_input.key] : String(_input.fallback) ?? key;
+  } catch (error) {
+    return String(_input.fallback) ?? key;
+  }
+};
+
 // packages/plugins/processors/src/intl/_cache.ts
 var cachedIntl = (intl, convert, process) => {
   const cache = {};
@@ -100,5 +113,6 @@ var defaultProcessors = {
   "intl/date": dateFormat,
   "intl/number": numberFormat,
   "intl/plural": pluralRules,
-  "intl/display": displayNames
+  "intl/display": displayNames,
+  dictionary
 };

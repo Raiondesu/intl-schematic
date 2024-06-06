@@ -1,3 +1,4 @@
+import { dictionary } from './dictionary';
 import { dateFormat } from './intl/date';
 import { displayNames } from './intl/display';
 import { numberFormat } from './intl/number';
@@ -18,6 +19,7 @@ export const defaultProcessors = {
   'intl/number': numberFormat,
   'intl/plural': pluralRules,
   'intl/display': displayNames,
+  dictionary,
 };
 
 export * from './intl/_cache';
