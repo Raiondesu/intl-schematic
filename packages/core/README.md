@@ -134,6 +134,7 @@ given a basic knowledge of any specific UI-framework,
 ### Current framework integrations
 
 - [`@intl-schematic/solid`](/packages/solid/) - reactive adapter for [`solid-js`](https://www.solidjs.com)
+  - Allows to use wrapper components like `<Intl>` or `<Multiline>` to simplify working with multipart string translations in need of complex styling
   - Creates a reactive [resource](https://www.solidjs.com/docs/latest/api#createresource)
     with the locale document and user's locale
     that is then passed in a closure to `intl-schematic` and user-defined plugins

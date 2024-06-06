@@ -172,3 +172,5 @@ export type ExtraPartial<I> = {
 };
 
 export type FlatType<T> = T extends object ? { [K in keyof T]: FlatType<T[K]> } : T;
+
+export type TranslationKey<Translator extends TranslationFunction<any, any>> = Translator extends TranslationFunction<infer LocaleDoc, any> ? LocaleKey<LocaleDoc> : never;

@@ -50,6 +50,7 @@ export default defineConfig(() => Promise.all(entries.map(async entry => {
     format: ['cjs' as const, 'esm' as const],
     metafile: true,
     splitting: false,
+    jsxFactory: 'createComponent',
     target: 'es2020',
     platform: 'neutral' as const,
     tsconfig: entry.replace('src', 'tsconfig.json'),
@@ -72,7 +73,7 @@ export default defineConfig(() => Promise.all(entries.map(async entry => {
         ['./' + path.replace('.js', '')]: {
           import: './dist/' + path,
           require: './dist/' + path.replace('.js', '.cjs'),
-          types: './src/' + path.replace('.js', '.ts')
+          types: './src/' + path.replace('.js', '.ts') + (existsSync(cwd('src/' + path.replace('.js', '.tsx'))) ? 'x' : '')
         }
       }), {} as Record<string, Record<string, string>>);
 
@@ -82,12 +83,16 @@ export default defineConfig(() => Promise.all(entries.map(async entry => {
         .slice(1)
         .map(line => console.log(`${CFG} ${line}`));
 
-      packageInfo.exports = exportPaths;
+      packageInfo.exports = {
+        ...packageInfo.exports,
+        ...exportPaths
+      };
+
       packageInfo.typesVersions = {
         '*': Object.keys(exportPaths).reduce((obj, p) => ({
           ...obj,
           [p.replace('./', '')]: [exportPaths[p].types],
-        }), {} as Record<string, string[]>),
+        }), packageInfo.typesVersions['*'] ?? {}),
       };
 
       await writeFile(cwd('./package.json'), JSON.stringify(packageInfo, null, 2) + '\n');

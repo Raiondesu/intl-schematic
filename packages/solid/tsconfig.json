@@ -1,4 +1,9 @@
 {
   "extends": "tsconfig/base",
-  "include": ["./src"],
+  "include": ["./src", "./Intl.tsx", "./Multiline.tsx"],
+  "compilerOptions": {
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js",
+    "strictFunctionTypes": true
+  }
 }
