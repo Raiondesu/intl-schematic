@@ -1,6 +1,6 @@
 {
   "name": "@intl-schematic/plugin-processors",
-  "version": "1.0.0-rc.8",
+  "version": "1.0.0-rc.9",
   "license": "MIT",
   "repository": {
     "url": "git+https://github.com/Raiondesu/intl-schematic.git"
